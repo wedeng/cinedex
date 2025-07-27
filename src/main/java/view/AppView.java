@@ -40,18 +40,21 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
     private final AppSearchBar searchBar = new AppSearchBar();
     private final AppNavigationMenu navigationMenu = new AppNavigationMenu();
     private final AppCentralView centralView = new AppCentralView();
+    private final AppStatusBar statusBar = new AppStatusBar();
 
     private AppPageController appPageController;
 
     public AppView(AppViewModel appViewModel) {
+        super();
 
         this.appViewModel = appViewModel;
         this.appViewModel.addPropertyChangeListener(this);
 
-
+        // Add components
         this.add(toolBar, BorderLayout.PAGE_START);
         this.add(navigationMenu, BorderLayout.LINE_START);
         this.add(centralView, BorderLayout.CENTER);
+        this.add(statusBar, BorderLayout.PAGE_END);
     }
 
     /**
@@ -222,7 +225,7 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
             // add placeholder contents to each card so they're distinguishable
             // discoverCard.add(new JLabel(DISCOVER_CARD_NAME));
 
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 16; i++) {
                 discoverCard.add(new MovieComponent());
             }
 
@@ -278,6 +281,28 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
             this.add(filterButton);
             this.add(searchField);
             this.add(searchButton);
+        }
+    }
+
+    private class AppStatusBar extends JPanel {
+
+        private final LayoutManager layout = new BoxLayout(this, BoxLayout.X_AXIS);
+
+        private final Icon RELOADING_ICON = new ImageIcon("src/main/resources/placeholder-icon.png");
+        private final Icon CHECKMARK_ICON = new ImageIcon("src/main/resources/placeholder-icon.png");
+
+        JLabel statusLabel = new JLabel(CHECKMARK_ICON);
+
+        public AppStatusBar() {
+            super();
+            this.setLayout(layout);
+
+            // style
+            this.setBorder(BorderFactory.createLoweredBevelBorder());
+
+            statusLabel.setText("Status: Up to date");
+
+            this.add(statusLabel);
         }
     }
 }
