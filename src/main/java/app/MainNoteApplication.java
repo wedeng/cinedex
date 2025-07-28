@@ -2,7 +2,18 @@
 package app;
 
 import data_access.DBNoteDataAccessObject;
+import data_access.MovieDataAceessObject;
 import use_case.note.NoteDataAccessInterface;
+import use_case.search.MovieSearchService;
+import use_case.search.SearchInputBoundary;
+import use_case.search.SearchInteractor;
+import use_case.search.SearchOutputBoundary;
+import view.search.SearchController;
+import view.search.SearchPresenter;
+import view.search.SearchView;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * An application where we can view and add to a note stored by a user.
@@ -53,5 +64,32 @@ public class MainNoteApplication {
         builder.addNoteDAO(noteDataAccess)
                .addNoteView()
                .addNoteUseCase().build().setVisible(true);
+
+        SwingUtilities.invokeLater(() -> {
+            JFrame mainFrame = new JFrame("Cinedex App");
+            mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            mainFrame.setSize(1000, 700);
+
+            JTabbedPane tabbedPane = new JTabbedPane();
+
+            MovieSearchService movieSearchService = new MovieDataAceessObject();
+            SearchView searchView = new SearchView();
+            SearchOutputBoundary searchPresenter = new SearchPresenter(searchView);
+            SearchInputBoundary searchInteractor = new SearchInteractor(movieSearchService,  searchPresenter);
+            SearchController searchController = new SearchController(searchInteractor);
+
+            searchView.addSearchListener(e -> {
+                String query = searchView.getSearchQuery();
+                String genre = searchView.getSelectedGenre();
+                Integer year = searchView.geetSelectedYear();
+                Double minRating = searchView.geetSelectedRating();
+                searchController.executeSearch(query, genre, year, minRating);
+            });
+
+            tabbedPane.addTab("Search Movie", searchView);
+
+            mainFrame.add(tabbedPane, BorderLayout.CENTER);
+            mainFrame.setVisible(true);
+        });
     }
 }
