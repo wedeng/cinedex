@@ -9,28 +9,40 @@ import java.util.List;
 
 public class SearchView extends JPanel {
 
+
     private final JTextField searchField;
+    private final JButton searchButton;
+    private final JButton filterButton;
+    private final JPanel resultsPanel;
+
     private final JComboBox<String> genreFilter;
     private final JComboBox<Integer> yearFilter;
     private final JComboBox<Double> ratingFilter;
 
-    private final JButton searchButton;
-    private final JPanel resultsPanel;
+    private final JPanel filtersPanel;
+    private boolean filtersVisible =  false;
+
 
     public SearchView() {
         setLayout(new BorderLayout());
 
-        JPanel searchPanel = new JPanel(new GridLayout(2, 1));
-
         // search field
-        JPanel searchBarPanel = new JPanel();
+        JPanel searchBarPanel = new JPanel(new BorderLayout());
         searchField = new JTextField(20);
         searchButton = new JButton("Search");
-        searchPanel.add(searchField);
-        searchPanel.add(searchButton);
+        filterButton = new JButton("Filters ▼");
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(searchButton);
+        buttonPanel.add(filterButton);
+
+        searchBarPanel.add(searchField, BorderLayout.CENTER);
+        searchBarPanel.add(buttonPanel, BorderLayout.EAST);
 
         // filters
-        JPanel filterPanel = new JPanel();
+        filtersPanel = new JPanel();
+        filtersPanel.setLayout(new BoxLayout(filtersPanel, BoxLayout.Y_AXIS));
+        filtersPanel.setVisible(false);
 
         // Genre filter
         String[] genres = {"All", "Action", "Comedy", "Drama", "Horror", "Fantasy", "Science Fiction", "Sports"};
@@ -49,24 +61,29 @@ public class SearchView extends JPanel {
         ratingFilter = new JComboBox<>(ratings);
         ratingFilter.setSelectedIndex(0);
 
-        filterPanel.add(new JLabel("Genre:"));
-        filterPanel.add(genreFilter);
-        filterPanel.add(new JLabel("Year:"));
-        filterPanel.add(yearFilter);
-        filterPanel.add(new JLabel("Rating:"));
-        filterPanel.add(ratingFilter);
-
-        searchPanel.add(searchBarPanel);
-        searchPanel.add(filterPanel);
+        filtersPanel.add(new JLabel("Genre:"));
+        filtersPanel.add(genreFilter);
+        filtersPanel.add(new JLabel("Year:"));
+        filtersPanel.add(yearFilter);
+        filtersPanel.add(new JLabel("Rating:"));
+        filtersPanel.add(ratingFilter);
 
         // results
         resultsPanel = new JPanel();
         resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
         JScrollPane scrollPane = new JScrollPane(resultsPanel);
 
-        add(searchPanel, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
+        filterButton.addActionListener(e -> toggleFilters());
 
+        add(searchBarPanel, BorderLayout.NORTH);
+        add(filtersPanel, BorderLayout.CENTER);
+        add(scrollPane, BorderLayout.SOUTH);
+    }
+
+    private void toggleFilters() {
+        filtersVisible = !filtersVisible;
+        filtersPanel.setVisible(filtersVisible);
+        filterButton.setText(filtersVisible ? "Filters ▲" : "Filters ▼");
     }
 
     public void addSearchListener(ActionListener listener) {
