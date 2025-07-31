@@ -25,7 +25,6 @@ import javax.swing.JToolBar;
 
 import interface_adapter.app.AppPageController;
 import interface_adapter.app.AppState;
-import interface_adapter.view.AppCentralViewModel;
 import interface_adapter.view.AppViewModel;
 import interface_adapter.view.ViewCard;
 
@@ -35,8 +34,6 @@ import interface_adapter.view.ViewCard;
 public class AppView extends JFrame implements ActionListener, PropertyChangeListener {
 
     private final AppViewModel appViewModel;
-    // currently unused
-    private final AppCentralViewModel appCentralViewModel;
 
     private final AppToolBar toolBar = new AppToolBar();
     private final AppSearchBar searchBar = new AppSearchBar();
@@ -45,11 +42,10 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
     private final AppStatusBar statusBar = new AppStatusBar();
 
 
-    public AppView(AppViewModel appViewModel, AppCentralViewModel appCentralViewModel) {
+    public AppView(AppViewModel appViewModel) {
         super();
 
         this.appViewModel = appViewModel;
-        this.appCentralViewModel = appCentralViewModel;
         this.appViewModel.addPropertyChangeListener(this);
 
         // Add components
