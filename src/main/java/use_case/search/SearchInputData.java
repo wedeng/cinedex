@@ -1,31 +1,22 @@
 package use_case.search;
 
+import entity.movie_fields.MovieField;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * The input data for the Search use case.
+ */
 public class SearchInputData {
-    private final String query;
-    private final String genre;
-    private final Integer year;
-    private final Double minRating;
 
-    public SearchInputData(String query, String genre, Integer year, Double minRating) {
-        this.query = query;
-        this.genre = genre;
-        this.year = year;
-        this.minRating = minRating;
+    private final Map<String, String> searchArguments;
+
+    public SearchInputData(Map<String, String> searchArguments) {
+        this.searchArguments = searchArguments;
     }
 
-    public String getQuery() {
-        return query;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public Double getMinRating() {
-        return minRating;
+    public Map<String, String> getSearchArguments() {
+        return searchArguments;
     }
 }
