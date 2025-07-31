@@ -20,7 +20,7 @@ public class NotePresenter implements NoteOutputBoundary {
      */
     @Override
     public void prepareSuccessView(String note) {
-//        appViewModel.getState().setNote(note);
+//     appViewModel.getState().setNote(note);
         appViewModel.getState().setError(null);
         appViewModel.firePropertyChanged();
     }
@@ -33,6 +33,6 @@ public class NotePresenter implements NoteOutputBoundary {
     @Override
     public void prepareFailView(String errorMessage) {
         appViewModel.getState().setError(errorMessage);
-        appViewModel.firePropertyChanged();
+        // appViewModel.firePropertyChanged();
     }
 }

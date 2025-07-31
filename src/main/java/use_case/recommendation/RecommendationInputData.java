@@ -7,25 +7,19 @@ import java.util.List;
  */
 
 public class RecommendationInputData {
-    private final int accountId;
-    private int maxRecommendations;
-    private List<Integer> watchedMovieIds;
+    private MovieCountService movieCountService;
+    private MovieListService movieListService;
 
-    public RecommendationInputData(int accountId, List<Integer> watchedMovieId, int maxRecommendations) {
-        this.accountId = accountId;
-        this.watchedMovieIds = watchedMovieId;
-        this.maxRecommendations = maxRecommendations;   
-    }
-
-    public int getAccountId() {
-        return this.accountId;
+    public RecommendationInputData(MovieListService movieListService, MovieCountService movieCountService) {
+        this.movieListService = movieListService;
+        this.movieCountService = movieCountService;
     }
 
     public int getMaxRecommendations() {
-        return this.maxRecommendations;
+        return this.movieCountService.getMovieCount();
     }
 
     public List<Integer> getWatchedMovieIds() {
-        return this.watchedMovieIds;
+        return this.movieListService.getMovieIds();
     }
 }

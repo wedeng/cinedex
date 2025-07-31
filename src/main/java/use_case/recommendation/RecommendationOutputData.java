@@ -5,28 +5,20 @@ import java.util.List;
 import entity.Movie;
 
 public class RecommendationOutputData {
-    private final int accountId;
 
     private List<Movie> recommendedMovies;
-
     private final boolean isSuccessful;
 
-    public RecommendationOutputData(int accountId, List<Movie> recommendedMovies,
-                                    boolean isSuccessful) {
-        this.accountId = accountId;
+    public RecommendationOutputData(List<Movie> recommendedMovies, boolean isSuccessful) {
         this.recommendedMovies = recommendedMovies;
         this.isSuccessful = isSuccessful;
-    }
-
-    public int getAccountId() {
-        return this.accountId;
     }
 
     public List<Movie> getRecommendedMovies() {
         return this.recommendedMovies;
     }
 
-    public boolean getSuccessful() {
+    public boolean isSuccessful() {
         return this.isSuccessful;
     }
 }

@@ -23,12 +23,12 @@ public class RecommendationInteractor implements RecommendationInputBoundary {
 
     @Override
     public void executeRecommendation(RecommendationInputData recommendationInputData) {
-        final int accountId = recommendationInputData.getAccountId();
         final List<Integer> moviesIdList = recommendationInputData.getWatchedMovieIds();
         final int maxRecommendations = recommendationInputData.getMaxRecommendations();
         
         if (moviesIdList.size() == 0) {
-            recommendationPresenter.prepareFailView("Need at least 1 movie watched to make recommendations");
+            recommendationPresenter.prepareFailView("Error: " +
+                    "Need at least one watched movie to make recommendations");
         }
         else {
             final List<Movie> recommendedMovieList = new ArrayList<>();
@@ -36,16 +36,16 @@ public class RecommendationInteractor implements RecommendationInputBoundary {
                 recommendedMovieList.addAll(movieRecommendationServiceObject.recommendMovies(moviesIdList.get(i)));
             }
             Collections.shuffle(recommendedMovieList);
+
             final List<Movie> completedRecommendedMovieList = new ArrayList<>();
-            
             for (int j = 0; j < Math.min(maxRecommendations, recommendedMovieList.size()); j++) {
                 completedRecommendedMovieList.add(recommendedMovieList.get(j));
             }
             if (completedRecommendedMovieList.size() == 0) {
-                recommendationPresenter.prepareFailView("No recommendations found");
+                recommendationPresenter.prepareFailView("Error: No recommendations found");
             }
             else {
-                final RecommendationOutputData recommendationOutputData = new RecommendationOutputData(accountId,
+                final RecommendationOutputData recommendationOutputData = new RecommendationOutputData(
                         completedRecommendedMovieList, true);
                 recommendationPresenter.prepareSuccessView(recommendationOutputData);
             }
