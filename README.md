@@ -5,6 +5,7 @@
 - Ebrahim Mohamud: EbrahimMohamud
 - Nwabuife Amede: Buife-C
 - Samy Bouarroudj: mysticdyingwhale
+- Xiangrenhe Jiang: XiangrenheJiang
 
 ## User Stories
 
