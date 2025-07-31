@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +16,6 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -26,8 +24,10 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 import interface_adapter.app.AppPageController;
-import interface_adapter.app.AppPageState;
-import interface_adapter.app.AppViewModel;
+import interface_adapter.app.AppState;
+import interface_adapter.view.AppCentralViewModel;
+import interface_adapter.view.AppViewModel;
+import interface_adapter.view.ViewCard;
 
 /**
  * The View for when the user is viewing a note in the program.
@@ -35,6 +35,8 @@ import interface_adapter.app.AppViewModel;
 public class AppView extends JFrame implements ActionListener, PropertyChangeListener {
 
     private final AppViewModel appViewModel;
+    // currently unused
+    private final AppCentralViewModel appCentralViewModel;
 
     private final AppToolBar toolBar = new AppToolBar();
     private final AppSearchBar searchBar = new AppSearchBar();
@@ -42,12 +44,12 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
     private final AppCentralView centralView = new AppCentralView();
     private final AppStatusBar statusBar = new AppStatusBar();
 
-    private AppPageController appPageController;
 
-    public AppView(AppViewModel appViewModel) {
+    public AppView(AppViewModel appViewModel, AppCentralViewModel appCentralViewModel) {
         super();
 
         this.appViewModel = appViewModel;
+        this.appCentralViewModel = appCentralViewModel;
         this.appViewModel.addPropertyChangeListener(this);
 
         // Add components
@@ -67,20 +69,20 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        final AppPageState state = (AppPageState) evt.getNewValue();
-//        setFields(state);
+        final AppState state = (AppState) evt.getNewValue();
+        setFields(state);
         if (state.getError() != null) {
             JOptionPane.showMessageDialog(this, state.getError(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-//    private void setFields(NoteState state) {
-//        noteInputField.setText(state.getNote());
-//    }
+    private void setFields(AppState state) {
+        ;
+    }
 
     public void setAppController(AppPageController controller) {
-        this.appPageController = controller;
+
     }
 
     private class AppNavigationMenu extends JPanel {
@@ -101,31 +103,75 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
             // style
             this.setBorder(BorderFactory.createLineBorder(Color.black));
 
-            prepareButton(discoverButton, PLACEHOLDER_ICON);
-            prepareButton(savedButton, PLACEHOLDER_ICON);
-            prepareButton(watchedButton, PLACEHOLDER_ICON);
-            prepareButton(settingsButton, PLACEHOLDER_ICON);
+            prepareButton(discoverButton, ViewCard.DISCOVER, PLACEHOLDER_ICON);
+            prepareButton(savedButton, ViewCard.SAVED, PLACEHOLDER_ICON);
+            prepareButton(watchedButton, ViewCard.WATCHED, PLACEHOLDER_ICON);
+            prepareButton(settingsButton, ViewCard.SETTINGS, PLACEHOLDER_ICON);
         }
 
         /**
          * Configures the button's style, adds an action listener,
          * and adds the button to this menu.
+         *
          * @param button The button to be prepared.
          */
-        private void prepareButton(JButton button, Icon icon) {
+        private void prepareButton(JButton button, ViewCard viewCard, Icon icon) {
             // button.setMaximumSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE))
             button.setIcon(icon);
 
             button.addActionListener(
                     evt -> {
                         if (evt.getSource().equals(button)) {
-                            // appPageController.execute(noteInputField.getText());
-                            ;
+                            // TODO: Delete this test print statement
+                            centralView.setActiveCard(viewCard);
+                            System.out.println("Set active card in AppViewModel to " + viewCard.getName());
                         }
                     }
             );
 
             this.add(button);
+        }
+    }
+
+    private class AppCentralView extends JPanel {
+        private final CardLayout layout = new CardLayout();
+
+        private final JPanel discoverCard = new JPanel();
+        private final JPanel savedCard = new JPanel();
+        private final JPanel watchedCard = new JPanel();
+        private final JPanel settingsCard = new JPanel();
+
+
+        public AppCentralView() {
+            super();
+            this.setLayout(layout);
+
+            // add placeholder contents to each card so they're distinguishable
+            // discoverCard.add(new JLabel(DISCOVER_CARD_NAME));
+
+            for (int i = 0; i < 16; i++) {
+                discoverCard.add(new MovieComponent());
+            }
+
+            savedCard.add(new JLabel(ViewCard.SAVED.getName()));
+            watchedCard.add(new JLabel(ViewCard.WATCHED.getName()));
+            settingsCard.add(new JLabel(ViewCard.SETTINGS.getName()));
+
+
+            this.setupCard(discoverCard, ViewCard.DISCOVER.getName());
+            this.setupCard(savedCard, ViewCard.SAVED.getName());
+            this.setupCard(watchedCard, ViewCard.WATCHED.getName());
+            this.setupCard(settingsCard, ViewCard.SETTINGS.getName());
+        }
+
+        private void setupCard(JPanel card, String cardName) {
+            this.add(card, cardName);
+        }
+
+        public void setActiveCard(ViewCard activeViewCard) {
+            layout.show(this, activeViewCard.getName());
+            // TODO: Delete this test print statement
+            System.out.println("Set active card in AppCentralView to " + activeViewCard.getName());
         }
     }
 
@@ -179,10 +225,10 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
                     }
             );
 
-            prepareButton(recommendButton, PLACEHOLDER_ICON);
-            prepareButton(saveButton, PLACEHOLDER_ICON);
-            prepareButton(watchedButton, PLACEHOLDER_ICON);
-            prepareButton(rateButton, PLACEHOLDER_ICON);
+            setupButton(recommendButton, PLACEHOLDER_ICON);
+            setupButton(saveButton, PLACEHOLDER_ICON);
+            setupButton(watchedButton, PLACEHOLDER_ICON);
+            setupButton(rateButton, PLACEHOLDER_ICON);
 
             Component spacer = Box.createHorizontalStrut((int) Math.round(BUTTON_SIZE * 4));
 
@@ -191,53 +237,15 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
         }
 
         /**
-         * Configures the button's style, adds an action listener,
-         * and adds the button to this toolbar.
+         * Configures the button's style and adds the button to this toolbar.
          * @param button The button to be prepared.
          * @param icon The icon of the button.
          */
-        private void prepareButton(JButton button, Icon icon) {
+        private void setupButton(JButton button, Icon icon) {
             // button.setMaximumSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
             button.setIcon(icon);
 
             this.add(button);
-        }
-    }
-
-    private class AppCentralView extends JPanel {
-        private final LayoutManager layout = new CardLayout();
-
-        private final String DISCOVER_CARD_NAME = "Discover";
-        private final String SAVED_CARD_NAME = "Saved";
-        private final String WATCHED_CARD_NAME = "Watched";
-        private final String SETTINGS_CARD_NAME = "Settings";
-
-        private final JPanel discoverCard = new JPanel();
-        private final JPanel savedCard = new JPanel();
-        private final JPanel watchedCard = new JPanel();
-        private final JPanel settingsCard = new JPanel();
-
-
-        public AppCentralView() {
-            super();
-            this.setLayout(layout);
-
-            // add placeholder contents to each card so they're distinguishable
-            // discoverCard.add(new JLabel(DISCOVER_CARD_NAME));
-
-            for (int i = 0; i < 16; i++) {
-                discoverCard.add(new MovieComponent());
-            }
-
-            savedCard.add(new JLabel(SAVED_CARD_NAME));
-            watchedCard.add(new JLabel(WATCHED_CARD_NAME));
-            settingsCard.add(new JLabel(SETTINGS_CARD_NAME));
-
-
-            this.add(discoverCard);
-            this.add(savedCard);
-            this.add(watchedCard);
-            this.add(settingsCard);
         }
     }
 
