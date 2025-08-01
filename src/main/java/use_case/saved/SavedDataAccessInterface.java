@@ -1,11 +1,12 @@
-package use_case.watchlist;
+package use_case.saved;
 
-import entity.Movie;
-import entity.AppUser;
-import use_case.note.DataAccessException;
 import java.util.List;
 
-public interface MovieDataAccessInterface {
+import entity.AppUser;
+import entity.Movie;
+import use_case.note.DataAccessException;
+
+public interface SavedDataAccessInterface {
     List<Movie> searchMovies(String query) throws DataAccessException;
     void addToSavedMovies(AppUser user, int movieId) throws DataAccessException;
     AppUser getCurrentUser() throws DataAccessException;

@@ -3,6 +3,8 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,14 +12,17 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 import interface_adapter.app.AppPageController;
@@ -32,20 +37,24 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
     private final AppViewModel appViewModel;
 
     private final AppToolBar toolBar = new AppToolBar();
+    private final AppSearchBar searchBar = new AppSearchBar();
     private final AppNavigationMenu navigationMenu = new AppNavigationMenu();
     private final AppCentralView centralView = new AppCentralView();
+    private final AppStatusBar statusBar = new AppStatusBar();
 
     private AppPageController appPageController;
 
     public AppView(AppViewModel appViewModel) {
+        super();
 
         this.appViewModel = appViewModel;
         this.appViewModel.addPropertyChangeListener(this);
 
-
+        // Add components
         this.add(toolBar, BorderLayout.PAGE_START);
         this.add(navigationMenu, BorderLayout.LINE_START);
         this.add(centralView, BorderLayout.CENTER);
+        this.add(statusBar, BorderLayout.PAGE_END);
     }
 
     /**
@@ -129,13 +138,56 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
         private final JButton watchedButton = new JButton();
         private final JButton rateButton = new JButton();
 
+        private final AppSearchBar searchBar = new AppSearchBar();
+
         public AppToolBar() {
             super();
+
+            recommendButton.addActionListener(
+                    evt -> {
+                        if (evt.getSource().equals(recommendButton)) {
+                            // appPageController.execute(noteInputField.getText());
+                            ;
+                        }
+                    }
+            );
+
+            saveButton.addActionListener(
+                    evt -> {
+                        if (evt.getSource().equals(saveButton)) {
+                            // appPageController.execute(noteInputField.getText());
+                            ;
+                        }
+                    }
+            );
+
+            watchedButton.addActionListener(
+                    evt -> {
+                        if (evt.getSource().equals(watchedButton)) {
+                            // appPageController.execute(noteInputField.getText());
+                            ;
+                        }
+                    }
+            );
+
+            rateButton.addActionListener(
+                    evt -> {
+                        if (evt.getSource().equals(rateButton)) {
+                            // appPageController.execute(noteInputField.getText());
+                            ;
+                        }
+                    }
+            );
 
             prepareButton(recommendButton, PLACEHOLDER_ICON);
             prepareButton(saveButton, PLACEHOLDER_ICON);
             prepareButton(watchedButton, PLACEHOLDER_ICON);
             prepareButton(rateButton, PLACEHOLDER_ICON);
+
+            Component spacer = Box.createHorizontalStrut((int) Math.round(BUTTON_SIZE * 4));
+
+            this.add(spacer);
+            this.add(searchBar);
         }
 
         /**
@@ -147,15 +199,6 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
         private void prepareButton(JButton button, Icon icon) {
             // button.setMaximumSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
             button.setIcon(icon);
-
-            button.addActionListener(
-                    evt -> {
-                        if (evt.getSource().equals(button)) {
-                            // appPageController.execute(noteInputField.getText());
-                            ;
-                        }
-                    }
-            );
 
             this.add(button);
         }
@@ -182,7 +225,7 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
             // add placeholder contents to each card so they're distinguishable
             // discoverCard.add(new JLabel(DISCOVER_CARD_NAME));
 
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 16; i++) {
                 discoverCard.add(new MovieComponent());
             }
 
@@ -195,6 +238,71 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
             this.add(savedCard);
             this.add(watchedCard);
             this.add(settingsCard);
+        }
+    }
+
+    private class AppSearchBar extends JPanel {
+
+        LayoutManager layout = new BoxLayout(this, BoxLayout.X_AXIS);
+
+        private final int BUTTON_SIZE = 32;
+        private final Icon SEARCH_ICON = new ImageIcon("src/main/resources/placeholder-icon.png");
+        private final Icon FILTER_ICON = new ImageIcon("src/main/resources/placeholder-icon.png");
+
+        final private JButton filterButton = new JButton(FILTER_ICON);
+        final private JTextField searchField = new JTextField();
+        final private JButton searchButton = new JButton(SEARCH_ICON);
+
+        public AppSearchBar() {
+            super();
+            this.setLayout(layout);
+
+            filterButton.addActionListener(
+                    evt -> {
+                        if (evt.getSource().equals(filterButton)) {
+                            // appPageController.execute(noteInputField.getText());
+                            ;
+                        }
+                    }
+            );
+
+            searchButton.addActionListener(
+                    evt -> {
+                        if (evt.getSource().equals(searchButton)) {
+                            // appPageController.execute(noteInputField.getText());
+                            ;
+                        }
+                    }
+            );
+
+//            filterButton.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
+//            searchButton.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
+
+            this.add(filterButton);
+            this.add(searchField);
+            this.add(searchButton);
+        }
+    }
+
+    private class AppStatusBar extends JPanel {
+
+        private final LayoutManager layout = new BoxLayout(this, BoxLayout.X_AXIS);
+
+        private final Icon RELOADING_ICON = new ImageIcon("src/main/resources/placeholder-icon.png");
+        private final Icon CHECKMARK_ICON = new ImageIcon("src/main/resources/placeholder-icon.png");
+
+        JLabel statusLabel = new JLabel(CHECKMARK_ICON);
+
+        public AppStatusBar() {
+            super();
+            this.setLayout(layout);
+
+            // style
+            this.setBorder(BorderFactory.createLoweredBevelBorder());
+
+            statusLabel.setText("Status: Up to date");
+
+            this.add(statusLabel);
         }
     }
 }
