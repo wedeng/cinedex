@@ -1,20 +1,13 @@
 package interface_adapter.app;
 
+import interface_adapter.view.ViewCard;
+
 /**
  * The State for the app.
  */
-public class AppPageState {
+public class AppState {
 
-    private AppPage page = AppPage.DISCOVER;
     private String error;
-
-    public AppPage getPage() {
-        return page;
-    }
-
-    public void setPage(AppPage page) {
-        this.page = page;
-    }
 
     public void setError(String errorMessage) {
         this.error = errorMessage;
