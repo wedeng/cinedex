@@ -1,4 +1,4 @@
-package use_case.search;
+package use_case;
 
 import entity.Movie;
 

@@ -8,7 +8,6 @@ import use_case.search.MovieSearchService;
 import use_case.search.SearchInputBoundary;
 import use_case.search.SearchInteractor;
 import use_case.search.SearchOutputBoundary;
-import view.search.SearchController;
 import view.search.SearchPresenter;
 import view.search.SearchView;
 
@@ -74,16 +73,16 @@ public class MainNoteApplication {
 
             MovieSearchService movieSearchService = new MovieDataAceessObject();
             SearchView searchView = new SearchView();
-            SearchOutputBoundary searchPresenter = new SearchPresenter(searchView);
-            SearchInputBoundary searchInteractor = new SearchInteractor(movieSearchService,  searchPresenter);
-            SearchController searchController = new SearchController(searchInteractor);
+//            SearchOutputBoundary searchPresenter = new SearchPresenter(searchView);
+//            SearchInputBoundary searchInteractor = new SearchInteractor(movieSearchService,  searchPresenter);
+//            SearchController searchController = new SearchController(searchInteractor);
 
             searchView.addSearchListener(e -> {
                 String query = searchView.getSearchQuery();
                 String genre = searchView.getSelectedGenre();
                 Integer year = searchView.geetSelectedYear();
                 Double minRating = searchView.geetSelectedRating();
-                searchController.executeSearch(query, genre, year, minRating);
+//                searchController.executeSearch(query, genre, year, minRating);
             });
 
             tabbedPane.addTab("Search Movie", searchView);
