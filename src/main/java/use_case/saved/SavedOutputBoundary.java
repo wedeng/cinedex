@@ -1,7 +1,19 @@
 package use_case.saved;
 
+/**
+ * The Output Boundary for the saved use case.
+ */
+
 public interface SavedOutputBoundary {
-    void prepareSearchSuccessView(SavedOutputData outputData);
-    void prepareAddToSavedMoviesSuccessView(String message);
+    /**
+     * Prepares the success view for the saved use case.
+     * @param savedOutputData the output data.
+     */
+    void prepareSuccessView(SavedOutputData savedOutputData);
+
+    /**
+     * Prepares the fail view for the saved use case.
+     * @param errorMessage the explanation for failure.
+     */
     void prepareFailView(String errorMessage);
 }

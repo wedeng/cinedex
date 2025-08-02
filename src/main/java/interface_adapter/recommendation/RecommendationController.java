@@ -1,7 +1,5 @@
 package interface_adapter.recommendation;
 
-import java.util.List;
-
 import use_case.recommendation.MovieCountService;
 import use_case.recommendation.MovieListService;
 import use_case.recommendation.RecommendationInputBoundary;

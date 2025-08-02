@@ -27,8 +27,7 @@ public class RecommendationInteractor implements RecommendationInputBoundary {
         final int maxRecommendations = recommendationInputData.getMaxRecommendations();
         
         if (moviesIdList.size() == 0) {
-            recommendationPresenter.prepareFailView("Error: " +
-                    "Need at least one watched movie to make recommendations");
+            recommendationPresenter.prepareFailView("Error: Need at least one watched movie to make recommendations");
         }
         else {
             final List<Movie> recommendedMovieList = new ArrayList<>();
