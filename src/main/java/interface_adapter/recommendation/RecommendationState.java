@@ -1,27 +1,21 @@
 package interface_adapter.recommendation;
 
-import entity.Movie;
 import java.util.List;
+
+import entity.MovieInterface;
 
 /**
  * The state information present for movie recommendations.
- * 
- * Program states:
- * 1. Success with movies
- * 2. Success without movies
- * 3. Failure all together
+ * Possible States:
+ * 1. Success with movies (movies >= 1)
+ * 2. Success without movies (movies = 0)
+ * 3. Failure all together (error in recommendation)
  */
 
 public class RecommendationState {
-    private List<Movie> movies;
+    private List<MovieInterface> movies;
     private String recommendationError;
     private boolean recommendationSuccess;
-
-    public RecommendationState(List<Movie> movies) {
-        this.movies = movies;
-        this.recommendationError = null;
-        this.recommendationSuccess = true;
-    }
 
     public RecommendationState() {
         this.movies = null;
@@ -29,11 +23,15 @@ public class RecommendationState {
         this.recommendationSuccess = false;
     }
 
-    public List<Movie> getMovies() {
+    public List<MovieInterface> getMovies() {
         return this.movies;
     }
 
-    public void setMovies(List<Movie> movies) {
+    /**
+     * Sets the state with a list of movies.
+     * @param movies the list of movies.
+     */
+    public void setMovies(List<MovieInterface> movies) {
         this.movies = movies;
     }
 
@@ -41,6 +39,10 @@ public class RecommendationState {
         return this.recommendationError;
     }
 
+    /**
+     * Sets a string explaining the recommendation error.
+     * @param recommendationError the recommendation Error.
+     */
     public void setRecommendationError(String recommendationError) {
         this.recommendationError = recommendationError;
         this.recommendationSuccess = false;
@@ -50,6 +52,10 @@ public class RecommendationState {
         return this.recommendationSuccess;
     }
 
+    /**
+     * Sets the status for the recommendation use case.
+     * @param recommendationSuccess the recommendation status.
+     */
     public void setRecommendationSuccess(boolean recommendationSuccess) {
         this.recommendationSuccess = recommendationSuccess;
         if (this.recommendationSuccess) {

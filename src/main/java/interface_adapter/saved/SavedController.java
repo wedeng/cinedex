@@ -1,6 +1,6 @@
 package interface_adapter.saved;
 
-import entity.Movie;
+import entity.MovieInterface;
 import use_case.saved.SavedInputBoundary;
 import use_case.saved.SavedInputData;
 
@@ -15,7 +15,7 @@ public class SavedController {
      * Executes the Add to saved objective.
      * @param movie the given movie to be saved.
      */
-    public void executeAddToSaved(Movie movie) {
+    public void executeAddToSaved(MovieInterface movie) {
         final SavedInputData savedInputData = new SavedInputData(movie);
         savedInputBoundary.executeAddToSavedMovies(savedInputData);
     }
@@ -24,7 +24,7 @@ public class SavedController {
      * Executes the Remove from saved objective.
      * @param movie the given movie to be removed from saved.
      */
-    public void executeRemoveFromSaved(Movie movie) {
+    public void executeRemoveFromSaved(MovieInterface movie) {
         final SavedInputData savedInputData = new SavedInputData(movie);
         savedInputBoundary.executeRemoveFromSavedMovies(savedInputData);
     }

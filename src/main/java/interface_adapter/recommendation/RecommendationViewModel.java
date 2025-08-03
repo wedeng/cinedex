@@ -3,7 +3,7 @@ package interface_adapter.recommendation;
 import interface_adapter.ViewModel;
 
 /**
- * The View Model for the recommendation View
+ * The View Model for the recommendation View.
  */
 
 public class RecommendationViewModel extends ViewModel<RecommendationState> {
@@ -12,5 +12,3 @@ public class RecommendationViewModel extends ViewModel<RecommendationState> {
         setState(new RecommendationState());
     }
 }
-
-

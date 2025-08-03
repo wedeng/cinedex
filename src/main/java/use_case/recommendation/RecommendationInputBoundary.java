@@ -7,7 +7,7 @@ package use_case.recommendation;
 public interface RecommendationInputBoundary {
     /**
      * Executes the recommendation use case.
-     * @param recommendationInputData the input data
+     * @param recommendationInputData the input data.
      */
     void executeRecommendation(RecommendationInputData recommendationInputData);
 }

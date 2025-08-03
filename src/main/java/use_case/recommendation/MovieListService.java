@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface MovieListService {
     /**
-     * Returns a list of watched Movies ids for account User.
-     * @return a list of watched Movies ids for account User.
+     * Service that provides a list of watched movies ids for the user.
+     * @return a list of watched Movies ids for the user.
      */
     List<Integer> getMovieIds();
 }
