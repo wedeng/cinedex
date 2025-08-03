@@ -3,6 +3,7 @@ package view.search;
 import entity.Movie;
 import use_case.search.SearchOutputBoundary;
 import use_case.search.SearchOutputData;
+import view.SearchView;
 
 import java.util.List;
 
