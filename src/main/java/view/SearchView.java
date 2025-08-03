@@ -9,7 +9,6 @@ import java.util.List;
 
 public class SearchView extends JPanel {
 
-
     private final JTextField searchField;
     private final JButton searchButton;
     private final JButton filterButton;
