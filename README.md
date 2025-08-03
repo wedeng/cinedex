@@ -4,6 +4,7 @@
 - Wenny Deng: wedeng
 - Ebrahim Mohamud: EbrahimMohamud
 - Nwabuife Amede: Buife-C
+- Samy Bouarroudj: mysticdyingwhale
 
 ## User Stories
 

@@ -9,6 +9,9 @@ public class User {
     private final String name;
     private final String password;
 
+
+    // id?
+
     public User(String name, String password) {
         this.name = name;
         this.password = password;
