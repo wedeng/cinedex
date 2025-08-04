@@ -7,39 +7,45 @@ import java.util.List;
 import entity.MovieInterface;
 
 /**
- * The Recommendation Interactor.
+ * The Recommendation Interactor: Class specifying the implementation of the recommendation use case.
  */
 
 public class RecommendationInteractor implements RecommendationInputBoundary {
-    private final MovieRecommendationService movieRecommendationServiceObject;
+    private final WatchedIdDataAccessInterface watchedMovieIdDataAccessInterface;
+    private final RecommendationDataAccessInterface recommendationDataAccessInterface;
     private final RecommendationOutputBoundary recommendationPresenter;
 
-    public RecommendationInteractor(MovieRecommendationService movieRecommendationService,
+    public RecommendationInteractor(WatchedIdDataAccessInterface watchedMovieIdDataAccessInterface,
+                                    RecommendationDataAccessInterface recommendationDataAccessInterface,
                                     RecommendationOutputBoundary recommendationPresenter) {
 
-        this.movieRecommendationServiceObject = movieRecommendationService;
+        this.watchedMovieIdDataAccessInterface = watchedMovieIdDataAccessInterface;
+        this.recommendationDataAccessInterface = recommendationDataAccessInterface;
         this.recommendationPresenter = recommendationPresenter;
+
     }
 
     @Override
-    public void executeRecommendation(RecommendationInputData recommendationInputData) {
-        final List<Integer> moviesIdList = recommendationInputData.getWatchedMovieIds();
-
+    public void executeRecommendation() {
+        final List<Integer> moviesIdList = this.watchedMovieIdDataAccessInterface.getMovieIds();
         if (moviesIdList.size() == 0) {
-            recommendationPresenter.prepareFailView("Error: Need at least one watched movie to make recommendations");
+            recommendationPresenter.prepareFailView(
+                    "Error: Need at least one watched movie to make recommendations"
+            );
         }
         else {
             final List<MovieInterface> recommendedMovieList = new ArrayList<>();
 
             for (int i = 0; i < moviesIdList.size(); i++) {
-                recommendedMovieList.addAll(movieRecommendationServiceObject.recommendMovies(moviesIdList.get(i)));
+                recommendedMovieList.addAll(
+                        this.recommendationDataAccessInterface.recommendMovies(moviesIdList.get(i))
+                );
             }
-            Collections.shuffle(recommendedMovieList);
-
             if (recommendedMovieList.size() == 0) {
                 recommendationPresenter.prepareFailView("Error: No recommendations found");
             }
             else {
+                Collections.shuffle(recommendedMovieList);
                 final RecommendationOutputData recommendationOutputData = new RecommendationOutputData(
                         recommendedMovieList, true);
                 recommendationPresenter.prepareSuccessView(recommendationOutputData);

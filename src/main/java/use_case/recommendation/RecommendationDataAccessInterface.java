@@ -8,9 +8,9 @@ import entity.MovieInterface;
  * The interface for the recommendation service we provide.
  */
 
-public interface MovieRecommendationService {
+public interface RecommendationDataAccessInterface {
     /**
-     * List of recommended movies given a users watched movie.
+     * Service that provides a list of recommended movies given a movie.
      * @param movieId the id of a given movie.
      * @return A list of recommended movies.
      */

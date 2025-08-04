@@ -1,7 +1,7 @@
 package use_case.saved;
 
 /**
- * The Output Boundary for the saved use case.
+ * The output boundary for the saved use case.
  */
 
 public interface SavedOutputBoundary {

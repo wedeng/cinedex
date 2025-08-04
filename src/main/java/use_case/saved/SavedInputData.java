@@ -14,6 +14,6 @@ public class SavedInputData {
     }
 
     public MovieInterface getMovie() {
-        return movie;
+        return this.movie;
     }
 }

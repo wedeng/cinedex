@@ -1,7 +1,7 @@
 package use_case.saved;
 
 /**
- * Input Boundary for adding a movie to a saved movie list.
+ * Input boundary for adding or removing movies from the users saved movie list.
  */
 
 public interface SavedInputBoundary {

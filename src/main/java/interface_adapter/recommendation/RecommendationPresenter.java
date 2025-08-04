@@ -23,7 +23,7 @@ public class RecommendationPresenter implements RecommendationOutputBoundary {
     public void prepareSuccessView(RecommendationOutputData recommendationOutputData) {
         final RecommendationState recommendationState = recommendationViewModel.getState();
 
-        recommendationState.setRecommendationSuccess(recommendationOutputData.isSuccessful());
+        recommendationState.setRecommendationSuccess(true);
         recommendationState.setMovies(recommendationOutputData.getRecommendedMovies());
         recommendationState.setRecommendationError(null);
 

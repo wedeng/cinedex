@@ -1,8 +1,6 @@
 package interface_adapter.recommendation;
 
-import use_case.recommendation.MovieListService;
 import use_case.recommendation.RecommendationInputBoundary;
-import use_case.recommendation.RecommendationInputData;
 
 public class RecommendationController {
     private final RecommendationInputBoundary recommendationInputBoundary;
@@ -12,13 +10,11 @@ public class RecommendationController {
     }
 
     /**
-     * Executes the recommendation Use Case.
-     * @param movieListService interface for retrieving the users list of watched movie ids.
+     * Executes the recommendation use case.
      */
 
-    public void execute(MovieListService movieListService) {
-        final RecommendationInputData recommendationInputData = new RecommendationInputData(movieListService);
-        recommendationInputBoundary.executeRecommendation(recommendationInputData);
+    public void execute() {
+        recommendationInputBoundary.executeRecommendation();
     }
 }
 

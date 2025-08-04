@@ -19,8 +19,8 @@ public class SavedPresenter implements SavedOutputBoundary {
     public void prepareSuccessView(SavedOutputData outputData) {
         final SavedState savedState = this.savedViewModel.getState();
 
-        savedState.setSavedTaskError(null);
-        savedState.setSavedTaskSuccess(outputData.isSaved());
+        savedState.setSavedManagerErrorMessage(null);
+        savedState.setSavedManagerSuccess(true);
 
         this.savedViewModel.setState(savedState);
         this.savedViewModel.firePropertyChanged("saved");
@@ -30,8 +30,8 @@ public class SavedPresenter implements SavedOutputBoundary {
     public void prepareFailView(String errorMessage) {
         final SavedState savedState = this.savedViewModel.getState();
 
-        savedState.setSavedTaskError(errorMessage);
-        savedState.setSavedTaskSuccess(false);
+        savedState.setSavedManagerErrorMessage(errorMessage);
+        savedState.setSavedManagerSuccess(false);
 
         this.savedViewModel.setState(savedState);
         this.savedViewModel.firePropertyChanged("saved");

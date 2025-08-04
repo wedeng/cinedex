@@ -17,7 +17,7 @@ public class SavedController {
      */
     public void executeAddToSaved(MovieInterface movie) {
         final SavedInputData savedInputData = new SavedInputData(movie);
-        savedInputBoundary.executeAddToSavedMovies(savedInputData);
+        this.savedInputBoundary.executeAddToSavedMovies(savedInputData);
     }
 
     /**
@@ -26,6 +26,6 @@ public class SavedController {
      */
     public void executeRemoveFromSaved(MovieInterface movie) {
         final SavedInputData savedInputData = new SavedInputData(movie);
-        savedInputBoundary.executeRemoveFromSavedMovies(savedInputData);
+        this.savedInputBoundary.executeRemoveFromSavedMovies(savedInputData);
     }
 }

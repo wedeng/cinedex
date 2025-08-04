@@ -5,37 +5,37 @@ package interface_adapter.saved;
  */
 
 public class SavedState {
-    private String savedTaskError;
-    private boolean savedTaskSuccess;
+    private String savedManagerErrorMessage;
+    private boolean savedManagerSuccess;
 
     public SavedState() {
-        this.savedTaskError = null;
-        this.savedTaskSuccess = false;
+        this.savedManagerErrorMessage = null;
+        this.savedManagerSuccess = false;
     }
 
-    public String getSavedTaskError() {
-        return this.savedTaskError;
+    public String getSavedManagerErrorMessage() {
+        return this.savedManagerErrorMessage;
     }
 
     /**
      * Sets the error message for a failed case regarding the saved use case.
-     * @param savedTaskError the explanation for error.
+     * @param savedManagerErrorMessage the explanation for error.
      */
-    public void setSavedTaskError(String savedTaskError) {
-        this.savedTaskError = savedTaskError;
-        this.savedTaskSuccess = false;
+    public void setSavedManagerErrorMessage(String savedManagerErrorMessage) {
+        this.savedManagerErrorMessage = savedManagerErrorMessage;
+        this.savedManagerSuccess = false;
     }
 
-    public boolean isSavedTaskSuccess() {
-        return this.savedTaskSuccess;
+    public boolean isSavedManagerSuccess() {
+        return this.savedManagerSuccess;
     }
 
     /**
      * Sets the status of a saved task (add or removed from save).
      * @param savedTaskStatus the saved task status.
      */
-    public void setSavedTaskSuccess(boolean savedTaskStatus) {
-        this.savedTaskSuccess = savedTaskStatus;
-        this.savedTaskError = null;
+    public void setSavedManagerSuccess(boolean savedTaskStatus) {
+        this.savedManagerSuccess = savedTaskStatus;
+        this.savedManagerErrorMessage = null;
     }
 }
