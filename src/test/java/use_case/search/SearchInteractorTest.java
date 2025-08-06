@@ -56,4 +56,17 @@ public class SearchInteractorTest {
 
         verify(mockField, times(1)).isValid("Action");
     }
+
+    @Test
+    void testExecuteWithInvalidArguments() {
+        Map<String, String> searchArgs = Map.of("year", "invalid");
+        SearchInputData inputData = new SearchInputData(searchArgs);
+
+        when(mockFieldRegister.getSearchFields()).thenReturn(new ArrayList<>());
+        when(mockField.getName()).thenReturn("year");
+        when(mockField.isValid("invalid")).thenReturn(false);
+
+        searchInteractor.execute(inputData);
+        verify(mockPresenter).prepareFailView("Invalid argument for year");
+    }
 }

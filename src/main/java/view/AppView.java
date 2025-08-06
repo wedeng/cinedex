@@ -81,7 +81,7 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
 
     }
 
-    private class AppNavigationMenu extends JPanel {
+    public class AppNavigationMenu extends JPanel {
         private final int BUTTON_SIZE = 32;
         private final Icon PLACEHOLDER_ICON = new ImageIcon("src/main/resources/placeholder-icon.png");
 
@@ -129,7 +129,7 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
         }
     }
 
-    private class AppCentralView extends JPanel {
+    public class AppCentralView extends JPanel {
         private final CardLayout layout = new CardLayout();
 
         private final JPanel discoverCard = new JPanel();
@@ -171,7 +171,7 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
         }
     }
 
-    private class AppToolBar extends JToolBar {
+    public class AppToolBar extends JToolBar {
         private final int BUTTON_SIZE = 32;
         private final Icon PLACEHOLDER_ICON = new ImageIcon("src/main/resources/placeholder-icon.png");
 
@@ -288,7 +288,7 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
         }
     }
 
-    private class AppStatusBar extends JPanel {
+    public class AppStatusBar extends JPanel {
 
         private final LayoutManager layout = new BoxLayout(this, BoxLayout.X_AXIS);
 
