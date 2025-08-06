@@ -1,13 +1,19 @@
 package use_case.saved;
 
-public class SavedInputData {
-    private final String searchQuery;
+import entity.MovieInterface;
 
-    public SavedInputData(String searchQuery) {
-        this.searchQuery = searchQuery;
+/**
+ * Input Data for the saved use case.
+ */
+
+public class SavedInputData {
+    private final MovieInterface movie;
+
+    public SavedInputData(MovieInterface movie) {
+        this.movie = movie;
     }
 
-    public String getSearchQuery() {
-        return searchQuery;
+    public MovieInterface getMovie() {
+        return this.movie;
     }
 }

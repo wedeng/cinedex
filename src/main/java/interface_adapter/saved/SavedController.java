@@ -1,21 +1,31 @@
 package interface_adapter.saved;
 
+import entity.MovieInterface;
 import use_case.saved.SavedInputBoundary;
 import use_case.saved.SavedInputData;
 
 public class SavedController {
-    private final SavedInputBoundary savedInteractor;
+    private final SavedInputBoundary savedInputBoundary;
 
-    public SavedController(SavedInputBoundary savedInteractor) {
-        this.savedInteractor = savedInteractor;
+    public SavedController(SavedInputBoundary savedInputBoundary) {
+        this.savedInputBoundary = savedInputBoundary;
     }
 
-    public void searchMovies(String query) {
-        SavedInputData inputData = new SavedInputData(query);
-        savedInteractor.executeSearch(inputData);
+    /**
+     * Executes the Add to saved objective.
+     * @param movie the given movie to be saved.
+     */
+    public void executeAddToSaved(MovieInterface movie) {
+        final SavedInputData savedInputData = new SavedInputData(movie);
+        this.savedInputBoundary.executeAddToSavedMovies(savedInputData);
     }
 
-    public void addToSavedMovies(int movieId) {
-        savedInteractor.executeAddToSavedMovies(movieId);
+    /**
+     * Executes the Remove from saved objective.
+     * @param movie the given movie to be removed from saved.
+     */
+    public void executeRemoveFromSaved(MovieInterface movie) {
+        final SavedInputData savedInputData = new SavedInputData(movie);
+        this.savedInputBoundary.executeRemoveFromSavedMovies(savedInputData);
     }
 }

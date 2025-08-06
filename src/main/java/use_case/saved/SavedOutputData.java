@@ -1,17 +1,13 @@
 package use_case.saved;
 
-import java.util.List;
-
-import entity.Movie;
-
 public class SavedOutputData {
-    private final List<Movie> movies;
+    private final boolean isSaved;
 
-    public SavedOutputData(List<Movie> movies) {
-        this.movies = movies;
+    public SavedOutputData(boolean isSaved) {
+        this.isSaved = isSaved;
     }
 
-    public List<Movie> getMovies() {
-        return movies;
+    public boolean isSaved() {
+        return this.isSaved;
     }
 }
