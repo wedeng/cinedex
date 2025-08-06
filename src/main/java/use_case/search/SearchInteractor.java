@@ -1,10 +1,14 @@
 package use_case.search;
 
+import entity.MovieInterface;
 import entity.movie_fields.MovieFieldInterface;
 import entity.movie_fields.MovieFieldRegisterInterface;
 import use_case.MovieDataAccessInterface;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SearchInteractor implements SearchInputBoundary {
 
@@ -20,10 +24,10 @@ public class SearchInteractor implements SearchInputBoundary {
 
     @Override
     public void execute(SearchInputData searchInputData) {
-        Map<String, String> searchArguments = searchInputData.getSearchArguments();
+        Map<String, String> stringSearchArguments = searchInputData.getSearchArguments();
 
         for (MovieFieldInterface movieField : movieFieldRegister.getSearchFields()) {
-            String argument = searchArguments.get(movieField.getName());
+            String argument = stringSearchArguments.get(movieField.getName());
             if (argument == null) {
                 searchPresenter.prepareFailView("Missing argument for " + movieField.getName());
             }
@@ -31,11 +35,11 @@ public class SearchInteractor implements SearchInputBoundary {
                 searchPresenter.prepareFailView("Invalid argument for " + movieField.getName());
             }
             else {
-                // TODO: Call on movieDataAccessObject accordingly
-//                SearchOutputData outputData = new SearchOutputData(movies, false);
-//                searchOutputBoundary.prepareSuccessView(outputData);
-//
-//                searchOutputBoundary.prepareFailView("Error occurred while searching for movies: " + e.getMessage());
+//                final SearchOutputData = new SearchOutputData();
+                List<MovieInterface> outputMovies = new ArrayList<>();
+                switch (searchInputData.getSearchType()) {
+//                    case "Discover": outputMovies = movieDataAccessObject.getFromTMDB(50);
+                }
             }
         }
     }

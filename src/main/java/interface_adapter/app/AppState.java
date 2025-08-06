@@ -1,7 +1,5 @@
 package interface_adapter.app;
 
-import interface_adapter.view.ViewCard;
-
 /**
  * The State for the app.
  */
