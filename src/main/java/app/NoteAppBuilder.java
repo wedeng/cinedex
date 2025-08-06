@@ -7,10 +7,13 @@ import javax.swing.WindowConstants;
 import interface_adapter.app.AppPageController;
 import interface_adapter.app.NotePresenter;
 import interface_adapter.view.AppViewModel;
+import interface_adapter.view.CardViewModel;
 import use_case.note.NoteDataAccessInterface;
 import use_case.note.NoteInteractor;
 import use_case.note.NoteOutputBoundary;
 import view.AppView;
+import view.CardView;
+import view.NavigationMenuView;
 
 /**
  * Builder for the Note Application.
@@ -20,6 +23,7 @@ public class NoteAppBuilder {
     public static final int WIDTH = 400;
     private NoteDataAccessInterface noteDAO;
     private AppViewModel appViewModel = new AppViewModel();
+    private CardViewModel cardViewModel = new CardViewModel();
     private AppView appView;
     private NoteInteractor noteInteractor;
 
@@ -54,12 +58,18 @@ public class NoteAppBuilder {
     }
 
     /**
-     * Creates the NoteView and underlying NoteViewModel.
+     * Creates the AppView, its component views, and its associated view models.
      * @return this builder
      */
-    public NoteAppBuilder addNoteView() {
+    public NoteAppBuilder addAppView() {
+        cardViewModel = new CardViewModel();
+        CardView cardView = new CardView(cardViewModel);
+        NavigationMenuView navigationMenuView = new NavigationMenuView(cardViewModel);
+
+
         appViewModel = new AppViewModel();
-        appView = new AppView(appViewModel);
+
+//        appView = new AppView(appViewModel, navigationMenuView, cardView);
         return this;
     }
 
@@ -68,7 +78,6 @@ public class NoteAppBuilder {
      * @return the JFrame for the application
      */
     public JFrame build() {
-        final JFrame appView = new AppView(appViewModel);
         appView.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         appView.setTitle("Movie App");
         appView.setSize(WIDTH, HEIGHT);

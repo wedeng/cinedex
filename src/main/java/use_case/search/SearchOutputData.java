@@ -1,23 +1,29 @@
 package use_case.search;
 
-import entity.Movie;
+import entity.MovieInterface;
 
 import java.util.List;
 
 public class SearchOutputData {
-    private final List<Movie> movies;
+    private final List<MovieInterface> movies;
+    private final String resultType;
     private final boolean hasError;
 
-    public SearchOutputData(List<Movie> movies, boolean hasError) {
+    public SearchOutputData(List<MovieInterface> movies, String resultType, boolean hasError) {
         this.movies = movies;
+        this.resultType = resultType;
         this.hasError = hasError;
     }
 
-    public List<Movie> getMovies() {
+    public List<MovieInterface> getMovies() {
         return movies;
     }
 
     public boolean hasError() {
         return hasError;
+    }
+
+    public String getResultType() {
+        return resultType;
     }
 }

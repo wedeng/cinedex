@@ -5,11 +5,7 @@ import data_access.DBNoteDataAccessObject;
 import data_access.MovieDataAceessObject;
 import use_case.note.NoteDataAccessInterface;
 import use_case.search.MovieSearchService;
-import use_case.search.SearchInputBoundary;
-import use_case.search.SearchInteractor;
-import use_case.search.SearchOutputBoundary;
-import view.search.SearchPresenter;
-import view.search.SearchView;
+import view.SearchView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,7 +57,7 @@ public class MainNoteApplication {
 
         final NoteAppBuilder builder = new NoteAppBuilder();
         builder.addNoteDAO(noteDataAccess)
-               .addNoteView()
+               .addAppView()
                .addNoteUseCase().build().setVisible(true);
 
         SwingUtilities.invokeLater(() -> {
@@ -72,20 +68,17 @@ public class MainNoteApplication {
             JTabbedPane tabbedPane = new JTabbedPane();
 
             MovieSearchService movieSearchService = new MovieDataAceessObject();
-            SearchView searchView = new SearchView();
 //            SearchOutputBoundary searchPresenter = new SearchPresenter(searchView);
 //            SearchInputBoundary searchInteractor = new SearchInteractor(movieSearchService,  searchPresenter);
 //            SearchController searchController = new SearchController(searchInteractor);
 
-            searchView.addSearchListener(e -> {
-                String query = searchView.getSearchQuery();
-                String genre = searchView.getSelectedGenre();
-                Integer year = searchView.geetSelectedYear();
-                Double minRating = searchView.geetSelectedRating();
-//                searchController.executeSearch(query, genre, year, minRating);
-            });
 
-            tabbedPane.addTab("Search Movie", searchView);
+            // TODO: Delete this and use the builder instead
+//            CardViewModel cardViewModel = new CardViewModel();
+//            NavigationMenuView navigationMenuView = new NavigationMenuView(cardViewModel);
+//            CentralView centralView = new CentralView(cardViewModel);
+
+
 
             mainFrame.add(tabbedPane, BorderLayout.CENTER);
             mainFrame.setVisible(true);
