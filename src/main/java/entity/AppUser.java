@@ -9,11 +9,10 @@ import java.util.Map;
 
 public class AppUser implements AppUserInterface {
     private final int accountId;
-    private String username;
-
-    private List<String> preferredGenres;
-    private List<Integer> savedMovies;
-    private Map<Integer, Integer> ratedMovies;
+    private final String username;
+    private final List<String> preferredGenres;
+    private final List<Integer> savedMovies;
+    private final Map<Integer, Integer> ratedMovies;
 
     public AppUser(int accountId, String username,
                    List<String> preferredGenres, List<Integer> savedMovies,
