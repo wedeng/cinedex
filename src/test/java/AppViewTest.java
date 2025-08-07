@@ -1,4 +1,5 @@
 import interface_adapter.view.AppViewModel;
+import interface_adapter.view.ViewCard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,5 +40,47 @@ public class AppViewTest {
         for (Component c : menu.getComponents()) {
             Assertions.assertInstanceOf(JButton.class, c);
         }
+    }
+
+    @Test
+    void testNavigateButtonActions() {
+        AppView.AppNavigationMenu menu = appView.new AppNavigationMenu();
+        AppView.AppCentralView centralView = appView.new AppCentralView();
+
+        for (Component c : menu.getComponents()) {
+            JButton button = (JButton) c;
+            button.doClick();
+            Assertions.assertTrue(centralView.getLayout().toString().contains(button.getText()));
+        }
+
+    }
+
+    @Test
+    void testCentralViewCards() {
+        AppView.AppCentralView centralView = appView.new AppCentralView();
+        Assertions.assertEquals(4, centralView.getComponentCount());
+
+        CardLayout layout = (CardLayout) centralView.getLayout();
+        for (ViewCard card : ViewCard.values()) {
+            layout.show(centralView, card.getName());
+            Component visible = centralView.getComponent(0);
+            Assertions.assertTrue(visible.isVisible());
+        }
+    }
+
+    @Test
+    void testToolbarComponents() {
+        AppView.AppToolBar toolbar = appView.new AppToolBar();
+        Assertions.assertTrue(toolbar.getComponentCount() >= 5);
+        Assertions.assertInstanceOf(AppView.AppSearchBar.class, toolbar.getComponent(1));
+    }
+
+    @Test
+    void testSearchBarComponents() {
+        AppView.AppSearchBar searchBar = appView.new AppSearchBar();
+        Assertions.assertEquals(3, searchBar.getComponentCount());
+        Assertions.assertInstanceOf(JButton.class, searchBar.getComponent(0));
+        Assertions.assertInstanceOf(JTextField.class, searchBar.getComponent(1));
+        Assertions.assertInstanceOf(JButton.class, searchBar.getComponent(2));
     }
 }

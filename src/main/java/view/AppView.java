@@ -34,7 +34,6 @@ import interface_adapter.view.ViewCard;
 public class AppView extends JFrame implements ActionListener, PropertyChangeListener {
 
     private final AppViewModel appViewModel;
-
     private final AppToolBar toolBar = new AppToolBar();
     private final AppSearchBar searchBar = new AppSearchBar();
     private final AppNavigationMenu navigationMenu = new AppNavigationMenu();
@@ -137,7 +136,6 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
         private final JPanel watchedCard = new JPanel();
         private final JPanel settingsCard = new JPanel();
 
-
         public AppCentralView() {
             super();
             this.setLayout(layout);
@@ -152,7 +150,6 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
             savedCard.add(new JLabel(ViewCard.SAVED.getName()));
             watchedCard.add(new JLabel(ViewCard.WATCHED.getName()));
             settingsCard.add(new JLabel(ViewCard.SETTINGS.getName()));
-
 
             this.setupCard(discoverCard, ViewCard.DISCOVER.getName());
             this.setupCard(savedCard, ViewCard.SAVED.getName());
@@ -245,7 +242,7 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
         }
     }
 
-    private class AppSearchBar extends JPanel {
+    public class AppSearchBar extends JPanel {
 
         LayoutManager layout = new BoxLayout(this, BoxLayout.X_AXIS);
 
