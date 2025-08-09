@@ -1,3 +1,4 @@
+import interface_adapter.app.AppState;
 import interface_adapter.view.AppViewModel;
 import interface_adapter.view.ViewCard;
 import org.junit.jupiter.api.Assertions;
@@ -7,9 +8,9 @@ import view.AppView;
 
 import javax.swing.*;
 import java.awt.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 
 public class AppViewTest {
@@ -52,7 +53,6 @@ public class AppViewTest {
             button.doClick();
             Assertions.assertTrue(centralView.getLayout().toString().contains(button.getText()));
         }
-
     }
 
     @Test
@@ -82,5 +82,39 @@ public class AppViewTest {
         Assertions.assertInstanceOf(JButton.class, searchBar.getComponent(0));
         Assertions.assertInstanceOf(JTextField.class, searchBar.getComponent(1));
         Assertions.assertInstanceOf(JButton.class, searchBar.getComponent(2));
+    }
+
+    @Test
+    void testStatusBarInitialization() {
+        AppView.AppStatusBar statusBar = appView.new AppStatusBar();
+        Assertions.assertEquals(1, statusBar.getComponentCount());
+        Assertions.assertEquals("Status", ((JLabel) statusBar.getComponent(0)).getText());
+    }
+
+    @Test
+    void testPropertyChangeWithError() {
+        AppState stateWithError = new AppState();
+        stateWithError.setError("Test Error");
+
+        PropertyChangeEvent event = new PropertyChangeEvent(mockViewModel, "error", null, stateWithError);
+        appView.propertyChange(event);
+    }
+
+    @Test
+    void testPropertyChangeWithoutError() {
+        AppState normalState = new AppState();
+        PropertyChangeEvent event = new PropertyChangeEvent(mockViewModel, "normalState", null, normalState);
+    }
+
+    @Test
+    void testActionListener() {
+        // Create a test action event
+        ActionEvent testEvent = new ActionEvent(new JButton("Test"), ActionEvent.ACTION_PERFORMED, null);
+        assertDoesNotThrow(() -> appView.actionPerformed(testEvent));
+    }
+
+    @Test
+    void testControllerBinding() {
+        assertDoesNotThrow(() -> appView.setAppController(null));
     }
 }
