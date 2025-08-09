@@ -1,6 +1,6 @@
 package interface_adapter.saved;
 
-import interface_adapter.ViewModel;
+import interface_adapter.view.ViewModel;
 
 public class SavedViewModel extends ViewModel<SavedState> {
     public SavedViewModel() {
