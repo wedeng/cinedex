@@ -1,5 +1,9 @@
 package interface_adapter.view;
 
+/**
+ * The View Model for the cards View.
+ * The stored state is the currently displayed card.
+ */
 public class CardViewModel extends ViewModel<CardType> {
 
     public CardViewModel() {

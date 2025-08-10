@@ -1,6 +1,6 @@
 package interface_adapter.recommendation;
 
-import interface_adapter.ViewModel;
+import interface_adapter.view.ViewModel;
 
 /**
  * The View Model for the recommendation View.

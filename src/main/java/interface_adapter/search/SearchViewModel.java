@@ -1,4 +1,6 @@
-package interface_adapter.view;
+package interface_adapter.search;
+
+import interface_adapter.view.ViewModel;
 
 import java.util.List;
 

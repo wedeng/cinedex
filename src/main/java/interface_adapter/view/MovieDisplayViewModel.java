@@ -1,13 +1,9 @@
-package interface_adapter;
-
-import interface_adapter.view.MovieDisplayState;
-import interface_adapter.view.CardType;
-import interface_adapter.view.ViewModel;
+package interface_adapter.view;
 
 public class MovieDisplayViewModel extends ViewModel<MovieDisplayState> {
 
     public MovieDisplayViewModel(CardType cardType) {
-        super("movie display");
+        super(cardType.getName().toLowerCase());
         setState(new MovieDisplayState(cardType));
     }
 

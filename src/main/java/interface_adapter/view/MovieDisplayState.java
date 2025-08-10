@@ -9,11 +9,13 @@ public class MovieDisplayState {
     private List<MovieInterface> displayedMovies;
     private int page = 1;
 
+    private String retrievalError;
+
     public MovieDisplayState(CardType viewType) {
         this.viewType = viewType;
     }
 
-    public CardType getViewType() {
+    public CardType getCardType() {
         return viewType;
     }
 
@@ -31,5 +33,13 @@ public class MovieDisplayState {
 
     public void setPage(int page) {
         this.page = page;
+    }
+
+    public String getRetrievalError() {
+        return retrievalError;
+    }
+
+    public void setRetrievalError(String retrievalError) {
+        this.retrievalError = retrievalError;
     }
 }

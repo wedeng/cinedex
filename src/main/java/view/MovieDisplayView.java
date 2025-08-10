@@ -2,7 +2,7 @@ package view;
 
 import entity.MovieInterface;
 import interface_adapter.view.MovieDisplayState;
-import interface_adapter.MovieDisplayViewModel;
+import interface_adapter.view.MovieDisplayViewModel;
 
 import javax.swing.JPanel;
 import java.beans.PropertyChangeEvent;

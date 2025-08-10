@@ -6,6 +6,7 @@ import entity.movie_fields.MovieFieldRegisterInterface;
 import use_case.MovieDataAccessInterface;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,11 +36,22 @@ public class SearchInteractor implements SearchInputBoundary {
                 searchPresenter.prepareFailView("Invalid argument for " + movieField.getName());
             }
             else {
-//                final SearchOutputData = new SearchOutputData();
-                List<MovieInterface> outputMovies = new ArrayList<>();
-                switch (searchInputData.getSearchType()) {
-//                    case "Discover": outputMovies = movieDataAccessObject.getFromTMDB(50);
+                // Convert to required type
+                Map<MovieFieldInterface, String> searchArguments = new HashMap<>();
+                for (var entry : stringSearchArguments.entrySet()) {
+                    searchArguments.put(movieFieldRegister.getField(entry.getKey()), entry.getValue());
                 }
+
+                // Get output from DAO
+                List<MovieInterface> outputMovies = new ArrayList<>();
+                String searchType = searchInputData.getSearchType();
+                switch (searchType) {
+                    case "Discover": outputMovies = movieDataAccessObject.getFromTMDB(50, searchArguments);
+                    case "Saved": outputMovies = movieDataAccessObject.getSaved(50,  searchArguments);
+                    case "Watched": outputMovies = movieDataAccessObject.getWatched(50, searchArguments);
+                }
+                final SearchOutputData searchOutputData = new SearchOutputData(outputMovies, searchType, false);
+                searchPresenter.prepareSuccessView(searchOutputData);
             }
         }
     }

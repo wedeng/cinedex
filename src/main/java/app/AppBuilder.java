@@ -3,12 +3,14 @@ package app;
 import entity.movie_fields.MovieFieldInterface;
 import entity.movie_fields.MovieFieldRegister;
 import entity.movie_fields.MovieFieldRegisterInterface;
-import interface_adapter.MovieDisplayViewModels;
-import interface_adapter.MovieDisplayViewModelsInterface;
+import interface_adapter.view.CardType;
+import interface_adapter.view.MovieDisplayViewModel;
+import interface_adapter.view.MovieDisplayViewModels;
+import interface_adapter.view.MovieDisplayViewModelsInterface;
 import interface_adapter.search.SearchController;
 import interface_adapter.search.SearchPresenter;
 import interface_adapter.view.CardViewModel;
-import interface_adapter.view.SearchViewModel;
+import interface_adapter.search.SearchViewModel;
 import use_case.MovieDataAccessInterface;
 import use_case.search.SearchInteractor;
 import use_case.search.SearchOutputBoundary;
@@ -82,9 +84,12 @@ public class AppBuilder {
         // SearchView
         searchView = new SearchView(searchViewModel, cardViewModel, searchFields);
 
+        // View Models
+        addMovieDisplayViewModels();
+
         // CardView
         cardViewModel = new CardViewModel();
-        CardView cardView = new CardView(cardViewModel);
+        CardView cardView = new CardView(cardViewModel, movieDisplayViewModels);
 
         // NavigationMenuView
         NavigationMenuView navigationMenuView = new NavigationMenuView(cardViewModel);
@@ -92,6 +97,16 @@ public class AppBuilder {
         appView = new AppView(navigationMenuView, cardView, searchView);
 
         return this;
+    }
+
+    /**
+     * Creates and adds the movie display view models to the collection of movie display models.
+     */
+    private void addMovieDisplayViewModels() {
+        movieDisplayViewModels.addViewModel(new MovieDisplayViewModel(CardType.DISCOVER));
+        movieDisplayViewModels.addViewModel(new MovieDisplayViewModel(CardType.SAVED));
+        movieDisplayViewModels.addViewModel(new MovieDisplayViewModel(CardType.WATCHED));
+        movieDisplayViewModels.addViewModel(new MovieDisplayViewModel(CardType.RECOMMENDED));
     }
 
     /**

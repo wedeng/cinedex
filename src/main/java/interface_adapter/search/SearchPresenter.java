@@ -2,17 +2,12 @@ package interface_adapter.search;
 
 import entity.MovieInterface;
 import interface_adapter.view.CardType;
-import interface_adapter.MovieDisplayViewModel;
-import interface_adapter.MovieDisplayViewModels;
-import interface_adapter.MovieDisplayViewModelsInterface;
+import interface_adapter.view.MovieDisplayViewModel;
+import interface_adapter.view.MovieDisplayViewModelsInterface;
 import interface_adapter.view.CardViewModel;
 import interface_adapter.view.MovieDisplayState;
-import interface_adapter.view.SearchState;
-import interface_adapter.view.SearchViewModel;
 import use_case.search.SearchOutputBoundary;
 import use_case.search.SearchOutputData;
-import view.CardView;
-import view.SearchView;
 
 import java.util.List;
 

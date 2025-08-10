@@ -2,8 +2,8 @@ package view;
 
 import interface_adapter.search.SearchController;
 import interface_adapter.view.CardViewModel;
-import interface_adapter.view.SearchState;
-import interface_adapter.view.SearchViewModel;
+import interface_adapter.search.SearchState;
+import interface_adapter.search.SearchViewModel;
 import interface_adapter.view.CardType;
 
 import javax.swing.BoxLayout;

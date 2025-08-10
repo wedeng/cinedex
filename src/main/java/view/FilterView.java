@@ -1,7 +1,7 @@
 package view;
 
-import interface_adapter.view.SearchState;
-import interface_adapter.view.SearchViewModel;
+import interface_adapter.search.SearchState;
+import interface_adapter.search.SearchViewModel;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
