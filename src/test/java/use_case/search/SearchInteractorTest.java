@@ -4,7 +4,7 @@ import entity.movie_fields.MovieFieldInterface;
 import entity.movie_fields.MovieFieldRegisterInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import use_case.MovieDataAccessInterface;
+import use_case.movie.MovieDataAccessInterface;
 
 import java.util.*;
 
