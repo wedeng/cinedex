@@ -1,9 +1,6 @@
 package interface_adapter.recommendation;
 
-import java.util.List;
-
 import use_case.recommendation.RecommendationInputBoundary;
-import use_case.recommendation.RecommendationInputData;
 
 public class RecommendationController {
     private final RecommendationInputBoundary recommendationInputBoundary;
@@ -13,15 +10,11 @@ public class RecommendationController {
     }
 
     /**
-     * Executes the recommendation Use Case.
-     * @param accountId accountId of AppUser who requests a recommendation.
-     * @param watchedMovieId a list of the AppUsers watched Movie Ids.
-     * @param maxRecommendations the movie recommendation count.
+     * Executes the recommendation use case.
      */
-    public void execute(int accountId, List<Integer> watchedMovieId, int maxRecommendations) {
-        final RecommendationInputData recommendationInputData = new RecommendationInputData(accountId,
-                watchedMovieId, maxRecommendations);
-        recommendationInputBoundary.executeRecommendation(recommendationInputData);
+
+    public void execute() {
+        recommendationInputBoundary.executeRecommendation();
     }
 }
 

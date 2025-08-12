@@ -4,49 +4,50 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import entity.Movie;
+import entity.MovieInterface;
 
 /**
- * The Recommendation Interactor.
+ * The Recommendation Interactor: Class specifying the implementation of the recommendation use case.
  */
 
 public class RecommendationInteractor implements RecommendationInputBoundary {
-    private final MovieRecommendationService movieRecommendationServiceObject;
+    private final WatchedIdDataAccessInterface watchedMovieIdDataAccessInterface;
+    private final RecommendationDataAccessInterface recommendationDataAccessInterface;
     private final RecommendationOutputBoundary recommendationPresenter;
 
-    public RecommendationInteractor(MovieRecommendationService movieRecommendationService,
-                                    RecommendationOutputBoundary recommendationOutputBoundary) {
+    public RecommendationInteractor(WatchedIdDataAccessInterface watchedMovieIdDataAccessInterface,
+                                    RecommendationDataAccessInterface recommendationDataAccessInterface,
+                                    RecommendationOutputBoundary recommendationPresenter) {
 
-        this.movieRecommendationServiceObject = movieRecommendationService;
-        this.recommendationPresenter = recommendationOutputBoundary;
+        this.watchedMovieIdDataAccessInterface = watchedMovieIdDataAccessInterface;
+        this.recommendationDataAccessInterface = recommendationDataAccessInterface;
+        this.recommendationPresenter = recommendationPresenter;
+
     }
 
     @Override
-    public void executeRecommendation(RecommendationInputData recommendationInputData) {
-        final int accountId = recommendationInputData.getAccountId();
-        final List<Integer> moviesIdList = recommendationInputData.getWatchedMovieIds();
-        final int maxRecommendations = recommendationInputData.getMaxRecommendations();
-        
+    public void executeRecommendation() {
+        final List<Integer> moviesIdList = this.watchedMovieIdDataAccessInterface.getMovieIds();
         if (moviesIdList.size() == 0) {
-            recommendationPresenter.prepareFailView("Need at least 1 movie watched to make recommendations");
+            recommendationPresenter.prepareFailView(
+                    "Error: Need at least one watched movie to make recommendations"
+            );
         }
         else {
-            final List<Movie> recommendedMovieList = new ArrayList<>();
+            final List<MovieInterface> recommendedMovieList = new ArrayList<>();
+
             for (int i = 0; i < moviesIdList.size(); i++) {
-                recommendedMovieList.addAll(movieRecommendationServiceObject.recommendMovies(moviesIdList.get(i)));
+                recommendedMovieList.addAll(
+                        this.recommendationDataAccessInterface.recommendMovies(moviesIdList.get(i))
+                );
             }
-            Collections.shuffle(recommendedMovieList);
-            final List<Movie> completedRecommendedMovieList = new ArrayList<>();
-            
-            for (int j = 0; j < Math.min(maxRecommendations, recommendedMovieList.size()); j++) {
-                completedRecommendedMovieList.add(recommendedMovieList.get(j));
-            }
-            if (completedRecommendedMovieList.size() == 0) {
-                recommendationPresenter.prepareFailView("No recommendations found");
+            if (recommendedMovieList.size() == 0) {
+                recommendationPresenter.prepareFailView("Error: No recommendations found");
             }
             else {
-                final RecommendationOutputData recommendationOutputData = new RecommendationOutputData(accountId,
-                        completedRecommendedMovieList, true);
+                Collections.shuffle(recommendedMovieList);
+                final RecommendationOutputData recommendationOutputData = new RecommendationOutputData(
+                        recommendedMovieList, true);
                 recommendationPresenter.prepareSuccessView(recommendationOutputData);
             }
         }
