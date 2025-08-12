@@ -2,7 +2,7 @@ package data_access;
 
 import entity.AppUser;
 import entity.Movie;
-import use_case.note.DataAccessException;
+import use_case.DataAccessException;
 import use_case.saved.SavedDataAccessInterface;
 
 import java.time.LocalDate;

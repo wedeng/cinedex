@@ -28,7 +28,7 @@ import okhttp3.Response;
 public class AuthDataAccessObject implements AuthDataAccessInterface {
 
     private static final String TMDB_BASE_URL = "https://api.themoviedb.org/3";
-    private static final String TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
+    private static final String TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w92";
     private final String apiKey;
     private final OkHttpClient client;
 
@@ -106,9 +106,10 @@ public class AuthDataAccessObject implements AuthDataAccessInterface {
             List<Integer> savedMovies = new ArrayList<>();
             int page = 1;
             boolean hasMorePages = true;
+            int accountId = getAccountId(sessionId);
 
             while (hasMorePages) {
-                String endpoint = String.format("%s/account/{account_id}/watchlist/movies?page=%d", TMDB_BASE_URL, page);
+                String endpoint = String.format("%s/account/%d/watchlist/movies?page=%d", TMDB_BASE_URL, accountId, page);
                 String response = makeApiRequestWithSession(endpoint, "GET", null, sessionId);
 
                 JSONObject jsonResponse = new JSONObject(response);
@@ -135,9 +136,10 @@ public class AuthDataAccessObject implements AuthDataAccessInterface {
             Map<Integer, Integer> ratedMovies = new HashMap<>();
             int page = 1;
             boolean hasMorePages = true;
+            int accountId = getAccountId(sessionId);
 
             while (hasMorePages) {
-                String endpoint = String.format("%s/account/{account_id}/rated/movies?page=%d", TMDB_BASE_URL, page);
+                String endpoint = String.format("%s/account/%d/rated/movies?page=%d", TMDB_BASE_URL, accountId, page);
                 String response = makeApiRequestWithSession(endpoint, "GET", null, sessionId);
 
                 JSONObject jsonResponse = new JSONObject(response);
@@ -200,8 +202,9 @@ public class AuthDataAccessObject implements AuthDataAccessInterface {
     @Override
     public void updateSavedMovies(String sessionId, List<Integer> movieIds) throws AuthException {
         try {
+            int accountId = getAccountId(sessionId);
             for (Integer movieId : movieIds) {
-                String endpoint = String.format("%s/account/{account_id}/watchlist", TMDB_BASE_URL);
+                String endpoint = String.format("%s/account/%d/watchlist", TMDB_BASE_URL, accountId);
                 JSONObject requestBody = new JSONObject();
                 requestBody.put("media_type", "movie");
                 requestBody.put("media_id", movieId);

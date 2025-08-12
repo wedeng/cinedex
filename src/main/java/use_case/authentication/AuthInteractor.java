@@ -58,7 +58,7 @@ public class AuthInteractor implements AuthInputBoundary {
             // Save user and session to local database
             mongoDB.saveUser(user);
             
-            Session session = new Session(); // Create session entity
+            Session session = new Session(sessionId, accountId); // Create session with proper data
             mongoDB.saveSession(session);
             
             // Return success with session info
@@ -78,14 +78,13 @@ public class AuthInteractor implements AuthInputBoundary {
         try {
             // Get current session
             Session currentSession = mongoDB.getCurrentSession();
-            if (currentSession != null) {
+            if (currentSession != null && currentSession.getSessionId() != null) {
                 // Delete session from TMDB
-                // Note: This would require storing session ID in the Session entity
-                // authDataAccessInterface.deleteSession(sessionId);
+                authDataAccessInterface.deleteSession(currentSession.getSessionId());
             }
             
-            // Clear local session
-            // Note: This would require a method to clear the current session
+            // Clear local session (assuming mongoDB has a method to clear current session)
+            // mongoDB.clearCurrentSession();
             
             AuthOutputData outputData = new AuthOutputData();
             authOutputBoundary.prepareSuccessView(outputData);

@@ -23,7 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
-import interface_adapter.app.AppPageController;
+// import interface_adapter.app.AppPageController; // Removed - not needed for movie app
 import interface_adapter.app.AppState;
 import interface_adapter.view.AppViewModel;
 import interface_adapter.view.ViewCard;
@@ -77,8 +77,8 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
         ;
     }
 
-    public void setAppController(AppPageController controller) {
-
+    public void setAppController(Object controller) {
+        // TODO: Implement with proper movie app controller
     }
 
     private class AppNavigationMenu extends JPanel {
