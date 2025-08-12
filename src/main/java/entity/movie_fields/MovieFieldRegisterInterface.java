@@ -7,7 +7,15 @@ import java.util.List;
  */
 public interface MovieFieldRegisterInterface {
 
-    List<MovieField> getFields();
+    List<MovieFieldInterface> getFields();
 
-    List<MovieField> getSearchFields();
+    List<String> getFieldNames();
+
+    List<MovieFieldInterface> getSearchFields();
+
+    List<String> getSearchFieldNames();
+
+    MovieFieldInterface getField(String fieldName);
+
+
 }

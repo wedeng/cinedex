@@ -38,6 +38,13 @@ public class ViewModel<T> {
     }
 
     /**
+     * Fires a property changed event for the state of this ViewModel.
+     */
+    public void firePropertyChanged() {
+        this.support.firePropertyChange("state", null, this.state);
+    }
+
+    /**
      * Fires a property changed event for the state of this ViewModel, which
      * allows the user to specify a different propertyName. This can be useful
      * when a class is listening for multiple kinds of property changes.
