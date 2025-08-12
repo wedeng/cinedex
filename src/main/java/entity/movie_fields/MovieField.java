@@ -10,12 +10,14 @@ public class MovieField implements MovieFieldInterface {
     private final String name;
     private final boolean isSearchOption;
     private final String validArgsRegex;
+    private final String defaultValue;
 
-    public MovieField(int id, String name, boolean isSearchOption, String validArgsRegex) {
+    public MovieField(int id, String name, boolean isSearchOption, String validArgsRegex, String defaultValue) {
         this.id = id;
         this.name = name;
         this.isSearchOption = isSearchOption;
         this.validArgsRegex = validArgsRegex;
+        this.defaultValue = defaultValue;
     }
 
     @Override
@@ -36,6 +38,11 @@ public class MovieField implements MovieFieldInterface {
     @Override
     public boolean isValid(String argument) {
         return false;
+    }
+
+    @Override
+    public String getDefaultValue() {
+        return defaultValue;
     }
 
     public String getValidArgsRegex() {

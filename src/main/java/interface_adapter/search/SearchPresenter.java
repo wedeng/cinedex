@@ -9,6 +9,8 @@ import interface_adapter.view.MovieDisplayState;
 import use_case.search.SearchOutputBoundary;
 import use_case.search.SearchOutputData;
 
+import javax.swing.JOptionPane;
+import java.awt.Frame;
 import java.util.List;
 
 public class SearchPresenter implements SearchOutputBoundary {
@@ -41,6 +43,6 @@ public class SearchPresenter implements SearchOutputBoundary {
 
     @Override
     public void prepareFailView(String error) {
-        // TODO
+        JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }

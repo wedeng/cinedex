@@ -16,11 +16,13 @@ import use_case.search.SearchInteractor;
 import use_case.search.SearchOutputBoundary;
 import view.AppView;
 import view.CardView;
+import view.FilterView;
 import view.NavigationMenuView;
 import view.SearchView;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,25 +36,18 @@ public class AppBuilder {
     public static final int WIDTH = 400;
 
     private final MovieFieldRegisterInterface movieFieldRegister = MovieFieldRegister.getInstance();
-    private List<String> searchFields;
+    private final List<String> searchFields = movieFieldRegister.getSearchFieldNames();
 
     private MovieDataAccessInterface movieDataAccessObject;
 
     // Views and ViewModels
     private AppView appView;
+    private FilterView filterView;
     private final MovieDisplayViewModelsInterface movieDisplayViewModels = new MovieDisplayViewModels();
 
     private SearchView searchView;
     private SearchViewModel searchViewModel;
     private CardViewModel cardViewModel;
-
-    public AppBuilder() {
-        // Get searchFields from movieFieldRegister
-        searchFields = movieFieldRegister.getSearchFields()
-                .stream()
-                .map(MovieFieldInterface::getName)
-                .collect(Collectors.toList());
-    }
 
     /**
      * Creates the objects for the Search Use Case and connects the SearchView to its
@@ -81,15 +76,24 @@ public class AppBuilder {
      */
     public AppBuilder addViews() {
 
-        // SearchView
-        searchView = new SearchView(searchViewModel, cardViewModel, searchFields);
-
         // View Models
         addMovieDisplayViewModels();
 
-        // CardView
+        // CardViewModel
         cardViewModel = new CardViewModel();
-        CardView cardView = new CardView(cardViewModel, movieDisplayViewModels);
+
+        // SearchView and SearchViewModel
+        searchViewModel = new SearchViewModel(searchFields);
+        searchView = new SearchView(searchViewModel, cardViewModel, searchFields);
+
+        // FilterView
+        List<String> filterFields = new ArrayList<>(searchFields);
+        filterFields.remove(0);
+        filterView = new FilterView(searchViewModel, filterFields);
+
+        // CardView
+
+        CardView cardView = new CardView(cardViewModel, movieDisplayViewModels, filterView);
 
         // NavigationMenuView
         NavigationMenuView navigationMenuView = new NavigationMenuView(cardViewModel);

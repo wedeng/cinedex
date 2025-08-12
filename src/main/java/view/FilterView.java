@@ -3,6 +3,7 @@ package view;
 import interface_adapter.search.SearchState;
 import interface_adapter.search.SearchViewModel;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,17 +18,17 @@ public class FilterView extends JPanel {
 
     private final SearchViewModel searchViewModel;
     private final BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
-    private final List<SearchFieldView> searchFields = new ArrayList<>();
+    private final List<SearchFieldComponent> searchFields = new ArrayList<>();
 
-    public FilterView(SearchViewModel searchViewModel, List<String> fieldNames) {
+    public FilterView(SearchViewModel searchViewModel, List<String> filterFields) {
         super();
         this.searchViewModel = searchViewModel;
+        this.setLayout(layout);
 
-        for (String fieldName : fieldNames) {
-            SearchFieldView searchField = new SearchFieldView(fieldName);
+        for (String fieldName : filterFields) {
+            SearchFieldComponent searchField = new SearchFieldComponent(fieldName);
 
-            searchFields.add(searchField);
-            this.add(searchField);
+            this.addSearchField(searchField);
 
             searchField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -55,19 +56,28 @@ public class FilterView extends JPanel {
         }
     }
 
+    private void addSearchField(SearchFieldComponent searchField) {
+        this.searchFields.add(searchField);
+        this.add(searchField);
+    }
 
-
-    private class SearchFieldView extends JPanel {
+    private class SearchFieldComponent extends JPanel {
         private BoxLayout layout = new BoxLayout(this, BoxLayout.X_AXIS);
-        JTextField textField = new JTextField();
+        private final JLabel nameLabel;
+        private final JTextField textField = new JTextField(20);
 
         private final String fieldName;
 
-        public SearchFieldView(String fieldName) {
+        public SearchFieldComponent(String fieldName) {
             super();
             this.fieldName = fieldName;
+            this.nameLabel = new JLabel(this.fieldName);
+            this.setLayout(layout);
 
-            this.add(new JLabel(this.fieldName));
+            // Style
+            this.setBorder(BorderFactory.createLoweredBevelBorder());
+
+            this.add(nameLabel);
             this.add(textField);
         }
 

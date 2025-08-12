@@ -26,7 +26,7 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
     private final SearchView searchView;
     private final NavigationMenuView navigationMenu;
     private final CardView cardView;
-    private final AppStatusBar statusBar = new AppStatusBar();
+    private final StatusBarView statusBar = new StatusBarView();
 
 
     public AppView(NavigationMenuView navigationMenu, CardView cardView, SearchView searchView) {
@@ -66,7 +66,7 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
 
     }
 
-    private class AppStatusBar extends JPanel {
+    private class StatusBarView extends JPanel {
 
         private final LayoutManager layout = new BoxLayout(this, BoxLayout.X_AXIS);
 
@@ -75,11 +75,11 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
 
         JLabel statusLabel = new JLabel(CHECKMARK_ICON);
 
-        public AppStatusBar() {
+        public StatusBarView() {
             super();
             this.setLayout(layout);
 
-            // style
+            // Style
             this.setBorder(BorderFactory.createLoweredBevelBorder());
 
             statusLabel.setText("Status: Up to date");

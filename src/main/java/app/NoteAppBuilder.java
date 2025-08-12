@@ -63,7 +63,7 @@ public class NoteAppBuilder {
      */
     public NoteAppBuilder addAppView() {
         cardViewModel = new CardViewModel();
-        CardView cardView = new CardView(cardViewModel);
+//        CardView cardView = new CardView(cardViewModel);
         NavigationMenuView navigationMenuView = new NavigationMenuView(cardViewModel);
 
 

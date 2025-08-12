@@ -9,7 +9,11 @@ public interface MovieFieldRegisterInterface {
 
     List<MovieFieldInterface> getFields();
 
+    List<String> getFieldNames();
+
     List<MovieFieldInterface> getSearchFields();
+
+    List<String> getSearchFieldNames();
 
     MovieFieldInterface getField(String fieldName);
 

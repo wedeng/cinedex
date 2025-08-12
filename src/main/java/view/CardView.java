@@ -24,13 +24,14 @@ public class CardView extends JPanel implements PropertyChangeListener {
     private final MovieDisplayView savedCard;
     private final MovieDisplayView watchedCard;
     private final MovieDisplayView recommendationCard;
+    private FilterView filterView;
 
 
-
-    public CardView(CardViewModel cardViewModel, MovieDisplayViewModelsInterface movieDisplayViewModels) {
+    public CardView(CardViewModel cardViewModel, MovieDisplayViewModelsInterface movieDisplayViewModels, FilterView filterView) {
 
         super();
         this.cardViewModel = cardViewModel;
+        this.filterView = filterView;
         this.cardViewModel.addPropertyChangeListener(this);
 
         this.setLayout(layout);
@@ -61,6 +62,11 @@ public class CardView extends JPanel implements PropertyChangeListener {
         this.setupCard(savedCard, CardType.SAVED.getName());
         this.setupCard(watchedCard, CardType.WATCHED.getName());
         this.setupCard(recommendationCard, CardType.RECOMMENDED.getName());
+        this.setupCard(filterView, CardType.FILTER.getName());
+    }
+
+    public void setFilterView(FilterView filterView) {
+        this.filterView = filterView;
     }
 
     private void setupCard(JPanel card, String cardName) {
@@ -70,14 +76,16 @@ public class CardView extends JPanel implements PropertyChangeListener {
     private void setActiveCard(CardType cardType) {
         layout.show(this, cardType.getName());
         // TODO: Delete this test print statement
-        System.out.println("Set active card in AppCentralView to " + cardType.getName());
+        System.out.println("Set active card in CardView to " + cardType.getName());
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
-            System.out.println("Property Change: " + evt.getPropertyName());
             final CardType state = (CardType) evt.getNewValue();
+
+            System.out.println("Property Change: " + evt.getPropertyName() + ", " + state + " in CardView");
+
             setActiveCard(state);
         }
     }
