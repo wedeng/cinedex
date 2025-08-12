@@ -2,7 +2,7 @@ package use_case.search;
 
 import entity.movie_fields.MovieFieldInterface;
 import entity.movie_fields.MovieFieldRegisterInterface;
-import use_case.MovieDataAccessInterface;
+import use_case.movie.MovieDataAccessInterface;
 
 import java.util.Map;
 
