@@ -5,6 +5,7 @@ import use_case.sync.SyncException;
 import use_case.authentication.AuthDataAccessInterface;
 import use_case.authentication.AuthException;
 import entity.Movie;
+import entity.MovieInterface;
 
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,15 @@ public class SyncDataAccessObject implements SyncDataAccessInterface {
     }
 
     @Override
+    public List<Integer> getWatchedMovies(String sessionId) throws SyncException {
+        try {
+            return authDAO.getWatchedMovies(sessionId);
+        } catch (AuthException e) {
+            throw new SyncException("Error getting watched movies: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
     public Map<Integer, Integer> getRatedMovies(String sessionId) throws SyncException {
         try {
             return authDAO.getRatedMovies(sessionId);
@@ -80,7 +90,7 @@ public class SyncDataAccessObject implements SyncDataAccessInterface {
     }
 
     @Override
-    public Movie getMovieDetails(int movieId) throws SyncException {
+    public MovieInterface getMovieDetails(int movieId) throws SyncException {
         try {
             return authDAO.getMovieDetails(movieId);
         } catch (AuthException e) {
@@ -94,6 +104,15 @@ public class SyncDataAccessObject implements SyncDataAccessInterface {
             authDAO.updateSavedMovies(sessionId, movieIds);
         } catch (AuthException e) {
             throw new SyncException("Error updating saved movies: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void updateWatchedMovies(String sessionId, List<Integer> watchedMovies) throws SyncException {
+        try {
+            authDAO.updateWatchedMovies(sessionId, watchedMovies);
+        } catch (AuthException e) {
+            throw new SyncException("Error updating watched movies: " + e.getMessage(), e);
         }
     }
 

@@ -2,6 +2,7 @@ package use_case.saved;
 
 import entity.AppUser;
 import entity.Movie;
+import entity.MovieInterface;
 import use_case.DataAccessException;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface SavedDataAccessInterface {
      * @return list of movies matching the query
      * @throws DataAccessException if there's an error accessing data
      */
-    List<Movie> searchMovies(String query) throws DataAccessException;
+    List<MovieInterface> searchMovies(String query) throws DataAccessException;
     
     /**
      * Add a movie to the user's saved movies list.

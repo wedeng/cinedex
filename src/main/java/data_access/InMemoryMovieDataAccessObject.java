@@ -2,6 +2,7 @@ package data_access;
 
 import entity.AppUser;
 import entity.Movie;
+import entity.MovieInterface;
 import use_case.DataAccessException;
 import use_case.saved.SavedDataAccessInterface;
 
@@ -12,17 +13,17 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryMovieDataAccessObject implements SavedDataAccessInterface {
-    private final Map<String, List<Movie>> mockMovieDatabase = new HashMap<>();
+    private final Map<String, List<MovieInterface>> mockMovieDatabase = new HashMap<>();
     private AppUser currentUser;
 
     public InMemoryMovieDataAccessObject() {
         initializeMockData();
         currentUser = new AppUser(1, "testuser", 
-                                 new ArrayList<>(), new ArrayList<>(), new HashMap<>());
+                                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashMap<>());
     }
 
     private void initializeMockData() {
-        List<Movie> actionMovies = new ArrayList<>();
+        List<MovieInterface> actionMovies = new ArrayList<>();
         actionMovies.add(new Movie(1, "The Matrix", LocalDate.of(1999, 3, 31), "/poster1.jpg",
                                   "A computer hacker learns reality is a simulation", 
                                   136, "Action", "English", 3.99, 9.99));
@@ -36,7 +37,7 @@ public class InMemoryMovieDataAccessObject implements SavedDataAccessInterface {
     }
 
     @Override
-    public List<Movie> searchMovies(String query) throws DataAccessException {
+    public List<MovieInterface> searchMovies(String query) throws DataAccessException {
         if (query == null || query.trim().isEmpty()) {
             throw new DataAccessException("Search query cannot be empty");
         }

@@ -1,6 +1,7 @@
 package data_access;
 
 import entity.Movie;
+import entity.MovieInterface;
 import entity.AppUser;
 import entity.Session;
 
@@ -30,6 +31,7 @@ public class MongoMovieDataBase {
     private static final String MONGODB_URL = "http://localhost:27017";
     private static final String DATABASE = "cinedex";
     private static final String MOVIES_COLL = "movies";
+    // Add differentiability column 
     private static final String USERS_COLL = "users";
     private static final String SESSIONS_COLL = "sessions";
 
@@ -41,7 +43,7 @@ public class MongoMovieDataBase {
 
     // --- Movie Operations ---
 
-    public boolean saveMovie(Movie movie) {
+    public boolean saveMovie(MovieInterface movie) {
         try {
             JSONObject json = convertMovieToJson(movie);
             String url = String.format("%s/%s/%s", MONGODB_URL, DATABASE, MOVIES_COLL);
@@ -65,7 +67,7 @@ public class MongoMovieDataBase {
         }
     }
 
-    public Movie getMovie(int movieId) {
+    public MovieInterface getMovie(int movieId) {
         try {
             String url = String.format("%s/%s/%s/%d", MONGODB_URL, DATABASE, MOVIES_COLL, movieId);
             Request req = new Request.Builder()
@@ -87,8 +89,8 @@ public class MongoMovieDataBase {
         return null;
     }
 
-    public List<Movie> getAllMovies() {
-        List<Movie> list = new ArrayList<>();
+    public List<MovieInterface> getAllMovies() {
+        List<MovieInterface> list = new ArrayList<>();
         try {
             String url = String.format("%s/%s/%s", MONGODB_URL, DATABASE, MOVIES_COLL);
             Request req = new Request.Builder()
@@ -112,8 +114,8 @@ public class MongoMovieDataBase {
         return list;
     }
 
-    public List<Movie> searchMoviesByTitle(String title) {
-        List<Movie> list = new ArrayList<>();
+    public List<MovieInterface> searchMoviesByTitle(String title) {
+        List<MovieInterface> list = new ArrayList<>();
         try {
             String url = String.format("%s/%s/%s/search?title=%s",
                     MONGODB_URL, DATABASE, MOVIES_COLL, title);
@@ -138,7 +140,7 @@ public class MongoMovieDataBase {
         return list;
     }
 
-    public boolean updateMovie(Movie movie) {
+    public boolean updateMovie(MovieInterface movie) {
         try {
             JSONObject json = convertMovieToJson(movie);
             String url = String.format("%s/%s/%s/%d", MONGODB_URL, DATABASE, MOVIES_COLL, movie.getMovieId());
@@ -302,7 +304,7 @@ public class MongoMovieDataBase {
 
     // --- JSON Conversion Helpers ---
 
-    private JSONObject convertMovieToJson(Movie m) throws JSONException {
+    private JSONObject convertMovieToJson(MovieInterface m) throws JSONException {
         JSONObject j = new JSONObject();
         j.put("movieId", m.getMovieId());
         j.put("title", m.getTitle());
@@ -317,7 +319,7 @@ public class MongoMovieDataBase {
         return j;
     }
 
-    private Movie convertJsonToMovie(JSONObject json) throws JSONException {
+    private MovieInterface convertJsonToMovie(JSONObject json) throws JSONException {
         int id = json.getInt("movieId");
         String title = json.getString("title");
         LocalDate date = LocalDate.parse(json.getString("releaseDate"));
@@ -361,7 +363,7 @@ public class MongoMovieDataBase {
         for (String key : ratedObj.keySet()) {
             ratedMap.put(Integer.parseInt(key), ratedObj.getInt(key));
         }
-        return new AppUser(id, name, prefs, saved, ratedMap);
+        return new AppUser(id, name, prefs, saved, new ArrayList<>(), ratedMap);
     }
 
     private JSONObject convertSessionToJson(Session s) throws JSONException {
@@ -382,5 +384,44 @@ public class MongoMovieDataBase {
         s.setCreatedAt(created);
         s.setExpiresAt(expires);
         return s;
+    }
+
+    /**
+     * Clears all data from the local database.
+     * Used when user logs out to prepare for next user.
+     */
+    public void clearAllData() {
+        try {
+            // Clear movies collection
+            String moviesUrl = String.format("%s/%s/%s", MONGODB_URL, DATABASE, MOVIES_COLL);
+            Request moviesReq = new Request.Builder()
+                    .url(moviesUrl)
+                    .delete()
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+            client.newCall(moviesReq).execute();
+
+            // Clear users collection
+            String usersUrl = String.format("%s/%s/%s", MONGODB_URL, DATABASE, USERS_COLL);
+            Request usersReq = new Request.Builder()
+                    .url(usersUrl)
+                    .delete()
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+            client.newCall(usersReq).execute();
+
+            // Clear sessions collection
+            String sessionsUrl = String.format("%s/%s/%s", MONGODB_URL, DATABASE, SESSIONS_COLL);
+            Request sessionsReq = new Request.Builder()
+                    .url(sessionsUrl)
+                    .delete()
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+            client.newCall(sessionsReq).execute();
+
+            System.out.println("All local data cleared successfully");
+        } catch (IOException e) {
+            System.err.println("Error clearing local data: " + e.getMessage());
+        }
     }
 }

@@ -1,6 +1,6 @@
 package view.search;
 
-import entity.Movie;
+import entity.MovieInterface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -106,13 +106,13 @@ public class SearchView extends JPanel {
         return (Double) ratingFilter.getSelectedItem();
     }
 
-    public void displayResults(List<Movie> movies) {
+    public void displayResults(List<MovieInterface> movies) {
         resultsPanel.removeAll();
 
         if (movies == null || movies.isEmpty()) {
             resultsPanel.add(new JLabel("No results found for this movie query.!"));
         } else {
-            for (Movie movie : movies) {
+            for (MovieInterface movie : movies) {
                 JPanel moviePanel = new JPanel(new BorderLayout());
 
                 JPanel infoPanel = new JPanel(new BorderLayout());

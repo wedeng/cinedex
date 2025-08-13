@@ -39,4 +39,10 @@ public interface AppUserInterface {
      */
     List<Integer> getSavedMovies();
 
+    /**
+     * Returns the watchedMovies of the AppUser.
+     * @return the watchedMovies of the AppUser.
+     */
+    List<Integer> getWatchedMovies();
+
 }

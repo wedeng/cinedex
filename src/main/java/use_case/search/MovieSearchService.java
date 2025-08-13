@@ -1,9 +1,9 @@
 package use_case.search;
 
-import entity.Movie;
+import entity.MovieInterface;
 
 import java.util.List;
 
 public interface MovieSearchService {
-    List<Movie> searchMovies(String query, String genre, Integer year, Double minRating);
+    List<MovieInterface> searchMovies(String query, String genre, Integer year, Double minRating);
 }

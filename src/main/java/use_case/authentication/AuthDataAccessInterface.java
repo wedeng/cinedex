@@ -1,7 +1,7 @@
 package use_case.authentication;
 
 import entity.AppUser;
-import entity.Movie;
+import entity.MovieInterface;
 import java.util.List;
 
 /**
@@ -50,6 +50,14 @@ public interface AuthDataAccessInterface {
     List<Integer> getSavedMovies(String sessionId) throws AuthException;
 
     /**
+     * Fetches user's watched movies from TMDB.
+     * @param sessionId the session ID
+     * @return list of watched movie IDs
+     * @throws AuthException if the request fails
+     */
+    List<Integer> getWatchedMovies(String sessionId) throws AuthException;
+
+    /**
      * Fetches user's rated movies from TMDB.
      * @param sessionId the session ID
      * @return map of movie ID to rating
@@ -71,7 +79,7 @@ public interface AuthDataAccessInterface {
      * @return the movie details
      * @throws AuthException if the request fails
      */
-    Movie getMovieDetails(int movieId) throws AuthException;
+    MovieInterface getMovieDetails(int movieId) throws AuthException;
 
     /**
      * Updates user's saved movies on TMDB.
@@ -80,6 +88,14 @@ public interface AuthDataAccessInterface {
      * @throws AuthException if the request fails
      */
     void updateSavedMovies(String sessionId, List<Integer> movieIds) throws AuthException;
+
+    /**
+     * Updates user's watched movies on TMDB.
+     * @param sessionId the session ID
+     * @param watchedMovies list of watched movie IDs
+     * @throws AuthException if the request fails
+     */
+    void updateWatchedMovies(String sessionId, List<Integer> watchedMovies) throws AuthException;
 
     /**
      * Updates user's rated movies on TMDB.

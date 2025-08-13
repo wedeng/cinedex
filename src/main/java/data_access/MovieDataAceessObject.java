@@ -1,6 +1,7 @@
 package data_access;
 
 import entity.Movie;
+import entity.MovieInterface;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -22,8 +23,8 @@ public class MovieDataAceessObject implements MovieSearchService {
     private final OkHttpClient client = new OkHttpClient();
 
     @Override
-    public List<Movie> searchMovies(String query, String genre, Integer year, Double minRating) {
-        List<Movie> movies = new ArrayList<>();
+    public List<MovieInterface> searchMovies(String query, String genre, Integer year, Double minRating) {
+        List<MovieInterface> movies = new ArrayList<>();
 
         try {
             HttpUrl.Builder urlBuilder = HttpUrl.parse(BASE_URL + "/search/movie").newBuilder()
@@ -60,7 +61,7 @@ public class MovieDataAceessObject implements MovieSearchService {
                 String overview = movieJson.getString("overview");
                 Double rating = movieJson.optDouble("vote_average", 0);
 
-                Movie movie = new Movie(
+                MovieInterface movie = new Movie(
                         id,
                         title,
                         releaseDate,

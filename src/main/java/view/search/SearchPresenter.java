@@ -1,6 +1,7 @@
 package view.search;
 
 import entity.Movie;
+import entity.MovieInterface;
 import use_case.search.SearchOutputBoundary;
 import use_case.search.SearchOutputData;
 
@@ -16,7 +17,7 @@ public class SearchPresenter implements SearchOutputBoundary {
 
     @Override
     public void prepareSuccessView(SearchOutputData searchOutputData) {
-        List<Movie> movies = searchOutputData.getMovies();
+        List<MovieInterface> movies = searchOutputData.getMovies();
         searchView.displayResults(movies);
 
     }

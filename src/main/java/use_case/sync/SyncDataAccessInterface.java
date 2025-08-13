@@ -1,6 +1,6 @@
 package use_case.sync;
 
-import entity.Movie;
+import entity.MovieInterface;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +42,14 @@ public interface SyncDataAccessInterface {
     List<Integer> getSavedMovies(String sessionId) throws SyncException;
 
     /**
+     * Fetches user's watched movies from TMDB.
+     * @param sessionId the session ID
+     * @return list of watched movie IDs
+     * @throws SyncException if the request fails
+     */
+    List<Integer> getWatchedMovies(String sessionId) throws SyncException;
+
+    /**
      * Fetches user's rated movies from TMDB.
      * @param sessionId the session ID
      * @return map of movie ID to rating
@@ -63,7 +71,7 @@ public interface SyncDataAccessInterface {
      * @return the movie details
      * @throws SyncException if the request fails
      */
-    Movie getMovieDetails(int movieId) throws SyncException;
+    MovieInterface getMovieDetails(int movieId) throws SyncException;
 
     /**
      * Updates user's saved movies on TMDB.
@@ -72,6 +80,14 @@ public interface SyncDataAccessInterface {
      * @throws SyncException if the request fails
      */
     void updateSavedMovies(String sessionId, List<Integer> movieIds) throws SyncException;
+
+    /**
+     * Updates user's watched movies on TMDB.
+     * @param sessionId the session ID
+     * @param watchedMovies list of watched movie IDs
+     * @throws SyncException if the request fails
+     */
+    void updateWatchedMovies(String sessionId, List<Integer> watchedMovies) throws SyncException;
 
     /**
      * Updates user's rated movies on TMDB.

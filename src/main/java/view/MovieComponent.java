@@ -1,7 +1,7 @@
 package view;
 
-import entity.Movie;
 import entity.MovieInterface;
+import entity.Movie;
 
 import java.awt.Color;
 import java.awt.Dimension;

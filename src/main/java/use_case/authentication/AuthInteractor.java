@@ -53,7 +53,7 @@ public class AuthInteractor implements AuthInputBoundary {
             String username = authDataAccessInterface.getUsername(sessionId);
             
             // Create basic user entity (without synced data)
-            AppUser user = new AppUser(accountId, username, null, null, null);
+            AppUser user = new AppUser(accountId, username, null, null, null, null);
             
             // Save user and session to local database
             mongoDB.saveUser(user);
@@ -72,6 +72,7 @@ public class AuthInteractor implements AuthInputBoundary {
 
     /**
      * Executes the logout use case.
+     * Syncs local data to TMDB with priority, then clears local database.
      */
     @Override
     public void executeLogout() {
@@ -79,18 +80,46 @@ public class AuthInteractor implements AuthInputBoundary {
             // Get current session
             Session currentSession = mongoDB.getCurrentSession();
             if (currentSession != null && currentSession.getSessionId() != null) {
-                // Delete session from TMDB
+                // 1. SYNC TO TMDB (with priority - overwrite TMDB data)
+                syncLocalDataToTMDB(currentSession.getSessionId());
+                
+                // 2. Delete session from TMDB
                 authDataAccessInterface.deleteSession(currentSession.getSessionId());
             }
             
-            // Clear local session (assuming mongoDB has a method to clear current session)
-            // mongoDB.clearCurrentSession();
+            // 3. CLEAR LOCAL DATABASE (for next user)
+            mongoDB.clearAllData();
             
             AuthOutputData outputData = new AuthOutputData();
             authOutputBoundary.prepareSuccessView(outputData);
             
         } catch (Exception ex) {
             authOutputBoundary.prepareFailView(ex.getMessage());
+        }
+    }
+    
+    /**
+     * Syncs all local user data to TMDB with priority (overwrites TMDB data).
+     * @param sessionId the current session ID
+     */
+    private void syncLocalDataToTMDB(String sessionId) {
+        try {
+            // Get current user from local database
+            Session currentSession = mongoDB.getCurrentSession();
+            if (currentSession != null) {
+                int accountId = currentSession.getAccountId();
+                AppUser localUser = mongoDB.getUser(accountId);
+                
+                if (localUser != null) {
+                    // Update TMDB with local changes (overwrites TMDB data)
+                    authDataAccessInterface.updateSavedMovies(sessionId, localUser.getSavedMovies());
+                    authDataAccessInterface.updateWatchedMovies(sessionId, localUser.getWatchedMovies());
+                    authDataAccessInterface.updateRatedMovies(sessionId, localUser.getRatedMovies());
+                }
+            }
+        } catch (Exception e) {
+            // Log error but don't fail logout
+            System.err.println("Warning: Failed to sync data to TMDB during logout: " + e.getMessage());
         }
     }
 }

@@ -3,6 +3,7 @@ package data_access;
 import use_case.authentication.AuthDataAccessInterface;
 import use_case.authentication.AuthException;
 import entity.Movie;
+import entity.MovieInterface;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -131,6 +132,38 @@ public class AuthDataAccessObject implements AuthDataAccessInterface {
     }
 
     @Override
+    public List<Integer> getWatchedMovies(String sessionId) throws AuthException {
+        try {
+            List<Integer> watchedMovies = new ArrayList<>();
+            int page = 1;
+            boolean hasMorePages = true;
+            int accountId = getAccountId(sessionId);
+
+            while (hasMorePages) {
+                String endpoint = String.format("%s/account/%d/movies?page=%d", TMDB_BASE_URL, accountId, page);
+                String response = makeApiRequestWithSession(endpoint, "GET", null, sessionId);
+
+                JSONObject jsonResponse = new JSONObject(response);
+                JSONArray results = jsonResponse.getJSONArray("results");
+
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject movie = results.getJSONObject(i);
+                    // TMDB doesn't have a direct "watched" endpoint, so we'll use favorites as watched
+                    // or implement a custom solution
+                    watchedMovies.add(movie.getInt("id"));
+                }
+
+                hasMorePages = page < jsonResponse.getInt("total_pages");
+                page++;
+            }
+
+            return watchedMovies;
+        } catch (IOException | JSONException e) {
+            throw new AuthException("An error occurred while fetching watched movies: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
     public Map<Integer, Integer> getRatedMovies(String sessionId) throws AuthException {
         try {
             Map<Integer, Integer> ratedMovies = new HashMap<>();
@@ -167,7 +200,7 @@ public class AuthDataAccessObject implements AuthDataAccessInterface {
             Map<String, Integer> genreCounts = new HashMap<>();
 
             for (Integer movieId : ratedMovies.keySet()) {
-                Movie movie = getMovieDetails(movieId);
+                MovieInterface movie = getMovieDetails(movieId);
                 if (movie != null) {
                     String genre = movie.getGenre();
                     genreCounts.put(genre, genreCounts.getOrDefault(genre, 0) + 1);
@@ -187,7 +220,7 @@ public class AuthDataAccessObject implements AuthDataAccessInterface {
     }
 
     @Override
-    public Movie getMovieDetails(int movieId) throws AuthException {
+    public MovieInterface getMovieDetails(int movieId) throws AuthException {
         try {
             String endpoint = String.format("%s/movie/%d", TMDB_BASE_URL, movieId);
             String response = makeApiRequest(endpoint, "GET", null);
@@ -214,6 +247,25 @@ public class AuthDataAccessObject implements AuthDataAccessInterface {
             }
         } catch (IOException | JSONException e) {
             throw new AuthException("An error occurred while updating saved movies: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void updateWatchedMovies(String sessionId, List<Integer> watchedMovies) throws AuthException {
+        try {
+            int accountId = getAccountId(sessionId);
+            for (Integer movieId : watchedMovies) {
+                // Add to favorites (TMDB's closest equivalent to "watched")
+                String endpoint = String.format("%s/account/%d/favorite", TMDB_BASE_URL, accountId);
+                JSONObject requestBody = new JSONObject();
+                requestBody.put("media_type", "movie");
+                requestBody.put("media_id", movieId);
+                requestBody.put("favorite", true);
+
+                makeApiRequestWithSession(endpoint, "POST", requestBody.toString(), sessionId);
+            }
+        } catch (IOException | JSONException e) {
+            throw new AuthException("An error occurred while updating watched movies: " + e.getMessage(), e);
         }
     }
 
@@ -303,7 +355,7 @@ public class AuthDataAccessObject implements AuthDataAccessInterface {
     /**
      * Converts TMDB JSON response to Movie entity.
      */
-    private Movie convertTMDBJsonToMovie(JSONObject movieJson) throws JSONException {
+    private MovieInterface convertTMDBJsonToMovie(JSONObject movieJson) throws JSONException {
         int movieId = movieJson.getInt("id");
         String title = movieJson.optString("title", "");
 

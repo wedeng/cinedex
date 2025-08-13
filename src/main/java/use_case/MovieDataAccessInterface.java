@@ -1,15 +1,15 @@
 package use_case;
 
-import entity.Movie;
+import entity.MovieInterface;
 
 import java.util.List;
 
 public interface MovieDataAccessInterface {
 
-    List<Movie> getSaved(int numOfResults);
+    List<MovieInterface> getSaved(int numOfResults);
 
-    List<Movie> getWatched(int numOfResults);
+    List<MovieInterface> getWatched(int numOfResults);
 
-    List<Movie> getFromTMDB(int numOfResults);
+    List<MovieInterface> getFromTMDB(int numOfResults);
 }
 

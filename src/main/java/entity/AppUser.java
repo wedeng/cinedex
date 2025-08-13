@@ -12,15 +12,17 @@ public class AppUser implements AppUserInterface {
     private final String username;
     private final List<String> preferredGenres;
     private final List<Integer> savedMovies;
+    private final List<Integer> watchedMovies;
     private final Map<Integer, Integer> ratedMovies;
 
     public AppUser(int accountId, String username,
                    List<String> preferredGenres, List<Integer> savedMovies,
-                   Map<Integer, Integer> ratedMovies) {
+                   List<Integer> watchedMovies, Map<Integer, Integer> ratedMovies) {
         this.accountId = accountId;
         this.username = username;
         this.preferredGenres = preferredGenres;
         this.savedMovies = savedMovies;
+        this.watchedMovies = watchedMovies;
         this.ratedMovies = ratedMovies;
     }
 
@@ -47,5 +49,10 @@ public class AppUser implements AppUserInterface {
     @Override
     public List<Integer> getSavedMovies() {
         return this.savedMovies;
+    }
+
+    @Override
+    public List<Integer> getWatchedMovies() {
+        return this.watchedMovies;
     }
 }

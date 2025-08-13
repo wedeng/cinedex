@@ -3,6 +3,7 @@ package use_case.sync;
 import data_access.MongoMovieDataBase;
 import entity.AppUser;
 import entity.Movie;
+import entity.MovieInterface;
 
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,7 @@ public class SyncInteractor implements SyncInputBoundary {
 
             // Fetch user data from TMDB
             List<Integer> savedMovies = syncDataAccessInterface.getSavedMovies(sessionId);
+            List<Integer> watchedMovies = syncDataAccessInterface.getWatchedMovies(sessionId);
             Map<Integer, Integer> ratedMovies = syncDataAccessInterface.getRatedMovies(sessionId);
             List<String> preferredGenres = syncDataAccessInterface.getPreferredGenres(sessionId);
             
@@ -50,7 +52,7 @@ public class SyncInteractor implements SyncInputBoundary {
             int accountId = syncDataAccessInterface.getAccountId(sessionId);
             String username = syncDataAccessInterface.getUsername(sessionId);
             
-            AppUser user = new AppUser(accountId, username, preferredGenres, savedMovies, ratedMovies);
+            AppUser user = new AppUser(accountId, username, preferredGenres, savedMovies, watchedMovies, ratedMovies);
             mongoDB.updateUser(user);
             
             SyncOutputData outputData = new SyncOutputData(moviesSynced, "from TMDB");
@@ -81,6 +83,7 @@ public class SyncInteractor implements SyncInputBoundary {
             if (localUser != null) {
                 // Update TMDB with local changes
                 syncDataAccessInterface.updateSavedMovies(sessionId, localUser.getSavedMovies());
+                syncDataAccessInterface.updateWatchedMovies(sessionId, localUser.getWatchedMovies());
                 syncDataAccessInterface.updateRatedMovies(sessionId, localUser.getRatedMovies());
             }
             
@@ -103,10 +106,10 @@ public class SyncInteractor implements SyncInputBoundary {
         for (Integer movieId : movieIds) {
             try {
                 // Check if movie already exists in local database
-                Movie existingMovie = mongoDB.getMovie(movieId);
+                MovieInterface existingMovie = mongoDB.getMovie(movieId);
                 if (existingMovie == null) {
                     // Fetch movie details from TMDB
-                    Movie movie = syncDataAccessInterface.getMovieDetails(movieId);
+                    MovieInterface movie = syncDataAccessInterface.getMovieDetails(movieId);
                     if (movie != null) {
                         // Save to local database
                         if (mongoDB.saveMovie(movie)) {
