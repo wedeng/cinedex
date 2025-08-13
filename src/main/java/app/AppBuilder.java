@@ -1,7 +1,7 @@
 package app;
 
-import entity.movie_fields.MovieFieldRegister;
-import entity.movie_fields.MovieFieldRegisterInterface;
+import entity.MovieFieldRegister;
+import entity.MovieFieldRegisterInterface;
 import interface_adapter.recommendation.RecommendationController;
 import interface_adapter.recommendation.RecommendationPresenter;
 import interface_adapter.view.CardType;
@@ -11,7 +11,7 @@ import interface_adapter.search.SearchController;
 import interface_adapter.search.SearchPresenter;
 import interface_adapter.view.CardViewModel;
 import interface_adapter.search.SearchViewModel;
-import use_case.SearchDataAccessInterface;
+import use_case.search.SearchDataAccessInterface;
 import use_case.recommendation.RecommendationDataAccessInterface;
 import use_case.recommendation.RecommendationInteractor;
 import use_case.recommendation.RecommendationOutputBoundary;

@@ -1,4 +1,4 @@
-package entity.movie_fields;
+package entity;
 
 /**
  * A movie field/parameter.

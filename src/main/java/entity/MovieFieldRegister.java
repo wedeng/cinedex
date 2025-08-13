@@ -1,6 +1,4 @@
-package entity.movie_fields;
-
-import entity.Movie;
+package entity;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -22,7 +20,7 @@ public class MovieFieldRegister implements MovieFieldRegisterInterface {
     private void initializeFields() {
         addField(new MovieField(0, "title", true, "", ""));
         addField(new MovieField(1, "release date", true, "", ""));
-        addField(new MovieField(2, "poster", true, "", ""));
+        addField(new MovieField(2, "poster", false, "", ""));
         addField(new MovieField(3, "synopsis", false, "", ""));
         addField(new MovieField(4, "runtime", true, "", ""));
         addField(new MovieField(5, "genre", true, "", ""));

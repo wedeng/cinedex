@@ -16,8 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import interface_adapter.app.AppPageController;
-
 /**
  * The main frame for the program. Contains all other views.
  */
@@ -28,7 +26,6 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
     private final NavigationMenuView navigationMenu;
     private final CardView cardView;
     private final StatusBarView statusBar = new StatusBarView();
-
 
     public AppView(NavigationMenuView navigationMenu, CardView cardView, SearchView searchView, ToolBarView toolBarView) {
         super("Cinedex App");
@@ -62,10 +59,6 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
 //            JOptionPane.showMessageDialog(this, state.getError(),
 //                    "Error", JOptionPane.ERROR_MESSAGE);
 //        }
-    }
-
-    public void setAppController(AppPageController controller) {
-
     }
 
     private class StatusBarView extends JPanel {
