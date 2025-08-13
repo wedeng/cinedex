@@ -37,7 +37,7 @@ public class MovieField implements MovieFieldInterface {
 
     @Override
     public boolean isValid(String argument) {
-        return false;
+        return true;
     }
 
     @Override

@@ -3,22 +3,21 @@ package interface_adapter.search;
 import entity.MovieInterface;
 import interface_adapter.view.CardType;
 import interface_adapter.view.MovieDisplayViewModel;
-import interface_adapter.view.MovieDisplayViewModelsInterface;
 import interface_adapter.view.CardViewModel;
 import interface_adapter.view.MovieDisplayState;
+import interface_adapter.view.MovieDisplayViewModels;
 import use_case.search.SearchOutputBoundary;
 import use_case.search.SearchOutputData;
 
 import javax.swing.JOptionPane;
-import java.awt.Frame;
 import java.util.List;
 
 public class SearchPresenter implements SearchOutputBoundary {
 
-    private final MovieDisplayViewModelsInterface movieDisplayViewModels;
+    private final MovieDisplayViewModels movieDisplayViewModels;
     private final CardViewModel cardViewModel;
 
-    public SearchPresenter(MovieDisplayViewModelsInterface movieDisplayViewModels, CardViewModel cardViewModel) {
+    public SearchPresenter(MovieDisplayViewModels movieDisplayViewModels, CardViewModel cardViewModel) {
         this.movieDisplayViewModels = movieDisplayViewModels;
         this.cardViewModel = cardViewModel;
     }
@@ -27,17 +26,14 @@ public class SearchPresenter implements SearchOutputBoundary {
     public void prepareSuccessView(SearchOutputData searchOutputData) {
         List<MovieInterface> movies = searchOutputData.getMovies();
 
-        // Get appropriate MovieDisplayViewModel matching the type in the output data
-        CardType cardType = CardType.getCardType(searchOutputData.getResultType());
-        MovieDisplayViewModel viewModel = movieDisplayViewModels.getMovieDisplayViewModel(cardType);
-
-        // Get the view model's state and replace its contents with the outputted movies
-        final MovieDisplayState state = viewModel.getState();
+        // Replace the contents of the Discover MovieDisplayModel with the outputted movies
+        MovieDisplayViewModel discoverViewModel = movieDisplayViewModels.getMovieDisplayViewModel(CardType.DISCOVER);
+        final MovieDisplayState state = discoverViewModel.getState();
         state.setDisplayedMovies(movies);
-        viewModel.setState(state);
+        discoverViewModel.setState(state);
 
-        // Set view to that
-        cardViewModel.setState(cardType);
+        // Set view to Discover
+        cardViewModel.setState(CardType.DISCOVER);
 
     }
 

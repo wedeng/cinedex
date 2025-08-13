@@ -1,6 +1,5 @@
 package app;
 
-import data_access.MovieDataAceessObject;
 import use_case.search.MovieSearchService;
 
 import javax.swing.JFrame;
@@ -18,9 +17,11 @@ public class MainApplication {
     public static void main(String[] args) {
 
         final AppBuilder builder = new AppBuilder();
-        builder.addViews()
+        final JFrame appFrame = builder.addViews()
                 .addSearchUseCase()
-                .build().setVisible(true);
+                .build();
+        appFrame.pack();
+        appFrame.setVisible(true);
 
     }
 }

@@ -39,7 +39,6 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         this.cardViewModel = cardViewModel;
         this.cardViewModel.addPropertyChangeListener(this);
         this.searchViewModel.getState().setCardSearchType(this.cardViewModel.getState());
-        this.searchController = searchController;
         this.fields = fields;
 
         filterButton.addActionListener(
