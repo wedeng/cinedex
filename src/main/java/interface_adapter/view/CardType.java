@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Different types of views used in this program.
+ * Different types of swappable central views used in this program.
  */
 public enum CardType {
     DISCOVER("Discover", true),

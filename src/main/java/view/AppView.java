@@ -14,11 +14,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import interface_adapter.app.AppPageController;
+import javax.swing.WindowConstants;
 
 /**
- * The primary View for the program. Contains all other views.
+ * The main frame for the program. Contains all other views.
  */
 public class AppView extends JFrame implements ActionListener, PropertyChangeListener {
 
@@ -28,14 +27,14 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
     private final CardView cardView;
     private final StatusBarView statusBar = new StatusBarView();
 
-
-    public AppView(NavigationMenuView navigationMenu, CardView cardView, SearchView searchView) {
-        super();
+    public AppView(NavigationMenuView navigationMenu, CardView cardView, SearchView searchView, ToolBarView toolBarView) {
+        super("Cinedex App");
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.navigationMenu = navigationMenu;
         this.cardView = cardView;
         this.searchView = searchView;
-        this.toolBarView = new ToolBarView(searchView);
+        this.toolBarView = toolBarView;
 
         // Add components
         this.add(toolBarView, BorderLayout.PAGE_START);
@@ -60,10 +59,6 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
 //            JOptionPane.showMessageDialog(this, state.getError(),
 //                    "Error", JOptionPane.ERROR_MESSAGE);
 //        }
-    }
-
-    public void setAppController(AppPageController controller) {
-
     }
 
     private class StatusBarView extends JPanel {

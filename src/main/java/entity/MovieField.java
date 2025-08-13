@@ -1,4 +1,4 @@
-package entity.movie_fields;
+package entity;
 
 /**
  * A movie field/parameter.
@@ -37,7 +37,7 @@ public class MovieField implements MovieFieldInterface {
 
     @Override
     public boolean isValid(String argument) {
-        return false;
+        return true;
     }
 
     @Override
