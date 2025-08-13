@@ -302,6 +302,15 @@ public class MongoMovieDataBase {
         return null;
     }
 
+    /**
+     * Gets the current session ID.
+     * @return the current session ID, or null if no active session exists
+     */
+    public String getCurrentSessionId() {
+        Session currentSession = getCurrentSession();
+        return currentSession != null ? currentSession.getSessionId() : null;
+    }
+
     // --- JSON Conversion Helpers ---
 
     private JSONObject convertMovieToJson(MovieInterface m) throws JSONException {
