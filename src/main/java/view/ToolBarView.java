@@ -1,5 +1,14 @@
 package view;
 
+import interface_adapter.recommendation.RecommendationController;
+import interface_adapter.saved.SavedController;
+import interface_adapter.view.CardType;
+import interface_adapter.view.CardViewModel;
+import interface_adapter.view.MovieDisplayState;
+import interface_adapter.view.MovieDisplayViewModel;
+import interface_adapter.view.MovieDisplayViewModels;
+import interface_adapter.watched.WatchedController;
+
 import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -11,54 +20,95 @@ public class ToolBarView extends JToolBar {
     private final int BUTTON_SIZE = 32;
     private final Icon PLACEHOLDER_ICON = new ImageIcon("src/main/resources/placeholder-icon.png");
 
-    private final JButton recommendButton = new JButton();
-    private final JButton saveButton = new JButton();
-    private final JButton watchedButton = new JButton();
-    private final JButton rateButton = new JButton();
+    private RecommendationController recommendationController;
 
-    public ToolBarView (SearchView searchView) {
+    private SavedController savedController;
+    private WatchedController watchedController;
+    private final CardViewModel cardViewModel;
+    private final MovieDisplayViewModels movieDisplayViewModels;
+
+    private final JButton recommendButton = new JButton();
+    private final JButton addToSavedButton = new JButton();
+    private final JButton removeFromSavedButton = new JButton();
+    private final JButton addToWatchedButton = new JButton();
+    private final JButton removeFromWatchedButton = new JButton();
+
+    public ToolBarView (SearchView searchView, CardViewModel cardViewModel,
+                        MovieDisplayViewModels movieDisplayViewModels) {
         super();
+        this.cardViewModel = cardViewModel;
+        this.movieDisplayViewModels = movieDisplayViewModels;
 
         recommendButton.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(recommendButton)) {
-                        // appPageController.execute(noteInputField.getText());
-                        ;
+                        recommendationController.execute();
+                        System.out.println("Recommend button pressed; Recommendation controller executed");
                     }
                 }
         );
 
-        saveButton.addActionListener(
+        addToSavedButton.addActionListener(
                 evt -> {
-                    if (evt.getSource().equals(saveButton)) {
-                        // appPageController.execute(noteInputField.getText());
-                        ;
+                    if (evt.getSource().equals(addToSavedButton)) {
+                        // Get currently displayed MovieDisplayViewModel, then get current selected movie from it
+                        CardType cardState = cardViewModel.getState();
+                        MovieDisplayViewModel currentMovieDisplay = movieDisplayViewModels.
+                                getMovieDisplayViewModel(cardState);
+                        MovieDisplayState movieDisplayState = currentMovieDisplay.getState();
+
+                        savedController.executeAddToSaved(movieDisplayState.getSelectedMovie());
                     }
                 }
         );
 
-        watchedButton.addActionListener(
+        removeFromSavedButton.addActionListener(
                 evt -> {
-                    if (evt.getSource().equals(watchedButton)) {
-                        // appPageController.execute(noteInputField.getText());
-                        ;
+                    if (evt.getSource().equals(removeFromSavedButton)) {
+                        // Get currently displayed MovieDisplayViewModel, then get current selected movie from it
+                        CardType cardState = cardViewModel.getState();
+                        MovieDisplayViewModel currentMovieDisplay = movieDisplayViewModels.
+                                getMovieDisplayViewModel(cardState);
+                        MovieDisplayState movieDisplayState = currentMovieDisplay.getState();
+
+                        savedController.executeRemoveFromSaved(movieDisplayState.getSelectedMovie());
                     }
                 }
         );
 
-        rateButton.addActionListener(
+        addToWatchedButton.addActionListener(
                 evt -> {
-                    if (evt.getSource().equals(rateButton)) {
-                        // appPageController.execute(noteInputField.getText());
-                        ;
+                    if (evt.getSource().equals(addToWatchedButton)) {
+                        // Get currently displayed MovieDisplayViewModel, then get current selected movie from it
+                        CardType cardState = cardViewModel.getState();
+                        MovieDisplayViewModel currentMovieDisplay = movieDisplayViewModels.
+                                getMovieDisplayViewModel(cardState);
+                        MovieDisplayState movieDisplayState = currentMovieDisplay.getState();
+
+                        watchedController.executeAddToWatched(movieDisplayState.getSelectedMovie());
                     }
                 }
         );
 
-        setupButton(recommendButton, PLACEHOLDER_ICON);
-        setupButton(saveButton, PLACEHOLDER_ICON);
-        setupButton(watchedButton, PLACEHOLDER_ICON);
-        setupButton(rateButton, PLACEHOLDER_ICON);
+        removeFromWatchedButton.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(removeFromWatchedButton)) {
+                        // Get currently displayed MovieDisplayViewModel, then get current selected movie from it
+                        CardType cardState = cardViewModel.getState();
+                        MovieDisplayViewModel currentMovieDisplay = movieDisplayViewModels.
+                                getMovieDisplayViewModel(cardState);
+                        MovieDisplayState movieDisplayState = currentMovieDisplay.getState();
+
+                        watchedController.executeRemoveFromWatched(movieDisplayState.getSelectedMovie());
+                    }
+                }
+        );
+
+        setupButton(recommendButton, AppIcon.RECOMMENDED_32.getIcon());
+        setupButton(addToSavedButton, AppIcon.SAVED_32.getIcon());
+        setupButton(removeFromSavedButton, AppIcon.SAVED_REMOVE_32.getIcon());
+        setupButton(addToWatchedButton, AppIcon.WATCHED_32.getIcon());
+        setupButton(removeFromWatchedButton, AppIcon.WATCHED_REMOVE_32.getIcon());
 
         Component spacer = Box.createHorizontalStrut((int) Math.round(BUTTON_SIZE * 4));
 
@@ -76,5 +126,17 @@ public class ToolBarView extends JToolBar {
         button.setIcon(icon);
 
         this.add(button);
+    }
+
+    public void setRecommendationController(RecommendationController recommendationController) {
+        this.recommendationController = recommendationController;
+    }
+
+    public void setSavedController(SavedController savedController) {
+        this.savedController = savedController;
+    }
+
+    public void setWatchedController(WatchedController watchedController) {
+        this.watchedController = watchedController;
     }
 }

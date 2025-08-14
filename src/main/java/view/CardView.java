@@ -75,7 +75,6 @@ public class CardView extends JPanel implements PropertyChangeListener {
 
     private void setActiveCard(CardType cardType) {
         layout.show(this, cardType.getName());
-        // TODO: Delete this test print statement
         System.out.println("Set active card in CardView to " + cardType.getName());
     }
 

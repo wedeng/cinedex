@@ -16,7 +16,6 @@ public class NavigationMenuView extends JPanel {
     final private CardViewModel cardViewModel;
 
     private final int BUTTON_SIZE = 32;
-    private final Icon PLACEHOLDER_ICON = new ImageIcon("src/main/resources/placeholder-icon.png");
 
     private final LayoutManager layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 
@@ -33,10 +32,10 @@ public class NavigationMenuView extends JPanel {
         // style
         this.setBorder(BorderFactory.createLineBorder(Color.black));
 
-        prepareButton(discoverButton, CardType.DISCOVER, PLACEHOLDER_ICON);
-        prepareButton(savedButton, CardType.SAVED, PLACEHOLDER_ICON);
-        prepareButton(watchedButton, CardType.WATCHED, PLACEHOLDER_ICON);
-        prepareButton(recommendedButton, CardType.RECOMMENDED, PLACEHOLDER_ICON);
+        prepareButton(discoverButton, CardType.DISCOVER, AppIcon.DISCOVER_64.getIcon());
+        prepareButton(savedButton, CardType.SAVED, AppIcon.SAVED_64.getIcon());
+        prepareButton(watchedButton, CardType.WATCHED, AppIcon.WATCHED_64.getIcon());
+        prepareButton(recommendedButton, CardType.RECOMMENDED, AppIcon.RECOMMENDED_64.getIcon());
     }
 
     /**
@@ -52,7 +51,6 @@ public class NavigationMenuView extends JPanel {
         button.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(button)) {
-                        // TODO: Delete the test print statement
                         cardViewModel.setState(cardType);
                         System.out.println("Set active card in AppViewModel to " + cardType.getName() + " in NavigationMenuView");
                     }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,13 +18,13 @@ import okhttp3.Response;
 
 import entity.Movie;
 import entity.MovieInterface;
-
 import use_case.authentication.AuthenticationException;
 import use_case.authentication.OperationsDataAccessInterface;
 import use_case.recommendation.RecommendationDataAccessInterface;
 import use_case.recommendation.WatchedIdDataAccessInterface;
 import use_case.saved.SavedMovieCheckerDataAccessInterface;
 import use_case.saved.SavedMovieManagerDataAccessInterface;
+import use_case.search.SearchDataAccessInterface;
 import use_case.watched.WatchedMovieCheckerDataAccessInterface;
 import use_case.watched.WatchedMovieManagerDataAccessInterface;
 
@@ -33,7 +34,7 @@ import use_case.watched.WatchedMovieManagerDataAccessInterface;
 
 public class CinedexDataAccessObject implements OperationsDataAccessInterface, RecommendationDataAccessInterface,
         WatchedIdDataAccessInterface, SavedMovieCheckerDataAccessInterface, WatchedMovieCheckerDataAccessInterface,
-        SavedMovieManagerDataAccessInterface, WatchedMovieManagerDataAccessInterface {
+        SavedMovieManagerDataAccessInterface, WatchedMovieManagerDataAccessInterface, SearchDataAccessInterface {
     private static final String TMDB_BASE_URL = "https://api.themoviedb.org/3";
     private static final String TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w92";
     private final String apiKey;
@@ -328,6 +329,59 @@ public class CinedexDataAccessObject implements OperationsDataAccessInterface, R
     public void removeWatchedMovie(MovieInterface movie) {
         final CinedexMongoDataBase dataBase = new CinedexMongoDataBase();
         dataBase.deleteMovie(movie.getMovieId());
+    }
+
+    // --- SearchDataAccessInterface ---
+    @Override
+    public List<MovieInterface> searchMovies(Map<String, String> searchArguments) {
+        try {
+            final List<MovieInterface> searchedMovies = new ArrayList<>();
+            final JSONArray results;
+
+            // Construct endpoint
+            final String endpoint = appendSearchArguments(TMDB_BASE_URL + "/discover/movie", searchArguments);
+
+            // Make API request
+            final String response = makeApiRequest(endpoint, "GET", null);
+
+            // Parse response and return
+            final JSONObject jsonResponse = new JSONObject(response);
+            results = jsonResponse.getJSONArray("results");
+
+            for (int i = 0; i < results.length(); i++) {
+                final JSONObject movie = results.getJSONObject(i);
+                searchedMovies.add(convertJsonToMovie(movie));
+            }
+
+            return searchedMovies;
+        }
+        catch (IOException | JSONException exception) {
+            return new ArrayList<>();
+        }
+    }
+
+    // --- SearchDataAccessInterface helper ---
+
+    /**
+     * Appends search parameters to the end of the URL endpoint.
+     * @param endPoint The endpoint to be appended on to
+     * @param searchArguments The search arguments to be appended
+     * @return The new endPoint
+     */
+    private String appendSearchArguments(String endPoint, Map<String, String> searchArguments) {
+
+        endPoint = endPoint + "?";
+        String conjunction = "";
+
+        for (Map.Entry<String, String> entry : searchArguments.entrySet()) {
+
+            final String searchField = entry.getKey();
+            final String searchArgument = entry.getValue();
+
+            endPoint = endPoint + conjunction + searchField + "=" + searchArgument;
+            conjunction = "&";
+        }
+        return endPoint;
     }
 
     // --- API helper methods ---
