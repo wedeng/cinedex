@@ -23,6 +23,7 @@ public class SearchController {
     public void execute(String query, Map<String, String> arguments) {
         HashMap<String, String> argumentsCopy = new HashMap<>(arguments);
         argumentsCopy.put("title", query);
+        System.out.println(argumentsCopy);
         final SearchInputData searchInputData = new SearchInputData(argumentsCopy);
 
         searchInteractor.execute(searchInputData);

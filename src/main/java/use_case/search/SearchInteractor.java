@@ -27,6 +27,7 @@ public class SearchInteractor implements SearchInputBoundary {
         }
         catch (Exception exception) {
             searchPresenter.prepareFailView(exception.getMessage());
+            System.out.println("Failed to execute in search interactor");
         }
 
     }

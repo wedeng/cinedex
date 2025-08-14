@@ -346,6 +346,7 @@ public class CinedexDataAccessObject implements OperationsDataAccessInterface, R
 
             // Parse response and return
             final JSONObject jsonResponse = new JSONObject(response);
+            System.out.println(jsonResponse.toString());
             results = jsonResponse.getJSONArray("results");
 
             for (int i = 0; i < results.length(); i++) {
@@ -356,6 +357,7 @@ public class CinedexDataAccessObject implements OperationsDataAccessInterface, R
             return searchedMovies;
         }
         catch (IOException | JSONException exception) {
+            System.out.println(exception.getMessage());
             return new ArrayList<>();
         }
     }

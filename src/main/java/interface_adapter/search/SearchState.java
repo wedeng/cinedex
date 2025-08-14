@@ -7,14 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 public class SearchState {
-    private CardType cardSearchType;
     private final Map<String, String> searchFields;
 
-    public SearchState(List<String> searchFields) {
+    public SearchState() {
         this.searchFields = new HashMap<>();
-        for (String searchField : searchFields) {
-            this.searchFields.put(searchField, "");
-        }
     }
 
     /**

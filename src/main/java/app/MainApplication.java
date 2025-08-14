@@ -28,12 +28,10 @@ public class MainApplication {
      */
     public static void main(String[] args) {
 
-//        Dotenv dotenv = Dotenv.load();
+        Dotenv dotenv = Dotenv.load();
 
-//        String accessToken = dotenv.get("API_READ_ACCESS_TOKEN");
-//        String apiKey = dotenv.get("API_KEY");
-
-        String apiKey = "d14c8b3240616174d718e3f575657829";
+        String accessToken = dotenv.get("API_READ_ACCESS_TOKEN");
+        String apiKey = dotenv.get("API_KEY");
 
         // DAOs
         AuthenticationDataAccessInterface authenticationDataAccessObject = new AuthenticationDataAccessObject(apiKey);

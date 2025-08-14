@@ -4,6 +4,7 @@ import entity.MovieInterface;
 import interface_adapter.view.MovieDisplayState;
 import interface_adapter.view.MovieDisplayViewModel;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -18,12 +19,6 @@ public class MovieDisplayView extends JPanel implements PropertyChangeListener {
         this.movieDisplayViewModel.addPropertyChangeListener(this);
     }
 
-    public void setDisplayedMovies(List<MovieInterface> movies) {
-        final MovieDisplayState state =  movieDisplayViewModel.getState();
-        state.setDisplayedMovies(movies);
-        movieDisplayViewModel.setState(state);
-    }
-
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         final MovieDisplayState state = (MovieDisplayState) evt.getNewValue();
@@ -34,6 +29,7 @@ public class MovieDisplayView extends JPanel implements PropertyChangeListener {
         this.removeAll();
         for (MovieInterface movie : state.getDisplayedMovies()) {
             this.add(new MovieComponent(movie));
+            this.add(new JLabel("Test"));
         }
     }
 }

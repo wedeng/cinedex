@@ -1,6 +1,5 @@
 package view;
 
-import entity.MovieFieldInterface;
 import interface_adapter.search.SearchArgument;
 import interface_adapter.search.SearchField;
 import interface_adapter.search.SearchViewModel;
@@ -28,29 +27,32 @@ public class FilterView extends JPanel {
     private final BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
     private final List<SearchFieldComponent> searchFieldComponents = new ArrayList<>();
 
-    public FilterView(SearchViewModel searchViewModel, List<String> filterFields) {
+    public FilterView(SearchViewModel searchViewModel) {
         super();
         this.searchViewModel = searchViewModel;
         this.setLayout(layout);
 
         for (SearchField searchField : SearchField.values()) {
 
-            SearchFieldComponent searchFieldComponent;
-            if (searchField.hasLimitedArguments()) {
-                searchFieldComponent = new SearchFieldComboBox(
-                        searchViewModel,
-                        searchField.getIdentifier(),
-                        searchField.getDisplayName(),
-                        searchField.getAllValidArguments());
-            }
-            else {
-                searchFieldComponent = new SearchFieldTextBox(
-                        searchViewModel,
-                        searchField.getIdentifier(),
-                        searchField.getDisplayName());
-            }
+            if (searchField.getIdentifier() != "title") {
 
-            this.addSearchFieldComponent(searchFieldComponent);
+                SearchFieldComponent searchFieldComponent;
+
+                if (searchField.hasLimitedArguments()) {
+                    searchFieldComponent = new SearchFieldComboBox(
+                            searchViewModel,
+                            searchField.getIdentifier(),
+                            searchField.getDisplayName(),
+                            searchField.getAllValidArguments());
+                } else {
+                    searchFieldComponent = new SearchFieldTextBox(
+                            searchViewModel,
+                            searchField.getIdentifier(),
+                            searchField.getDisplayName());
+                }
+
+                this.addSearchFieldComponent(searchFieldComponent);
+            }
         }
     }
 

@@ -22,23 +22,19 @@ public class SearchView extends JPanel implements PropertyChangeListener {
     private final CardViewModel cardViewModel;
     private SearchController searchController;
 
-    private final List<String> fields;
     private final BoxLayout layout = new BoxLayout(this, BoxLayout.X_AXIS);
 
     private final int BUTTON_SIZE = 32;
-    private final Icon SEARCH_ICON = new ImageIcon("src/main/resources/placeholder-icon.png");
-    private final Icon FILTER_ICON = new ImageIcon("src/main/resources/placeholder-icon.png");
 
-    final private JButton filterButton = new JButton(FILTER_ICON);
+    final private JButton filterButton = new JButton(AppIcon.FILTER_32.getIcon());
     final private JTextField searchField = new JTextField(20);
-    final private JButton searchButton = new JButton(SEARCH_ICON);
+    final private JButton searchButton = new JButton(AppIcon.SEARCH_32.getIcon());
 
-    public SearchView(SearchViewModel searchViewModel, CardViewModel cardViewModel, List<String> fields) {
+    public SearchView(SearchViewModel searchViewModel, CardViewModel cardViewModel) {
         super();
         this.searchViewModel = searchViewModel;
         this.cardViewModel = cardViewModel;
         this.cardViewModel.addPropertyChangeListener(this);
-        this.fields = fields;
 
         filterButton.addActionListener(
                 evt -> {

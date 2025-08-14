@@ -2,8 +2,6 @@ package app;
 
 import data_access.AuthenticationDataAccessObject;
 import data_access.CinedexDataAccessObject;
-import entity.MovieFieldRegister;
-import entity.MovieFieldRegisterInterface;
 import interface_adapter.authentication.AuthenticationController;
 import interface_adapter.authentication.AuthenticationPresenter;
 import interface_adapter.authentication.AuthenticationViewModel;
@@ -47,6 +45,7 @@ import view.AppView;
 import view.AuthenticationView;
 import view.CardView;
 import view.FilterView;
+import view.MovieDisplayView;
 import view.NavigationMenuView;
 import view.SearchView;
 import view.ToolBarView;
@@ -68,9 +67,6 @@ import java.util.List;
 public class AppBuilder {
     public static final int HEIGHT = 300;
     public static final int WIDTH = 400;
-
-    private final MovieFieldRegisterInterface movieFieldRegister = MovieFieldRegister.getInstance();
-    private final List<String> searchFields = movieFieldRegister.getSearchFieldNames();
 
     // ViewManager and ViewManagerModel, and primary views
     CardLayout cardLayout = new CardLayout();
@@ -155,9 +151,8 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addRecommendationUseCase() {
-        final RecommendationViewModel recommendationViewModel = new RecommendationViewModel();
         final RecommendationOutputBoundary recommendationPresenter = new RecommendationPresenter(
-                recommendationViewModel);
+                movieDisplayViewModels.getMovieDisplayViewModel(CardType.RECOMMENDED));
 
         final RecommendationInteractor recommendationInteractor = new RecommendationInteractor(
                 watchedIdDataAccessObject, recommendationDataAccessObject, recommendationPresenter);
@@ -271,13 +266,11 @@ public class AppBuilder {
         cardViewModel = new CardViewModel();
 
         // SearchView and SearchViewModel
-        searchViewModel = new SearchViewModel(searchFields);
-        searchView = new SearchView(searchViewModel, cardViewModel, searchFields);
+        searchViewModel = new SearchViewModel();
+        searchView = new SearchView(searchViewModel, cardViewModel);
 
         // FilterView
-        List<String> filterFields = new ArrayList<>(searchFields);
-        filterFields.remove(0);
-        filterView = new FilterView(searchViewModel, filterFields);
+        filterView = new FilterView(searchViewModel);
 
         // CardView
         CardView cardView = new CardView(cardViewModel, movieDisplayViewModels, filterView);
