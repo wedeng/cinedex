@@ -21,12 +21,19 @@ import entity.MovieInterface;
 import use_case.authentication.AuthenticationException;
 import use_case.authentication.OperationsDataAccessInterface;
 import use_case.recommendation.RecommendationDataAccessInterface;
+import use_case.recommendation.WatchedIdDataAccessInterface;
+import use_case.saved.SavedMovieCheckerDataAccessInterface;
+import use_case.saved.SavedMovieManagerDataAccessInterface;
+import use_case.watched.WatchedMovieCheckerDataAccessInterface;
+import use_case.watched.WatchedMovieManagerDataAccessInterface;
 
 /**
  * Data access object for handling TMDB authentication/sync and recommendations.
  */
 
-public class CinedexDataAccessObject implements OperationsDataAccessInterface, RecommendationDataAccessInterface {
+public class CinedexDataAccessObject implements OperationsDataAccessInterface, RecommendationDataAccessInterface,
+        WatchedIdDataAccessInterface, SavedMovieCheckerDataAccessInterface, WatchedMovieCheckerDataAccessInterface,
+        SavedMovieManagerDataAccessInterface, WatchedMovieManagerDataAccessInterface {
     private static final String TMDB_BASE_URL = "https://api.themoviedb.org/3";
     private static final String TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w92";
     private final String apiKey;
@@ -232,9 +239,11 @@ public class CinedexDataAccessObject implements OperationsDataAccessInterface, R
                     final int movieIdentity = movie.getInt("id");
                     final String movieTitle = movie.getString("title");
                     final String synopsis = movie.getString("overview");
+                    final String language = movie.getString("original_language");
                     final String releaseDate = movie.getString("release_date");
-                    final MovieInterface movieObj = new Movie(movieIdentity, movieTitle, releaseDate, backdropPath,
-                            synopsis, 0, "none" ,"english", 3.99, 14.99);
+                    final LocalDate date = LocalDate.parse(releaseDate);
+                    final MovieInterface movieObj = new Movie(movieIdentity, movieTitle, date, backdropPath,
+                            synopsis, 115, "Horror", language, 3.99, 14.99);
                     recommendedMovies.add(movieObj);
                 }
                 hasMorePages = page < jsonResponse.getInt("total_pages");
@@ -248,7 +257,81 @@ public class CinedexDataAccessObject implements OperationsDataAccessInterface, R
         }
     }
 
+    // --- WatchedIdDataAccessInterface ---
+
+    @Override
+    public List<Integer> getMovieIds() {
+        final ArrayList<Integer> movieIds = new ArrayList<>();
+        final CinedexMongoDataBase dataBase = new CinedexMongoDataBase();
+        final List<MovieInterface> movies = dataBase.getAllWatchedMovies();
+
+        for (int i = 0; i < movies.toArray().length; i++) {
+            movieIds.add(movies.get(i).getMovieId());
+        }
+        return movieIds;
+    }
+
+    // --- SavedMovieCheckerDataAccessInterface ---
+
+    @Override
+    public boolean checkSavedMovies(MovieInterface movie) {
+        final CinedexMongoDataBase dataBase = new CinedexMongoDataBase();
+        final List<MovieInterface> movies = dataBase.getAllSavedMovies();
+
+        for (int i = 0; i < movies.toArray().length; i++) {
+            if (movies.get(i).getMovieId() == movie.getMovieId()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // -- SavedMovieManagerDataAccessInterface --
+
+    @Override
+    public void addSavedMovie(MovieInterface movie) {
+        final CinedexMongoDataBase dataBase = new CinedexMongoDataBase();
+        dataBase.saveMovieAsSaved(movie);
+
+    }
+
+    @Override
+    public void removeSavedMovie(MovieInterface movie) {
+        final CinedexMongoDataBase dataBase = new CinedexMongoDataBase();
+        dataBase.deleteMovie(movie.getMovieId());
+    }
+
+    // --- WatchedMovieCheckerDataAccessInterface ---
+
+    @Override
+    public boolean checkWatchedMovie(MovieInterface movie) {
+        final CinedexMongoDataBase dataBase = new CinedexMongoDataBase();
+        final List<MovieInterface> movies = dataBase.getAllWatchedMovies();
+
+        for (int i = 0; i < movies.toArray().length; i++) {
+            if (movies.get(i).getMovieId() == movie.getMovieId()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // --- WatchedMovieManagerDataAccessInterface ---
+
+    @Override
+    public void addWatchedMovie(MovieInterface movie) {
+        final CinedexMongoDataBase dataBase = new CinedexMongoDataBase();
+        dataBase.saveMovieAsWatched(movie);
+    }
+
+    @Override
+    public void removeWatchedMovie(MovieInterface movie) {
+        final CinedexMongoDataBase dataBase = new CinedexMongoDataBase();
+        dataBase.deleteMovie(movie.getMovieId());
+    }
+
     // --- API helper methods ---
+
     private String makeApiRequestWithSession(
             String endpoint, String method, String requestBody, String sessionId) throws IOException {
         final String url = endpoint + "?api_key=" + apiKey + "&session_id=" + sessionId;

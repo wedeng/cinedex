@@ -104,7 +104,7 @@ public class InteractorSync implements SyncInputBoundary {
                 MovieInterface existingMovie = mongoDB.getMovie(movieId);
                 if (existingMovie == null) {
                     // Fetch movie details from TMDB
-                    MovieInterface movie = syncDataAccessInterface.getMovieDetails(movieId);
+                    MovieInterface movie = dataAccessInterfaceSync.getMovieDetails(movieId);
                     if (movie != null) {
                         // Save to local database
                         if (mongoDB.saveMovie(movie)) {

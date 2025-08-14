@@ -1,113 +1,77 @@
-# Movie Recommendation System
+# CSC207 Course Project: Cinedex
 
-## Team Members
-- Wenny Deng: wedeng
-- Ebrahim Mohamud: EbrahimMohamud
-- Nwabuife Amede: Buife-C
-- Samy Bouarroudj: mysticdyingwhale
-- Xiangrenhe Jiang: XiangrenheJiang
+## 📑 Table of Contents
+- [Authors & Contributors](#-authors-and-contributors)
+- [Project Purpose Summary](#-project-purpose-summary)
+- [Software Features](#-software-features)
+- [Installation Instructions](#-installation-instructions)
+- [Usage Guide](#-usage-guide)
+- [License](#-license)
+- [Feedback](#-feedback)
+- [Contributions](#-contributions-)
+---
+## 👥 Authors and Contributors
+**Wenny Deng**  
+**Ebrahim Mohamud**  
+**Nwabuife Amede**  
+**Samy Bouarroudj**  
+**Xiangrenhe Jiang**
 
-## User Stories
-
-### User Story 1
-**Assigned to:** Nwabuife Amede
-**Description:** As a user, I want to search for a movie and add it to my "To-Watch" list so I can find it later.
-
-**Use Cases:**
-- Search Movies: User enters search query → System searches TMDB API → Returns movie results
-- Add to Watch List: User selects movie → System adds to user's watch list → Confirms addition
-
-**User Interactions:**
-- MovieSearchController + MovieSearchPresenter
-- AddToWatchListController + AddToWatchListPresenter
-
-### User Story 2
-**Assigned to:** []
-**Description:** ...
-
-**Use Cases:**
+---
+## 📝 Project Purpose Summary
+Our project aims to provide users with the ability to find, peruse, and record movies they wish to see. Using a large movie
+database, our project allows users to search for movies they have in mind by querying for Our audience
+The project aims to provide users with a seranyone the ability to browse
+...  
+...    
+...  
+...  
+...  
+...  
 ...
+---
+## 📽️ Software Features
+**🔐 Authentication** - Users are able to log into our application thereby establishing a user profile. ​
 
-**User Interactions:**
-...
+**🔍 Search** - Able to search for movies by specifying a query, genera, release date, or a minimum rating.​
 
-### User Story 3
-**Assigned to:** []
-**Description:** ...
+**🖼 Display** - Able to display movies with information including its title, poster, genera, release date, synopsis, runtime, and price.​
 
-**Use Cases:**
-...
+**🎯 Recommendation** - Able to make tailored movie recommendations to users that improve with more user input. ​
 
-**User Interactions:**
-...
+**💾 Saved** - Able to add or remove movies into or from a saved list representing a users to watch list. ​
 
-### User Story 4
-**Assigned to:** []
-**Description:** ...
+**✅ Watched** - Able to add or remove movies into or from a watched list representing a users already watched list.​
 
-**Use Cases:**
-...
+---
 
-**User Interactions:**
-...
+## 📥 Installation Instructions
+1. .
+2. .
+3. .
+4. .
+5. .
+6. .
 
-### User Story 5
-**Assigned to:** []
-**Description:** ...
+---
 
-**Use Cases:**
-...
+## ⚙️ Usage Guide
+1. .
+2. .
+3. .
 
-**User Interactions:**
-...
+---
 
-### User Story 6
-**Assigned to:** []
-**Description:** ...
+## ⚖️ License
+1. .
+2. .
+3. .
 
-**Use Cases:**
-...
+---
 
-**User Interactions:**
-...
+## 💬 Feedback
+To provide feeback, please submit the [google forms](https://docs.google.com/forms/d/e/1FAIpQLSeIThH6VA0OYDVRPipiY8wJV3oMyxnsl8A0PBTTkT89wy700g/viewform?usp=preview) and our team will promptly respond with updates.
 
-## Entities
-- **AppUser**: Stores user data including tmdbAccountID, username, ratedMovies, preferredGenres, savedMovies (used as watch list)
-- **Movie**: Represents movie data from TMDB API
+---
 
-## Note Application
-
-This is a minimal example demonstrating usage of the
-password-protected user part of the API used in lab 5.
-
-You can find more information about the API endpoints in
-[the documentation](https://www.postman.com/cloudy-astronaut-813156/csc207-grade-apis-demo/documentation/fg3zkjm/5-password-protected-user).
-
-If your team is considering an application for which it would be convenient to
-store data in something like a database, you may find that the API calls demonstrated
-here will be useful in your project, as this will allow you to store
-an arbitrary JSON object associated with a username and password.
-
-In this application, a single note has a name (the "username" in terms of the API) and the note
-can be read by anyone who knows the name — but only edited by someone who
-knows the password for it.
-
-You can see the documentation in the various files for more information.
-
-## Testing
-
-The repo also includes an example of a use case interactor test, as well as
-an example of an end-to-end test which automates button clicks and inspects
-the contents of the actual views. This is something we discussed in the lectures
-about testing in CA but had not provided a code example of before. Note, one
-could also inspect the contents of the ViewModel objects instead when testing
-CA to make a similar test which would be less dependent on the details of the
-specific UI implementation.
-
-## Project Starter Code
-
-Your team may choose to use this repo as starter code for your project. You could
-also use the lab 5 code — or start from an empty repo if your team prefers.
-
-If you choose to use one of the repositories we have provided, you can either make
-a fork of it or copy the subset of code you want into a completely new repository.
+## ✍️ Contributions 
