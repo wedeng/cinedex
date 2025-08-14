@@ -1,10 +1,10 @@
 package interface_adapter.search;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import use_case.search.SearchInputBoundary;
 import use_case.search.SearchInputData;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The controller for the search use case.
@@ -18,13 +18,10 @@ public class SearchController {
     }
 
     /**
-     * Executes the search use case.
-     * @param query the query.
-     * @param arguments the arguments.
-     * @param searchType the search Type.
+     * Executes the Search use case.
      */
-    public void execute(String query, Map<String, String> arguments, String searchType) {
-        final HashMap<String, String> argumentsCopy = new HashMap<String, String>(arguments);
+    public void execute(String query, Map<String, String> arguments) {
+        HashMap<String, String> argumentsCopy = new HashMap<>(arguments);
         argumentsCopy.put("title", query);
         final SearchInputData searchInputData = new SearchInputData(argumentsCopy);
 

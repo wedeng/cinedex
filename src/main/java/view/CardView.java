@@ -3,7 +3,7 @@ package view;
 import interface_adapter.view.CardViewModel;
 import interface_adapter.view.MovieDisplayViewModel;
 import interface_adapter.view.CardType;
-import interface_adapter.view.MovieDisplayViewModelsInterface;
+import interface_adapter.view.MovieDisplayViewModels;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,10 +24,10 @@ public class CardView extends JPanel implements PropertyChangeListener {
     private final MovieDisplayView savedCard;
     private final MovieDisplayView watchedCard;
     private final MovieDisplayView recommendationCard;
-    private FilterView filterView;
+    private final FilterView filterView;
 
 
-    public CardView(CardViewModel cardViewModel, MovieDisplayViewModelsInterface movieDisplayViewModels, FilterView filterView) {
+    public CardView(CardViewModel cardViewModel, MovieDisplayViewModels movieDisplayViewModels, FilterView filterView) {
 
         super();
         this.cardViewModel = cardViewModel;
@@ -58,15 +58,11 @@ public class CardView extends JPanel implements PropertyChangeListener {
 //        watchedCard.add(new JLabel(CardType.WATCHED.getName()));
 //        recommendationCard.add(new JLabel(CardType.RECOMMENDED.getName()));
 
-        this.setupCard(discoverCard, CardType.DISCOVER.getName());
-        this.setupCard(savedCard, CardType.SAVED.getName());
-        this.setupCard(watchedCard, CardType.WATCHED.getName());
-        this.setupCard(recommendationCard, CardType.RECOMMENDED.getName());
-        this.setupCard(filterView, CardType.FILTER.getName());
-    }
-
-    public void setFilterView(FilterView filterView) {
-        this.filterView = filterView;
+        this.setupCard(this.discoverCard, CardType.DISCOVER.getName());
+        this.setupCard(this.savedCard, CardType.SAVED.getName());
+        this.setupCard(this.watchedCard, CardType.WATCHED.getName());
+        this.setupCard(this.recommendationCard, CardType.RECOMMENDED.getName());
+        this.setupCard(this.filterView, CardType.FILTER.getName());
     }
 
     private void setupCard(JPanel card, String cardName) {
