@@ -18,14 +18,13 @@ public class MovieFieldRegister implements MovieFieldRegisterInterface {
     }
 
     private void initializeFields() {
-        addField(new MovieField(0, "title", true, "", ""));
-        addField(new MovieField(1, "release date", true, "", ""));
-        addField(new MovieField(2, "poster", false, "", ""));
-        addField(new MovieField(3, "synopsis", false, "", ""));
-        addField(new MovieField(4, "runtime", true, "", ""));
-        addField(new MovieField(5, "genre", true, "", ""));
-        addField(new MovieField(6, "language", true, "", ""));
-        addField(new MovieField(7, "director", true, "", ""));
+        addField(new MovieField("title", true, ""));
+        addField(new MovieField("release year", true, ""));
+        addField(new MovieField("poster", false, ""));
+        addField(new MovieField("synopsis", false, ""));
+        addField(new MovieField("runtime", false, ""));
+        addField(new MovieField("language", true, ""));
+        addField(new MovieField("director", true, ""));
     }
 
     public static MovieFieldRegister getInstance() {

@@ -31,12 +31,16 @@ public class SearchInteractor implements SearchInputBoundary {
                 searchPresenter.prepareFailView("Invalid argument for " + movieField.getName());
             }
             else {
+                // Attempt to get output from DAO
+                try {
+                    List<MovieInterface> outputMovies = movieDataAccessObject.searchMovies(searchArguments);
+                    final SearchOutputData searchOutputData = new SearchOutputData(outputMovies, false);
+                    searchPresenter.prepareSuccessView(searchOutputData);
+                }
+                catch (Exception exception) {
+                    searchPresenter.prepareFailView(exception.getMessage());
+                }
 
-                // Get output from DAO
-                List<MovieInterface> outputMovies = movieDataAccessObject.searchMovies(searchArguments);
-
-                final SearchOutputData searchOutputData = new SearchOutputData(outputMovies, false);
-                searchPresenter.prepareSuccessView(searchOutputData);
             }
         }
     }

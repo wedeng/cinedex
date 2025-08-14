@@ -21,12 +21,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import use_case.search.SearchDataAccessInterface;
 
 /**
  * Data access object for handling TMDB authentication and data sync.
  * Implements the API calls for auth and synchronization.
  */
-public class AuthDataAccessObject implements AuthDataAccessInterface {
+public class AuthDataAccessObject implements AuthDataAccessInterface, SearchDataAccessInterface {
 
     private static final String TMDB_BASE_URL = "https://api.themoviedb.org/3";
     private static final String TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w92";
@@ -385,5 +386,51 @@ public class AuthDataAccessObject implements AuthDataAccessInterface {
         double buyPrice = 14.99;
 
         return new Movie(movieId, title, releaseDate, poster, synopsis, runtime, genre, language, rentPrice, buyPrice);
+    }
+
+    @Override
+    public List<MovieInterface> searchMovies(Map<String, String> searchArguments) throws IOException {
+
+        final List<MovieInterface> searchedMovies = new ArrayList<>();
+        final JSONArray results;
+
+        // Construct endpoint
+        final String endpoint = appendSearchArguments(TMDB_BASE_URL + "/discover/movie", searchArguments);
+
+        // Make API request
+        final String response = makeApiRequest(endpoint, "GET", null);
+
+        // Parse response and return
+        final JSONObject jsonResponse = new JSONObject(response);
+        results = jsonResponse.getJSONArray("results");
+
+        for (int i = 0; i < results.length(); i++) {
+            final JSONObject movie = results.getJSONObject(i);
+            searchedMovies.add(convertTMDBJsonToMovie(movie));
+        }
+
+        return searchedMovies;
+    }
+
+    /**
+     * Appends search parameters to the end of the URL endpoint.
+     * @param endPoint The endpoint to be appended on to
+     * @param searchArguments The search arguments to be appended
+     * @return The new endPoint
+     */
+    private String appendSearchArguments(String endPoint, Map<String, String> searchArguments) {
+
+        endPoint = endPoint + "?";
+        String conjunction = "";
+
+        for (Map.Entry<String, String> entry : searchArguments.entrySet()) {
+
+            String searchField = entry.getKey();
+            String searchArgument = entry.getValue();
+
+            endPoint = endPoint + conjunction + searchField + "=" + searchArgument;
+            conjunction = "&";
+        }
+        return endPoint;
     }
 }

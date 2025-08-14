@@ -20,8 +20,8 @@ public class SearchController {
     /**
      * Executes the Search use case.
      */
-    public void execute(String query, Map<String, String> arguments, String searchType) {
-        HashMap<String, String> argumentsCopy = new HashMap<String, String>(arguments);
+    public void execute(String query, Map<String, String> arguments) {
+        HashMap<String, String> argumentsCopy = new HashMap<>(arguments);
         argumentsCopy.put("title", query);
         final SearchInputData searchInputData = new SearchInputData(argumentsCopy);
 
