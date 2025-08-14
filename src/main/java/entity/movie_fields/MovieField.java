@@ -6,23 +6,29 @@ package entity.movie_fields;
  */
 public class MovieField implements MovieFieldInterface {
 
+    private final int id;
     private final String name;
     private final boolean isSearchOption;
+    private final String validArgsRegex;
+    private final String defaultValue;
 
-    public MovieField(String name, boolean isSearchOption) {
+    public MovieField(int id, String name, boolean isSearchOption, String validArgsRegex, String defaultValue) {
+        this.id = id;
         this.name = name;
         this.isSearchOption = isSearchOption;
+        this.validArgsRegex = validArgsRegex;
+        this.defaultValue = defaultValue;
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     @Override
     public String getName() {
         return name;
     }
-
-//    @Override
-//    public String getDescription() {
-//        return description;
-//    }
 
     @Override
     public boolean isSearchOption() {
@@ -34,4 +40,12 @@ public class MovieField implements MovieFieldInterface {
         return false;
     }
 
+    @Override
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public String getValidArgsRegex() {
+        return validArgsRegex;
+    }
 }
