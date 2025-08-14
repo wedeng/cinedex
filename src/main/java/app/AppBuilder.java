@@ -67,12 +67,12 @@ public class AppBuilder {
     private ViewManagerModel viewManagerModel;
 
     // DAOs
-    private AuthenticationDataAccessInterface authenticationDataAccessObject;
-    private OperationsDataAccessInterface operationsDataAccessObject;
-    private CinedexMongoDataBaseInterface cinedexMongoDataBaseObject;
-    private SearchDataAccessInterface searchDataAccessObject;
-    private WatchedIdDataAccessInterface watchedIdDataAccessObject;
-    private RecommendationDataAccessInterface recommendationDataAccessObject;
+    private final AuthenticationDataAccessInterface authenticationDataAccessObject;
+    private final CinedexMongoDataBaseInterface cinedexMongoDataBaseObject;
+    private final OperationsDataAccessInterface operationsDataAccessObject;
+    private final SearchDataAccessInterface searchDataAccessObject;
+    private final WatchedIdDataAccessInterface watchedIdDataAccessObject;
+    private final RecommendationDataAccessInterface recommendationDataAccessObject;
 
     // Authentication View/ViewModel
     AuthenticationViewModel authenticationViewModel;
@@ -87,6 +87,20 @@ public class AppBuilder {
     private SearchView searchView;
     private SearchViewModel searchViewModel;
     private CardViewModel cardViewModel;
+
+    public AppBuilder(AuthenticationDataAccessInterface authenticationDataAccessObject,
+                      CinedexMongoDataBaseInterface cinedexMongoDataBaseObject,
+                      OperationsDataAccessInterface operationsDataAccessObject,
+                      SearchDataAccessInterface searchDataAccessObject,
+                      WatchedIdDataAccessInterface watchedIdDataAccessObject,
+                      RecommendationDataAccessInterface recommendationDataAccessObject) {
+        this.authenticationDataAccessObject = authenticationDataAccessObject;
+        this.operationsDataAccessObject = operationsDataAccessObject;
+        this.cinedexMongoDataBaseObject = cinedexMongoDataBaseObject;
+        this.searchDataAccessObject = searchDataAccessObject;
+        this.watchedIdDataAccessObject = watchedIdDataAccessObject;
+        this.recommendationDataAccessObject = recommendationDataAccessObject;
+    }
 
     /**
      * Adds the Authentication use case.

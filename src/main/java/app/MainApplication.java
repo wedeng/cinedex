@@ -1,6 +1,8 @@
 package app;
 
 import data_access.AuthenticationDataAccessObject;
+import data_access.CinedexDataAccessObject;
+import data_access.CinedexMongoDataBase;
 import use_case.authentication.AuthenticationDataAccessInterface;
 import use_case.authentication.CinedexMongoDataBaseInterface;
 import use_case.authentication.OperationsDataAccessInterface;
@@ -23,15 +25,22 @@ public class MainApplication {
      */
     public static void main(String[] args) {
 
-        // TODO: Initialize DAOs here (and inject into builder)
-        // AuthenticationDataAccessInterface authenticationDataAccessObject = new AuthenticationDataAccessObject();
-        // OperationsDataAccessInterface operationsDataAccessObject;
-        // CinedexMongoDataBaseInterface cinedexMongoDataBaseObject;
-        // SearchDataAccessInterface searchDataAccessObject;
-        // WatchedIdDataAccessInterface watchedIdDataAccessObject;
-        // RecommendationDataAccessInterface recommendationDataAccessObject;
+        String key = "d14c8b3240616174d718e3f575657829";
 
-        final AppBuilder builder = new AppBuilder();
+        // DAOs
+        AuthenticationDataAccessInterface authenticationDataAccessObject = new AuthenticationDataAccessObject(key);
+        CinedexDataAccessObject cinedexDataAccessObject = new CinedexDataAccessObject(key);
+        CinedexMongoDataBaseInterface cinedexMongoDataBaseObject = new CinedexMongoDataBase();
+
+        final AppBuilder builder = new AppBuilder(
+                authenticationDataAccessObject,
+                cinedexMongoDataBaseObject,
+                cinedexDataAccessObject,
+                cinedexDataAccessObject,
+                cinedexDataAccessObject,
+                cinedexDataAccessObject
+                );
+
         final JFrame appFrame = builder
                 .addViewManager()
                 .addAppView()
@@ -41,6 +50,5 @@ public class MainApplication {
                 .build();
         appFrame.pack();
         appFrame.setVisible(true);
-
     }
 }
