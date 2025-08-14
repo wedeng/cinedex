@@ -48,15 +48,15 @@ public class CardView extends JPanel implements PropertyChangeListener {
         recommendationCard = new MovieDisplayView(recommendationViewModel);
 
         // add placeholder contents to each card so they're distinguishable
-         discoverCard.add(new JLabel(CardType.DISCOVER.getName()));
-
-        for (int i = 0; i < 16; i++) {
-            discoverCard.add(new MovieComponent());
-        }
-
-        savedCard.add(new JLabel(CardType.SAVED.getName()));
-        watchedCard.add(new JLabel(CardType.WATCHED.getName()));
-        recommendationCard.add(new JLabel(CardType.RECOMMENDED.getName()));
+//         discoverCard.add(new JLabel(CardType.DISCOVER.getName()));
+//
+//        for (int i = 0; i < 16; i++) {
+//            discoverCard.add(new MovieComponent());
+//        }
+//
+//        savedCard.add(new JLabel(CardType.SAVED.getName()));
+//        watchedCard.add(new JLabel(CardType.WATCHED.getName()));
+//        recommendationCard.add(new JLabel(CardType.RECOMMENDED.getName()));
 
         this.setupCard(discoverCard, CardType.DISCOVER.getName());
         this.setupCard(savedCard, CardType.SAVED.getName());

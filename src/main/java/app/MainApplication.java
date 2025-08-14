@@ -28,10 +28,12 @@ public class MainApplication {
      */
     public static void main(String[] args) {
 
-        Dotenv dotenv = Dotenv.load();
+//        Dotenv dotenv = Dotenv.load();
 
-        String accessToken = dotenv.get("API_READ_ACCESS_TOKEN");
-        String apiKey = dotenv.get("API_KEY");
+//        String accessToken = dotenv.get("API_READ_ACCESS_TOKEN");
+//        String apiKey = dotenv.get("API_KEY");
+
+        String apiKey = "d14c8b3240616174d718e3f575657829";
 
         // DAOs
         AuthenticationDataAccessInterface authenticationDataAccessObject = new AuthenticationDataAccessObject(apiKey);
@@ -44,6 +46,10 @@ public class MainApplication {
                 cinedexDataAccessObject,
                 cinedexDataAccessObject,
                 cinedexDataAccessObject,
+                cinedexDataAccessObject,
+                cinedexDataAccessObject,
+                cinedexDataAccessObject,
+                cinedexDataAccessObject,
                 cinedexDataAccessObject
                 );
 
@@ -52,6 +58,9 @@ public class MainApplication {
                 .addAppView()
                 .addAuthenticationView()
                 .addAuthenticationUseCase()
+                .addSavedUseCase()
+                .addWatchedUseCase()
+                .addRecommendationUseCase()
                 .addSearchUseCase()
                 .build();
         appFrame.pack();

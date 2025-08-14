@@ -1,5 +1,7 @@
 package interface_adapter.saved;
 
+import interface_adapter.view.MovieDisplayState;
+import interface_adapter.view.MovieDisplayViewModel;
 import use_case.saved.SavedOutputBoundary;
 import use_case.saved.SavedOutputData;
 
@@ -9,31 +11,29 @@ import use_case.saved.SavedOutputData;
 
 public class SavedPresenter implements SavedOutputBoundary {
 
-    private final SavedViewModel savedViewModel;
+    private final MovieDisplayViewModel savedViewModel;
 
-    public SavedPresenter(SavedViewModel savedViewModel) {
+    public SavedPresenter(MovieDisplayViewModel savedViewModel) {
         this.savedViewModel = savedViewModel;
     }
 
     @Override
     public void prepareSuccessView(SavedOutputData outputData) {
-        final SavedState savedState = this.savedViewModel.getState();
+        final MovieDisplayState savedState = this.savedViewModel.getState();
 
-        savedState.setSavedManagerErrorMessage(null);
-        savedState.setSavedManagerSuccess(true);
+        savedState.setRetrievalError(null);
 
         this.savedViewModel.setState(savedState);
-        this.savedViewModel.firePropertyChanged("saved");
+        this.savedViewModel.firePropertyChanged("state");
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
-        final SavedState savedState = this.savedViewModel.getState();
+        final MovieDisplayState savedState = this.savedViewModel.getState();
 
-        savedState.setSavedManagerErrorMessage(errorMessage);
-        savedState.setSavedManagerSuccess(false);
+        savedState.setRetrievalError(errorMessage);
 
         this.savedViewModel.setState(savedState);
-        this.savedViewModel.firePropertyChanged("saved");
+        this.savedViewModel.firePropertyChanged("state");
     }
 }

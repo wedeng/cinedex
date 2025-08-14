@@ -1,12 +1,13 @@
 package view;
 
+import interface_adapter.saved.SavedController;
 import interface_adapter.view.CardViewModel;
 import interface_adapter.view.CardType;
+import interface_adapter.view.MovieDisplayViewModels;
+import interface_adapter.watched.WatchedController;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -26,37 +27,62 @@ public class NavigationMenuView extends JPanel {
 
     public NavigationMenuView(CardViewModel cardViewModel) {
         super();
+        // SavedController savedController, WatchedController watchedController,
         this.setLayout(layout);
         this.cardViewModel = cardViewModel;
 
         // style
         this.setBorder(BorderFactory.createLineBorder(Color.black));
 
-        prepareButton(discoverButton, CardType.DISCOVER, AppIcon.DISCOVER_64.getIcon());
-        prepareButton(savedButton, CardType.SAVED, AppIcon.SAVED_64.getIcon());
-        prepareButton(watchedButton, CardType.WATCHED, AppIcon.WATCHED_64.getIcon());
-        prepareButton(recommendedButton, CardType.RECOMMENDED, AppIcon.RECOMMENDED_64.getIcon());
-    }
-
-    /**
-     * Configures the button's style, adds an action listener,
-     * and adds the button to this menu.
-     *
-     * @param button The button to be prepared.
-     */
-    private void prepareButton(JButton button, CardType cardType, Icon icon) {
-        // button.setMaximumSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE))
-        button.setIcon(icon);
-
-        button.addActionListener(
-                evt -> {
-                    if (evt.getSource().equals(button)) {
-                        cardViewModel.setState(cardType);
-                        System.out.println("Set active card in AppViewModel to " + cardType.getName() + " in NavigationMenuView");
+        // Discover
+        discoverButton.setIcon(AppIcon.DISCOVER_64.getIcon());
+        discoverButton.addActionListener(
+                evt3 -> {
+                    if (evt3.getSource().equals(discoverButton)) {
+                        this.cardViewModel.setState(CardType.DISCOVER);
+                        System.out.println("Set active card in AppViewModel to " + CardType.DISCOVER.getName() + " in NavigationMenuView");
                     }
                 }
         );
 
-        this.add(button);
+        // Saved
+        savedButton.setIcon(AppIcon.SAVED_64.getIcon());
+        savedButton.addActionListener(
+                evt2 -> {
+                    if (evt2.getSource().equals(savedButton)) {
+                        this.cardViewModel.setState(CardType.SAVED);
+                        System.out.println("Set active card in AppViewModel to " + CardType.SAVED.getName() + " in NavigationMenuView");
+
+                    }
+                }
+        );
+
+        // Watched
+        watchedButton.setIcon(AppIcon.WATCHED_64.getIcon());
+        watchedButton.addActionListener(
+                evt1 -> {
+                    if (evt1.getSource().equals(watchedButton)) {
+                        this.cardViewModel.setState(CardType.WATCHED);
+                        System.out.println("Set active card in AppViewModel to " + CardType.WATCHED.getName() + " in NavigationMenuView");
+                    }
+                }
+        );
+
+        // Recommended
+        recommendedButton.setIcon(AppIcon.RECOMMENDED_64.getIcon());
+        recommendedButton.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(recommendedButton)) {
+                        this.cardViewModel.setState(CardType.RECOMMENDED);
+                        System.out.println("Set active card in AppViewModel to " + CardType.RECOMMENDED.getName() + " in NavigationMenuView");
+                    }
+                }
+        );
+
+        this.add(discoverButton);
+        this.add(savedButton);
+        this.add(watchedButton);
+        this.add(recommendedButton);
     }
+
 }

@@ -10,6 +10,8 @@ import interface_adapter.authentication.AuthenticationViewModel;
 import interface_adapter.recommendation.RecommendationController;
 import interface_adapter.recommendation.RecommendationPresenter;
 import interface_adapter.recommendation.RecommendationViewModel;
+import interface_adapter.saved.SavedController;
+import interface_adapter.saved.SavedPresenter;
 import interface_adapter.view.CardType;
 import interface_adapter.view.MovieDisplayViewModel;
 import interface_adapter.view.MovieDisplayViewModels;
@@ -18,6 +20,7 @@ import interface_adapter.search.SearchPresenter;
 import interface_adapter.view.CardViewModel;
 import interface_adapter.search.SearchViewModel;
 import interface_adapter.view.ViewManagerModel;
+import interface_adapter.watched.WatchedController;
 import interface_adapter.watched.WatchedPresenter;
 import use_case.authentication.AuthenticationDataAccessInterface;
 import use_case.authentication.AuthenticationInputBoundary;
@@ -25,6 +28,10 @@ import use_case.authentication.AuthenticationInteractor;
 import use_case.authentication.AuthenticationOutputBoundary;
 import use_case.authentication.CinedexMongoDataBaseInterface;
 import use_case.authentication.OperationsDataAccessInterface;
+import use_case.saved.SavedInteractor;
+import use_case.saved.SavedMovieCheckerDataAccessInterface;
+import use_case.saved.SavedMovieManagerDataAccessInterface;
+import use_case.saved.SavedOutputBoundary;
 import use_case.search.SearchDataAccessInterface;
 import use_case.recommendation.RecommendationDataAccessInterface;
 import use_case.recommendation.RecommendationInteractor;
@@ -33,6 +40,8 @@ import use_case.recommendation.WatchedIdDataAccessInterface;
 import use_case.search.SearchInteractor;
 import use_case.search.SearchOutputBoundary;
 import use_case.watched.WatchedInteractor;
+import use_case.watched.WatchedMovieCheckerDataAccessInterface;
+import use_case.watched.WatchedMovieManagerDataAccessInterface;
 import use_case.watched.WatchedOutputBoundary;
 import view.AppView;
 import view.AuthenticationView;
@@ -72,10 +81,17 @@ public class AppBuilder {
     // DAOs
     private final AuthenticationDataAccessInterface authenticationDataAccessObject;
     private final CinedexMongoDataBaseInterface cinedexMongoDataBaseObject;
+
+    // DAIs implemented by CinedexDataAccessObject
     private final OperationsDataAccessInterface operationsDataAccessObject;
     private final SearchDataAccessInterface searchDataAccessObject;
     private final WatchedIdDataAccessInterface watchedIdDataAccessObject;
     private final RecommendationDataAccessInterface recommendationDataAccessObject;
+    private final WatchedMovieManagerDataAccessInterface watchedMovieManagerDataAccessObject;
+    private final WatchedMovieCheckerDataAccessInterface watchedMovieCheckerDataAccessObject;
+    private final SavedMovieManagerDataAccessInterface savedMovieManagerDataAccessObject;
+    private final SavedMovieCheckerDataAccessInterface savedMovieCheckerDataAccessObject;
+
 
     // Authentication View/ViewModel
     AuthenticationViewModel authenticationViewModel;
@@ -96,13 +112,17 @@ public class AppBuilder {
                       OperationsDataAccessInterface operationsDataAccessObject,
                       SearchDataAccessInterface searchDataAccessObject,
                       WatchedIdDataAccessInterface watchedIdDataAccessObject,
-                      RecommendationDataAccessInterface recommendationDataAccessObject) {
+                      RecommendationDataAccessInterface recommendationDataAccessObject, WatchedMovieManagerDataAccessInterface watchedMovieManagerDataAccessObject, WatchedMovieCheckerDataAccessInterface watchedMovieCheckerDataAccessObject, SavedMovieManagerDataAccessInterface savedMovieManagerDataAccessObject, SavedMovieCheckerDataAccessInterface savedMovieCheckerDataAccessObject) {
         this.authenticationDataAccessObject = authenticationDataAccessObject;
         this.operationsDataAccessObject = operationsDataAccessObject;
         this.cinedexMongoDataBaseObject = cinedexMongoDataBaseObject;
         this.searchDataAccessObject = searchDataAccessObject;
         this.watchedIdDataAccessObject = watchedIdDataAccessObject;
         this.recommendationDataAccessObject = recommendationDataAccessObject;
+        this.watchedMovieManagerDataAccessObject = watchedMovieManagerDataAccessObject;
+        this.watchedMovieCheckerDataAccessObject = watchedMovieCheckerDataAccessObject;
+        this.savedMovieManagerDataAccessObject = savedMovieManagerDataAccessObject;
+        this.savedMovieCheckerDataAccessObject = savedMovieCheckerDataAccessObject;
     }
 
     /**
@@ -176,13 +196,39 @@ public class AppBuilder {
         return this;
     }
 
-//    public AppBuilder addWatchedUseCase() {
-//        final WatchedOutputBoundary watchedPresenter = new WatchedPresenter(movieDisplayViewModels.
-//                getMovieDisplayViewModel(CardType.WATCHED));
-//
-//        WatchedInteractor watchedInteractor = new WatchedInteractor(watchedPresenter, )
-//
-//    }
+    public AppBuilder addWatchedUseCase() {
+        final WatchedOutputBoundary watchedPresenter = new WatchedPresenter(movieDisplayViewModels.
+                getMovieDisplayViewModel(CardType.WATCHED));
+
+        WatchedInteractor watchedInteractor = new WatchedInteractor(watchedMovieManagerDataAccessObject,
+                watchedMovieCheckerDataAccessObject, watchedPresenter);
+
+        final WatchedController watchedController = new WatchedController(watchedInteractor);
+
+        if (toolBarView == null) {
+            throw new RuntimeException("addAppView must be called before addWatchedUseCase");
+        }
+        toolBarView.setWatchedController(watchedController);
+
+        return this;
+    }
+
+    public AppBuilder addSavedUseCase() {
+        final SavedOutputBoundary savedPresenter = new SavedPresenter(movieDisplayViewModels.
+                getMovieDisplayViewModel(CardType.SAVED));
+
+        SavedInteractor savedInteractor = new SavedInteractor(savedMovieManagerDataAccessObject,
+                savedMovieCheckerDataAccessObject, savedPresenter);
+
+        final SavedController savedController = new SavedController(savedInteractor);
+
+        if (toolBarView == null) {
+            throw new RuntimeException("addAppView must be called before addSavedUseCase");
+        }
+        toolBarView.setSavedController(savedController);
+
+        return this;
+    }
 
 
     /**

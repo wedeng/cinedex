@@ -44,7 +44,7 @@ public class MovieComponent extends JPanel {
         // get poster image from URL (placeholder code)
         final URL url;
         try {
-            url = new URL("https://image.tmdb.org/t/p/w92/4CkZl1LK6a5rXBqJB2ZP77h3N5i.jpg");
+            url = new URL(movie.getPoster());
         }
         catch (MalformedURLException ex) {
             throw new RuntimeException(ex);
@@ -55,23 +55,15 @@ public class MovieComponent extends JPanel {
         poster.setPreferredSize(new Dimension(POSTER_WIDTH, (int) Math.round(POSTER_WIDTH * POSTER_ASPECT_RATIO)));
 
         // get title text (placeholder code currently used)
-        // title.setText(movie.getTitle());
-        title.setText("Sinners");
+        title.setText(movie.getTitle());
 
         // get release year (placeholder code currently used)
-        // year.setText(String.valueOf(movie.getReleaseDate().getYear()));
-        year.setText("2025");
+        year.setText(String.valueOf(movie.getReleaseDate().getYear()));
         year.setForeground(Color.GRAY);
 
         this.add(poster, initializePosterConstraints());
         this.add(title, initializeTitleConstraints());
         this.add(year, initializeYearConstraints());
-    }
-
-    // TODO: Delete this placeholder constructor eventually
-    public MovieComponent() {
-        this(new Movie(2, "Sinners", LocalDate.of(2025, 4, 5),
-                "placeholder", "(synopsis)", 120, "genre", "English", 5, 20));
     }
 
     private GridBagConstraints initializePosterConstraints() {
