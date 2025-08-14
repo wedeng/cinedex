@@ -9,12 +9,13 @@ import java.awt.Component;
 
 public class ToolBarView extends JToolBar {
     private final int BUTTON_SIZE = 32;
-    private final Icon PLACEHOLDER_ICON = new ImageIcon("src/main/resources/placeholder-icon.png");
+    private final Icon SAVED_ICON = new ImageIcon("src/main/resources/savedicon.png");
+    private final Icon WATCHED = new ImageIcon("src/main/resources/watchedicon.png");
+    private final Icon RECOMMENDED_ICON = new ImageIcon("src/main/resources/recommendicon.png");
 
     private final JButton recommendButton = new JButton();
     private final JButton saveButton = new JButton();
     private final JButton watchedButton = new JButton();
-    private final JButton rateButton = new JButton();
 
     public ToolBarView (SearchView searchView) {
         super();
@@ -46,19 +47,9 @@ public class ToolBarView extends JToolBar {
                 }
         );
 
-        rateButton.addActionListener(
-                evt -> {
-                    if (evt.getSource().equals(rateButton)) {
-                        // appPageController.execute(noteInputField.getText());
-                        ;
-                    }
-                }
-        );
-
-        setupButton(recommendButton, PLACEHOLDER_ICON);
-        setupButton(saveButton, PLACEHOLDER_ICON);
-        setupButton(watchedButton, PLACEHOLDER_ICON);
-        setupButton(rateButton, PLACEHOLDER_ICON);
+        setupButton(recommendButton, RECOMMENDED_ICON);
+        setupButton(saveButton, SAVED_ICON);
+        setupButton(watchedButton, WATCHED);
 
         Component spacer = Box.createHorizontalStrut((int) Math.round(BUTTON_SIZE * 4));
 

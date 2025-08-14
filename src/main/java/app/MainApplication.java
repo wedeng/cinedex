@@ -1,7 +1,5 @@
 package app;
 
-import use_case.search.MovieSearchService;
-
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
