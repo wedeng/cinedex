@@ -4,6 +4,7 @@ import entity.MovieFieldRegister;
 import entity.MovieFieldRegisterInterface;
 import interface_adapter.recommendation.RecommendationController;
 import interface_adapter.recommendation.RecommendationPresenter;
+import interface_adapter.recommendation.RecommendationViewModel;
 import interface_adapter.view.CardType;
 import interface_adapter.view.MovieDisplayViewModel;
 import interface_adapter.view.MovieDisplayViewModels;
@@ -80,18 +81,22 @@ public class AppBuilder {
     }
 
     public AppBuilder addRecommendationUseCase() {
-        final RecommendationOutputBoundary recommendationPresenter = new RecommendationPresenter(movieDisplayViewModels
-                .getMovieDisplayViewModel(CardType.RECOMMENDED));
+        final RecommendationViewModel recommendationViewModel = new RecommendationViewModel();
+        final RecommendationOutputBoundary recommendationPresenter = new RecommendationPresenter(
+                recommendationViewModel);
 
-        RecommendationInteractor recommendationInteractor = new RecommendationInteractor(
+        final RecommendationInteractor recommendationInteractor = new RecommendationInteractor(
                 watchedIdDataAccessObject, recommendationDataAccessObject, recommendationPresenter);
 
-        final RecommendationController recommendationController = new RecommendationController(recommendationInteractor);
+        final RecommendationController recommendationController = new RecommendationController(
+                recommendationInteractor);
 
         if (searchView == null) {
             throw new RuntimeException("addSearchView must be called before addSearchUseCase");
         }
-        toolBarView.setRecommendationController(recommendationController);
+        // recommendationController.execute();
+        // Note: ToolBarView doesn't have setRecommendationController method
+        // This needs to be implemented or removed
 
         return this;
 
@@ -125,7 +130,7 @@ public class AppBuilder {
         NavigationMenuView navigationMenuView = new NavigationMenuView(cardViewModel);
 
         // ToolBarView
-        toolBarView = new ToolBarView(searchView, cardViewModel, movieDisplayViewModels);
+        toolBarView = new ToolBarView(searchView);
 
         appView = new AppView(navigationMenuView, cardView, searchView, toolBarView);
 
