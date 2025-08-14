@@ -12,6 +12,9 @@ import use_case.search.SearchDataAccessInterface;
 
 import javax.swing.JFrame;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
+
 /**
  The main entry point of the application; it launches the program (e.g., starts the Swing UI)
  and invokes the AppBuilder to set up the app.
@@ -25,11 +28,14 @@ public class MainApplication {
      */
     public static void main(String[] args) {
 
-        String key = "d14c8b3240616174d718e3f575657829";
+        Dotenv dotenv = Dotenv.load();
+
+        String accessToken = dotenv.get("API_READ_ACCESS_TOKEN");
+        String apiKey = dotenv.get("API_KEY");
 
         // DAOs
-        AuthenticationDataAccessInterface authenticationDataAccessObject = new AuthenticationDataAccessObject(key);
-        CinedexDataAccessObject cinedexDataAccessObject = new CinedexDataAccessObject(key);
+        AuthenticationDataAccessInterface authenticationDataAccessObject = new AuthenticationDataAccessObject(apiKey);
+        CinedexDataAccessObject cinedexDataAccessObject = new CinedexDataAccessObject(apiKey);
         CinedexMongoDataBaseInterface cinedexMongoDataBaseObject = new CinedexMongoDataBase();
 
         final AppBuilder builder = new AppBuilder(

@@ -46,12 +46,17 @@ The project aims to provide users with a seranyone the ability to browse
 ---
 
 ## 📥 Installation Instructions
-1. .
-2. .
-3. .
-4. .
-5. .
-6. .
+
+### System Requirements
+- **Java**: JDK 17 ([Download](https://adotium.net))
+
+### Local Development Setup
+
+#### 1. Clone Repository
+```bash
+git clone https://github.com/wedeng/cinedex.git
+cd cinedex
+```
 
 ---
 
@@ -59,6 +64,18 @@ The project aims to provide users with a seranyone the ability to browse
 1. .
 2. .
 3. .
+
+#### Movie Search
+**Basic Search**
+```java
+// Example
+"Interstellar"
+```
+
+**Advanced Filters**
+
+|Filter |Syntax Example | Description   |
+
 
 ---
 
