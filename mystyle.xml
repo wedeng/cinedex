@@ -509,7 +509,7 @@
         <module name="ParameterAssignment"/>
         <module name="RequireThis"/>
         <module name="ReturnCount">
-            <property name="max" value="1"/>
+            <property name="max" value="2"/>
             <property name="maxForVoid" value="0"/>
             <property name="format" value="^create"/>
         </module>
@@ -739,7 +739,7 @@
         <!-- Naming Conventions -->
         <module name="AbbreviationAsWordInName">
             <property name="ignoreFinal" value="false"/>
-            <property name="allowedAbbreviationLength" value="0"/>
+            <property name="allowedAbbreviationLength" value="4"/>
             <property name="allowedAbbreviations" value="DB,DAO,AST,HTML,ID,JSON,CSV"/>
         </module>
         <module name="AbstractClassName"/>

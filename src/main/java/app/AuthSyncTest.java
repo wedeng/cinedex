@@ -3,7 +3,9 @@ package app;
 import data_access.MongoMovieDataBase;
 import data_access.AuthDataAccessObject;
 import data_access.SyncDataAccessObject;
-import use_case.authentication.*;
+import use_case.previous_authentication.AuthInteractor;
+import use_case.previous_authentication.AuthOutputBoundary;
+import use_case.previous_authentication.AuthOutputData;
 import use_case.sync.*;
 
 /**

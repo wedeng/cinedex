@@ -17,4 +17,4 @@ public interface SyncOutputBoundary {
      * @param errorMessage the explanation of the failure
      */
     void prepareFailView(String errorMessage);
-} 
+}

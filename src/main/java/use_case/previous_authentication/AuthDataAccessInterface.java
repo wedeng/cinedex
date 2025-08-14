@@ -1,8 +1,8 @@
-package use_case.authentication;
+package use_case.previous_authentication;
 
-import entity.AppUser;
-import entity.MovieInterface;
 import java.util.List;
+
+import entity.MovieInterface;
 
 /**
  * Data access interface for authentication operations.
@@ -111,4 +111,4 @@ public interface AuthDataAccessInterface {
      * @throws AuthException if the request fails
      */
     void deleteSession(String sessionId) throws AuthException;
-} 
+}

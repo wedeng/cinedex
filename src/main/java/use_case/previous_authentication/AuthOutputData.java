@@ -1,7 +1,6 @@
-package use_case.authentication;
+package use_case.previous_authentication;
 
 import entity.AppUser;
-import java.util.List;
 
 /**
  * Output data for authentication operations.

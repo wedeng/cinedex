@@ -1,4 +1,4 @@
-package use_case.authentication;
+package use_case.previous_authentication;
 
 /**
  * Exception thrown when authentication operations fail.
@@ -21,4 +21,4 @@ public class AuthException extends Exception {
     public AuthException(String message, Throwable cause) {
         super(message, cause);
     }
-} 
+}

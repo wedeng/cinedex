@@ -1,9 +1,6 @@
 package data_access;
 
-import entity.Movie;
-import entity.MovieInterface;
-import entity.AppUser;
-import entity.Session;
+import entity.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -31,7 +28,7 @@ public class MongoMovieDataBase {
     private static final String MONGODB_URL = "http://localhost:27017";
     private static final String DATABASE = "cinedex";
     private static final String MOVIES_COLL = "movies";
-    // Add differentiability column 
+    // Add differentiability column.
     private static final String USERS_COLL = "users";
     private static final String SESSIONS_COLL = "sessions";
 
@@ -257,46 +254,58 @@ public class MongoMovieDataBase {
 
     // --- Session Operations ---
 
-    public boolean saveSession(Session session) {
+    /**
+     * Saved the session id to our local database.
+     * @param session the sessionId of a user.
+     * @return true if the method successfully saved to the database.
+     */
+    public boolean saveSession(SessionInterface session) {
         try {
-            JSONObject json = convertSessionToJson(session);
-            String url = String.format("%s/%s/%s", MONGODB_URL, DATABASE, SESSIONS_COLL);
-            RequestBody body = RequestBody.create(
+            final JSONObject json = convertSessionToJson(session);
+            final String url = String.format("%s/%s/%s", MONGODB_URL, DATABASE, SESSIONS_COLL);
+            final RequestBody body = RequestBody.create(
                     MediaType.parse("application/json"), json.toString()
             );
-            Request req = new Request.Builder()
+            final Request req = new Request.Builder()
                     .url(url)
                     .post(body)
                     .addHeader("Content-Type", "application/json")
                     .build();
 
-            Response res = client.newCall(req).execute();
+            final Response res = client.newCall(req).execute();
             if (!res.isSuccessful()) {
                 System.err.println("Failed to save session: HTTP " + res.code());
             }
             return res.isSuccessful();
-        } catch (IOException | JSONException e) {
-            System.err.println("Error saving session '" + session.getSessionId() + "': " + e.getMessage());
+        }
+        catch (IOException | JSONException exception) {
+            System.err.println("Error saving session '" + session.getSessionId() + "': " + exception.getMessage());
             return false;
         }
     }
 
+    /**
+     * Returns the session id stored in our database.
+     * @return Session in our database.
+     */
     public Session getCurrentSession() {
         try {
-            String url = String.format("%s/%s/%s/current", MONGODB_URL, DATABASE, SESSIONS_COLL);
-            Request req = new Request.Builder()
+            final String url = String.format("%s/%s/%s/current", MONGODB_URL, DATABASE, SESSIONS_COLL);
+            final Request req = new Request.Builder()
                     .url(url)
                     .get()
                     .addHeader("Content-Type", "application/json")
                     .build();
 
-            Response res = client.newCall(req).execute();
+            final Response res = client.newCall(req).execute();
             if (res.isSuccessful() && res.body() != null) {
                 return convertJsonToSession(new JSONObject(res.body().string()));
-            } else {
+            }
+            else {
                 System.err.println("No active session found or HTTP " + res.code());
             }
-        } catch (IOException | JSONException e) {
+        }
+        catch (IOException | JSONException e) {
             System.err.println("Error fetching current session: " + e.getMessage());
         }
         return null;
@@ -375,8 +384,8 @@ public class MongoMovieDataBase {
         return new AppUser(id, name, prefs, saved, new ArrayList<>(), ratedMap);
     }
 
-    private JSONObject convertSessionToJson(Session s) throws JSONException {
-        JSONObject j = new JSONObject();
+    private JSONObject convertSessionToJson(SessionInterface s) throws JSONException {
+        final JSONObject j = new JSONObject();
         j.put("sessionId", s.getSessionId());
         j.put("accountId", s.getAccountId());
         j.put("createdAt", s.getCreatedAt().toString());

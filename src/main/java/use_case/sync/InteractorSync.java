@@ -1,27 +1,26 @@
 package use_case.sync;
 
 import java.util.List;
-import java.util.Map;
 
 import data_access.MongoMovieDataBase;
 import data_access.CinedexMongoDataBase;
 import entity.AppUser;
 import entity.MovieInterface;
+import entity.User;
 
 /**
  * The "Use Case Interactor" for sync use cases.
  * Implements the business logic for data synchronization.
  */
-public class SyncInteractor implements SyncInputBoundary {
-
-    private final SyncDataAccessInterface syncDataAccessInterface;
-    private final MongoMovieDataBase mongoDB;
+public class InteractorSync implements SyncInputBoundary {
+    private final DataAccessInterfaceSync dataAccessInterfaceSync;
+    private final CinedexMongoDataBase mongoDB;
     private final SyncOutputBoundary syncOutputBoundary;
 
-    public SyncInteractor(SyncDataAccessInterface syncDataAccessInterface,
-                          MongoMovieDataBase mongoDB,
+    public InteractorSync(DataAccessInterfaceSync dataAccessInterfaceSync,
+                          CinedexMongoDataBase mongoDB,
                           SyncOutputBoundary syncOutputBoundary) {
-        this.syncDataAccessInterface = syncDataAccessInterface;
+        this.dataAccessInterfaceSync = dataAccessInterfaceSync;
         this.mongoDB = mongoDB;
         this.syncOutputBoundary = syncOutputBoundary;
     }
@@ -30,31 +29,30 @@ public class SyncInteractor implements SyncInputBoundary {
     public void executeSyncFromTMDB() {
         try {
             // Get current session
-            String sessionId = syncDataAccessInterface.getCurrentSessionId();
+            final String sessionId = dataAccessInterfaceSync.getCurrentSessionId();
             if (sessionId == null) {
                 syncOutputBoundary.prepareFailView("No active session found");
-                return;
             }
 
             // Fetch user data from TMDB
-            List<Integer> savedMovies = syncDataAccessInterface.getSavedMovies(sessionId);
-            List<Integer> watchedMovies = syncDataAccessInterface.getWatchedMovies(sessionId);
-            Map<Integer, Integer> ratedMovies = syncDataAccessInterface.getRatedMovies(sessionId);
-            List<String> preferredGenres = syncDataAccessInterface.getPreferredGenres(sessionId);
-            
+            final List<Integer> savedMovies = dataAccessInterfaceSync.getSavedMovies(sessionId);
+            final List<Integer> watchedMovies = dataAccessInterfaceSync.getWatchedMovies(sessionId);
+
             // Sync movies to local database
-            int moviesSynced = syncMoviesToLocal(savedMovies);
-            
+            final int moviesSynced = syncMoviesToLocal(savedMovies);
+
             // Update local user data
-            int accountId = syncDataAccessInterface.getAccountId(sessionId);
-            String username = syncDataAccessInterface.getUsername(sessionId);
-            
-            AppUser user = new AppUser(accountId, username, preferredGenres, savedMovies, watchedMovies, ratedMovies);
-            mongoDB.updateUser(user);
-            
-            SyncOutputData outputData = new SyncOutputData(moviesSynced, "from TMDB");
+            final int accountId = dataAccessInterfaceSync.getAccountId(sessionId);
+            final String username = dataAccessInterfaceSync.getUsername(sessionId);
+
+            final User user = new User(accountId, username);
+
+            // TODO: No update user.
+            mongoDB.saveUser(user);
+
+            final SyncOutputData outputData = new SyncOutputData(moviesSynced, "from TMDB");
             syncOutputBoundary.prepareSuccessView(outputData);
-            
+
         }
         catch (SyncException ex) {
             syncOutputBoundary.prepareFailView(ex.getMessage());
@@ -68,26 +66,25 @@ public class SyncInteractor implements SyncInputBoundary {
     public void executeSyncToTMDB() {
         try {
             // Get current session
-            String sessionId = syncDataAccessInterface.getCurrentSessionId();
+            final String sessionId = dataAccessInterfaceSync.getCurrentSessionId();
             if (sessionId == null) {
                 syncOutputBoundary.prepareFailView("No active session found");
-                return;
             }
 
             // Get current user from local database
-            int accountId = syncDataAccessInterface.getAccountId(sessionId);
+            final int accountId = dataAccessInterfaceSync.getAccountId(sessionId);
+
             AppUser localUser = mongoDB.getUser(accountId);
-            
+
             if (localUser != null) {
                 // Update TMDB with local changes
-                syncDataAccessInterface.updateSavedMovies(sessionId, localUser.getSavedMovies());
-                syncDataAccessInterface.updateWatchedMovies(sessionId, localUser.getWatchedMovies());
-                syncDataAccessInterface.updateRatedMovies(sessionId, localUser.getRatedMovies());
+                dataAccessInterfaceSync.updateSavedMovies(sessionId, localUser.getSavedMovies());
+                dataAccessInterfaceSync.updateWatchedMovies(sessionId, localUser.getWatchedMovies());
             }
-            
+
             SyncOutputData outputData = new SyncOutputData(0, "to TMDB");
             syncOutputBoundary.prepareSuccessView(outputData);
-            
+
         } catch (SyncException ex) {
             syncOutputBoundary.prepareFailView(ex.getMessage());
         }
@@ -100,7 +97,7 @@ public class SyncInteractor implements SyncInputBoundary {
      */
     private int syncMoviesToLocal(List<Integer> movieIds) {
         int syncedCount = 0;
-        
+
         for (Integer movieId : movieIds) {
             try {
                 // Check if movie already exists in local database
@@ -120,7 +117,7 @@ public class SyncInteractor implements SyncInputBoundary {
                 System.err.println("Failed to sync movie " + movieId + ": " + e.getMessage());
             }
         }
-        
+
         return syncedCount;
     }
 }

@@ -1,4 +1,4 @@
-package use_case.authentication;
+package use_case.previous_authentication;
 
 /**
  * The Input Boundary for authentication use cases.
@@ -22,3 +22,4 @@ public interface AuthInputBoundary {
      */
     void executeLogout();
 }
+

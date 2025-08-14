@@ -1,15 +1,15 @@
-package use_case.sync;
+package use_case.authentication;
 
 /**
- * Exception thrown when sync operations fail.
+ * Exception thrown when authentication operations fail.
  */
-public class SyncException extends Exception {
+public class AuthenticationException extends Exception {
 
     /**
      * Constructor with error message.
      * @param message the error message
      */
-    public SyncException(String message) {
+    public AuthenticationException(String message) {
         super(message);
     }
 
@@ -18,7 +18,7 @@ public class SyncException extends Exception {
      * @param message the error message
      * @param cause the cause of the exception
      */
-    public SyncException(String message, Throwable cause) {
+    public AuthenticationException(String message, Throwable cause) {
         super(message, cause);
     }
 }

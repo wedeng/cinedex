@@ -2,9 +2,8 @@ package data_access;
 
 import use_case.sync.SyncDataAccessInterface;
 import use_case.sync.SyncException;
-import use_case.authentication.AuthDataAccessInterface;
-import use_case.authentication.AuthException;
-import entity.Movie;
+import use_case.previous_authentication.AuthDataAccessInterface;
+import use_case.previous_authentication.AuthException;
 import entity.MovieInterface;
 
 import java.util.List;

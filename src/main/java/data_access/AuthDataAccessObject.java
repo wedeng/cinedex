@@ -1,10 +1,5 @@
 package data_access;
 
-import use_case.authentication.AuthDataAccessInterface;
-import use_case.authentication.AuthException;
-import entity.Movie;
-import entity.MovieInterface;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,12 +17,16 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import entity.Movie;
+import entity.MovieInterface;
+import use_case.previous_authentication.AuthDataAccessInterface;
+import use_case.previous_authentication.AuthException;
+
 /**
  * Data access object for handling TMDB authentication and data sync.
  * Implements the API calls for auth and synchronization.
  */
 public class AuthDataAccessObject implements AuthDataAccessInterface {
-
     private static final String TMDB_BASE_URL = "https://api.themoviedb.org/3";
     private static final String TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w92";
     private final String apiKey;
@@ -41,16 +40,18 @@ public class AuthDataAccessObject implements AuthDataAccessInterface {
     @Override
     public String createRequestToken() throws AuthException {
         try {
-            String endpoint = TMDB_BASE_URL + "/authentication/token/new";
-            String response = makeApiRequest(endpoint, "GET", null);
+            final String endpoint = TMDB_BASE_URL + "/authentication/token/new";
+            final String response = makeApiRequest(endpoint, "GET", null);
 
-            JSONObject jsonResponse = new JSONObject(response);
+            final JSONObject jsonResponse = new JSONObject(response);
             if (jsonResponse.getBoolean("success")) {
                 return jsonResponse.getString("request_token");
-            } else {
+            }
+            else {
                 throw new AuthException("Could not generate a new request token.");
             }
-        } catch (IOException | JSONException e) {
+        }
+        catch (IOException | JSONException e) {
             throw new AuthException("An error occurred while generating request token: " + e.getMessage(), e);
         }
     }
@@ -58,19 +59,21 @@ public class AuthDataAccessObject implements AuthDataAccessInterface {
     @Override
     public String createSession(String requestToken) throws AuthException {
         try {
-            String endpoint = TMDB_BASE_URL + "/authentication/session/new";
-            JSONObject requestBody = new JSONObject();
+            final String endpoint = TMDB_BASE_URL + "/authentication/session/new";
+            final JSONObject requestBody = new JSONObject();
             requestBody.put("request_token", requestToken);
 
-            String response = makeApiRequest(endpoint, "POST", requestBody.toString());
+            final String response = makeApiRequest(endpoint, "POST", requestBody.toString());
 
-            JSONObject jsonResponse = new JSONObject(response);
+            final JSONObject jsonResponse = new JSONObject(response);
             if (jsonResponse.getBoolean("success")) {
                 return jsonResponse.getString("session_id");
-            } else {
+            }
+            else {
                 throw new AuthException("Could not create a session with the provided token.");
             }
-        } catch (IOException | JSONException e) {
+        }
+        catch (IOException | JSONException e) {
             throw new AuthException("An error occurred while creating session: " + e.getMessage(), e);
         }
     }

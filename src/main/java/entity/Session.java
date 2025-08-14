@@ -6,7 +6,8 @@ import java.time.LocalDateTime;
  * Represents a user session in the application.
  * Stores the session token and user ID for the current user.
  */
-public class Session {
+public class Session implements SessionInterface {
+    private static final int TIME = 24;
     private String sessionId;
     private int accountId;
     private LocalDateTime createdAt;
@@ -17,7 +18,7 @@ public class Session {
      */
     public Session() {
         this.createdAt = LocalDateTime.now();
-        this.expiresAt = this.createdAt.plusHours(24); // Sessions expire in 24 hours
+        this.expiresAt = this.createdAt.plusHours(TIME);
     }
 
     /**
@@ -29,45 +30,50 @@ public class Session {
         this.sessionId = sessionId;
         this.accountId = accountId;
         this.createdAt = LocalDateTime.now();
-        this.expiresAt = this.createdAt.plusHours(24); // Sessions expire in 24 hours
+        this.expiresAt = this.createdAt.plusHours(TIME);
     }
 
+    @Override
     public String getSessionId() {
         return sessionId;
     }
 
+    @Override
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
     }
 
+    @Override
     public int getAccountId() {
         return accountId;
     }
 
+    @Override
     public void setAccountId(int accountId) {
         this.accountId = accountId;
     }
 
+    @Override
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
+    @Override
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
+    @Override
     public LocalDateTime getExpiresAt() {
         return expiresAt;
     }
 
+    @Override
     public void setExpiresAt(LocalDateTime expiresAt) {
         this.expiresAt = expiresAt;
     }
 
-    /**
-     * Checks if the session is still valid.
-     * @return true if the session hasn't expired
-     */
+    @Override
     public boolean isValid() {
         return LocalDateTime.now().isBefore(expiresAt);
     }

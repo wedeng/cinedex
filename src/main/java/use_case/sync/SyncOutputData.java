@@ -48,4 +48,4 @@ public class SyncOutputData {
     public String getErrorDetails() {
         return errorDetails;
     }
-} 
+}

@@ -15,4 +15,4 @@ public interface SyncInputBoundary {
      * Syncs local changes back to TMDB.
      */
     void executeSyncToTMDB();
-} 
+}
