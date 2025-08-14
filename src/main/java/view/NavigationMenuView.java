@@ -16,11 +16,10 @@ public class NavigationMenuView extends JPanel {
     final private CardViewModel cardViewModel;
 
     private final int BUTTON_SIZE = 32;
-    private final Icon DISCOVER_ICON = new ImageIcon("src/main/resources/discover.png");
-    private final Icon SAVED_ICON = new ImageIcon("src/main/resources/saved.png");
-    private final Icon WATCHED = new ImageIcon("src/main/resources/watched.png");
-    private final Icon RECOMMENDED_ICON = new ImageIcon("src/main/resources/recommend.png");
-
+    private final Icon DISCOVER_ICON = new ImageIcon("src/main/resources/Discover.png");
+    private final Icon SAVED_ICON = new ImageIcon("src/main/resources/Saved.png");
+    private final Icon WATCHED = new ImageIcon("src/main/resources/Watched.png");
+    private final Icon RECOMMENDED_ICON = new ImageIcon("src/main/resources/Recommend.png");
 
     private final LayoutManager layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 
