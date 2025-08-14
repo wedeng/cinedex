@@ -1,11 +1,11 @@
 package use_case.search;
 
-import java.util.List;
-import java.util.Map;
-
 import entity.MovieInterface;
 import entity.MovieFieldInterface;
 import entity.MovieFieldRegisterInterface;
+
+import java.util.List;
+import java.util.Map;
 
 public class SearchInteractor implements SearchInputBoundary {
 
@@ -21,22 +21,26 @@ public class SearchInteractor implements SearchInputBoundary {
 
     @Override
     public void execute(SearchInputData searchInputData) {
-        final Map<String, String> searchArguments = searchInputData.getSearchArguments();
+        Map<String, String> searchArguments = searchInputData.getSearchArguments();
 
         for (MovieFieldInterface movieField : movieFieldRegister.getSearchFields()) {
 
-            final String argument = searchArguments.get(movieField.getName());
+            String argument = searchArguments.get(movieField.getName());
 
             if (!movieField.isValid(argument)) {
                 searchPresenter.prepareFailView("Invalid argument for " + movieField.getName());
             }
             else {
+                // Attempt to get output from DAO
+                try {
+                    List<MovieInterface> outputMovies = movieDataAccessObject.searchMovies(searchArguments);
+                    final SearchOutputData searchOutputData = new SearchOutputData(outputMovies, false);
+                    searchPresenter.prepareSuccessView(searchOutputData);
+                }
+                catch (Exception exception) {
+                    searchPresenter.prepareFailView(exception.getMessage());
+                }
 
-                // Get output from DAO
-                final List<MovieInterface> outputMovies = movieDataAccessObject.searchMovies(searchArguments);
-
-                final SearchOutputData searchOutputData = new SearchOutputData(outputMovies, false);
-                searchPresenter.prepareSuccessView(searchOutputData);
             }
         }
     }

@@ -1,5 +1,7 @@
 package interface_adapter.recommendation;
 
+import interface_adapter.view.MovieDisplayState;
+import interface_adapter.view.MovieDisplayViewModel;
 import use_case.recommendation.RecommendationOutputBoundary;
 import use_case.recommendation.RecommendationOutputData;
 
@@ -9,9 +11,9 @@ import use_case.recommendation.RecommendationOutputData;
 
 public class RecommendationPresenter implements RecommendationOutputBoundary {
 
-    private final RecommendationViewModel recommendationViewModel;
+    private final MovieDisplayViewModel recommendationViewModel;
 
-    public RecommendationPresenter(RecommendationViewModel recommendationViewModel) {
+    public RecommendationPresenter(MovieDisplayViewModel recommendationViewModel) {
         this.recommendationViewModel = recommendationViewModel;
     }
 
@@ -21,11 +23,10 @@ public class RecommendationPresenter implements RecommendationOutputBoundary {
      */
     @Override
     public void prepareSuccessView(RecommendationOutputData recommendationOutputData) {
-        final RecommendationState recommendationState = recommendationViewModel.getState();
+        final MovieDisplayState recommendationState = recommendationViewModel.getState();
 
-        recommendationState.setRecommendationSuccess(true);
-        recommendationState.setMovies(recommendationOutputData.getRecommendedMovies());
-        recommendationState.setRecommendationError(null);
+        recommendationState.setDisplayedMovies(recommendationOutputData.getRecommendedMovies());
+        recommendationState.setRetrievalError(null);
 
         this.recommendationViewModel.setState(recommendationState);
         this.recommendationViewModel.firePropertyChanged("recommendation");
@@ -37,11 +38,10 @@ public class RecommendationPresenter implements RecommendationOutputBoundary {
      */
     @Override
     public void prepareFailView(String errorMessage) {
-        final RecommendationState recommendationState = recommendationViewModel.getState();
+        final MovieDisplayState recommendationState = recommendationViewModel.getState();
 
-        recommendationState.setRecommendationSuccess(false);
-        recommendationState.setMovies(null);
-        recommendationState.setRecommendationError(errorMessage);
+        recommendationState.setDisplayedMovies(null);
+        recommendationState.setRetrievalError(errorMessage);
 
         this.recommendationViewModel.setState(recommendationState);
         recommendationViewModel.firePropertyChanged("recommendation");

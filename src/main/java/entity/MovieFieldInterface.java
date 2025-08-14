@@ -1,8 +1,8 @@
 package entity;
 
-public interface MovieFieldInterface {
+import java.util.List;
 
-    public int getId();
+public interface MovieFieldInterface {
 
     public String getName();
 
@@ -11,9 +11,9 @@ public interface MovieFieldInterface {
     public boolean isValid(String movieArgument);
 
     /**
-     * Get the default value (if any) of the movie field.
-     * May return an empty String.
-     * @return the default value
+     *
+     * @return
      */
-    public String getDefaultValue();
+    public List<String> getValidArguments();
+
 }

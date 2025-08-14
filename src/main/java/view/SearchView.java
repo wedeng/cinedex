@@ -1,9 +1,9 @@
 package view;
 
 import interface_adapter.search.SearchController;
-import interface_adapter.view.CardViewModel;
 import interface_adapter.search.SearchState;
 import interface_adapter.search.SearchViewModel;
+import interface_adapter.view.CardViewModel;
 import interface_adapter.view.CardType;
 
 import javax.swing.BoxLayout;
@@ -38,22 +38,11 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         this.searchViewModel = searchViewModel;
         this.cardViewModel = cardViewModel;
         this.cardViewModel.addPropertyChangeListener(this);
-        this.searchViewModel.getState().setCardSearchType(this.cardViewModel.getState());
-        this.searchController = searchController;
         this.fields = fields;
 
         filterButton.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(filterButton)) {
-//                        final CardType currentCardType = cardViewModel.getState();
-//                        final SearchState currentSearchState = searchViewModel.getState();
-//
-//                        // Set the search state's search type to the current card, unless it's not a searchable card
-//                        if (currentCardType.isValidSearchType()) {
-//                            currentSearchState.setCardSearchType(currentCardType);
-//                        }
-
-                        // Set the current ViewCard to the filter card
                         cardViewModel.setState(CardType.FILTER);
                     }
                 }
@@ -63,16 +52,12 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(searchButton)) {
                         final SearchState currentState = searchViewModel.getState();
-                        searchController.execute(
-                                searchField.getText(),
-                                currentState.getSearchFields(),
-                                currentState.getCardSearchType().getName());
+                        searchController.execute(searchField.getText(), currentState.getSearchFields());
+                        System.out.println("Search button pressed; currentState.getSearchFields is " +
+                                currentState.getSearchFields());
                     }
                 }
         );
-
-//            filterButton.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
-//            searchButton.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
 
         this.add(filterButton);
         this.add(searchField);
@@ -88,12 +73,6 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         if (evt.getPropertyName().equals("state")) {
             System.out.println("Property Change: " + evt.getPropertyName() + " (in SearchView)");
             CardType cardState = (CardType) evt.getNewValue();
-
-            // Update search state if the new card is a searchable option
-            if (cardState.isValidSearchType()) {
-                SearchState searchState = searchViewModel.getState();
-                searchState.setCardSearchType(cardState);
             }
         }
-    }
 }

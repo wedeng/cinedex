@@ -1,97 +1,64 @@
 package view;
 
-import interface_adapter.search.SearchState;
+import entity.MovieFieldInterface;
+import interface_adapter.search.SearchArgument;
+import interface_adapter.search.SearchField;
 import interface_adapter.search.SearchViewModel;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class FilterView extends JPanel {
 
     private final SearchViewModel searchViewModel;
     private final BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
-    private final List<SearchFieldComponent> searchFields = new ArrayList<>();
+    private final List<SearchFieldComponent> searchFieldComponents = new ArrayList<>();
 
     public FilterView(SearchViewModel searchViewModel, List<String> filterFields) {
         super();
         this.searchViewModel = searchViewModel;
         this.setLayout(layout);
 
-        for (String fieldName : filterFields) {
-            SearchFieldComponent searchField = new SearchFieldComponent(fieldName);
+        for (SearchField searchField : SearchField.values()) {
 
-            this.addSearchField(searchField);
+            SearchFieldComponent searchFieldComponent;
+            if (searchField.hasLimitedArguments()) {
+                searchFieldComponent = new SearchFieldComboBox(
+                        searchViewModel,
+                        searchField.getIdentifier(),
+                        searchField.getDisplayName(),
+                        searchField.getAllValidArguments());
+            }
+            else {
+                searchFieldComponent = new SearchFieldTextBox(
+                        searchViewModel,
+                        searchField.getIdentifier(),
+                        searchField.getDisplayName());
+            }
 
-            searchField.getDocument().addDocumentListener(new DocumentListener() {
-
-                private void documentListenerHelper() {
-                    final SearchState currentState = searchViewModel.getState();
-                    currentState.setSearchArgument(searchField.getFieldName(), searchField.getContents());
-                    searchViewModel.setState(currentState);
-                }
-
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    documentListenerHelper();
-                }
-
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    documentListenerHelper();
-                }
-
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    documentListenerHelper();
-                }
-            });
+            this.addSearchFieldComponent(searchFieldComponent);
         }
     }
 
-    private void addSearchField(SearchFieldComponent searchField) {
-        this.searchFields.add(searchField);
-        this.add(searchField);
+    private void addSearchFieldComponent(SearchFieldComponent searchFieldComponent) {
+        this.searchFieldComponents.add(searchFieldComponent);
+        this.add(searchFieldComponent);
     }
 
-    private class SearchFieldComponent extends JPanel {
-        private BoxLayout layout = new BoxLayout(this, BoxLayout.X_AXIS);
-        private final JLabel nameLabel;
-        private final JTextField textField = new JTextField(20);
 
-        private final String fieldName;
-
-        public SearchFieldComponent(String fieldName) {
-            super();
-            this.fieldName = fieldName;
-            this.nameLabel = new JLabel(this.fieldName);
-            this.setLayout(layout);
-
-            // Style
-            this.setBorder(BorderFactory.createLoweredBevelBorder());
-
-            this.add(nameLabel);
-            this.add(textField);
-        }
-
-        public String getFieldName() {
-            return fieldName;
-        }
-
-        public String getContents() {
-            return textField.getText();
-        }
-
-        public Document getDocument() {
-            return textField.getDocument();
-        }
-    }
 }
 

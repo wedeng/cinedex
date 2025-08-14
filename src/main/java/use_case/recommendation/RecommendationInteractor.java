@@ -12,15 +12,15 @@ import entity.MovieInterface;
 
 public class RecommendationInteractor implements RecommendationInputBoundary {
     private final WatchedIdDataAccessInterface watchedMovieIdDataAccessInterface;
-    private final RecommendationDataAccessInterface recommendationDataAccessInterface;
+    private final RecommendationDataAccessInterface recommendationDataAccessObject;
     private final RecommendationOutputBoundary recommendationPresenter;
 
     public RecommendationInteractor(WatchedIdDataAccessInterface watchedMovieIdDataAccessInterface,
-                                    RecommendationDataAccessInterface recommendationDataAccessInterface,
+                                    RecommendationDataAccessInterface recommendationDataAccessObject,
                                     RecommendationOutputBoundary recommendationPresenter) {
 
         this.watchedMovieIdDataAccessInterface = watchedMovieIdDataAccessInterface;
-        this.recommendationDataAccessInterface = recommendationDataAccessInterface;
+        this.recommendationDataAccessObject = recommendationDataAccessObject;
         this.recommendationPresenter = recommendationPresenter;
 
     }
@@ -38,7 +38,7 @@ public class RecommendationInteractor implements RecommendationInputBoundary {
 
             for (int i = 0; i < moviesIdList.size(); i++) {
                 recommendedMovieList.addAll(
-                        this.recommendationDataAccessInterface.recommendMovies(moviesIdList.get(i))
+                        this.recommendationDataAccessObject.recommendMovies(moviesIdList.get(i))
                 );
             }
             if (recommendedMovieList.size() == 0) {

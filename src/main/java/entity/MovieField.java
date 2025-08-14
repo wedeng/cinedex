@@ -1,28 +1,21 @@
 package entity;
 
+import java.util.List;
+
 /**
  * A movie field/parameter.
  * For example, "movie title" might be the name of one instance of this class.
  */
 public class MovieField implements MovieFieldInterface {
 
-    private final int id;
     private final String name;
     private final boolean isSearchOption;
     private final String validArgsRegex;
-    private final String defaultValue;
 
-    public MovieField(int id, String name, boolean isSearchOption, String validArgsRegex, String defaultValue) {
-        this.id = id;
+    public MovieField(String name, boolean isSearchOption, String validArgsRegex) {
         this.name = name;
         this.isSearchOption = isSearchOption;
         this.validArgsRegex = validArgsRegex;
-        this.defaultValue = defaultValue;
-    }
-
-    @Override
-    public int getId() {
-        return id;
     }
 
     @Override
@@ -37,12 +30,12 @@ public class MovieField implements MovieFieldInterface {
 
     @Override
     public boolean isValid(String argument) {
-        return false;
+        return true;
     }
 
     @Override
-    public String getDefaultValue() {
-        return defaultValue;
+    public List<String> getValidArguments() {
+        return List.of();
     }
 
     public String getValidArgsRegex() {
