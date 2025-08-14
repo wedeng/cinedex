@@ -7,6 +7,7 @@ import interface_adapter.view.ViewModel;
  */
 
 public class AuthenticationViewModel extends ViewModel<AuthenticationState> {
+
     public AuthenticationViewModel() {
         super("authentication");
         setState(new AuthenticationState());

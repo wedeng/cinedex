@@ -56,7 +56,6 @@ public class NavigationMenuView extends JPanel {
         button.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(button)) {
-                        // TODO: Delete the test print statement
                         cardViewModel.setState(cardType);
                         System.out.println("Set active card in AppViewModel to " + cardType.getName() + " in NavigationMenuView");
                     }
