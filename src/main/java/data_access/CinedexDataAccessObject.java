@@ -20,12 +20,13 @@ import entity.MovieInterface;
 
 import use_case.authentication.AuthenticationException;
 import use_case.authentication.OperationsDataAccessInterface;
+import use_case.recommendation.RecommendationDataAccessInterface;
 
 /**
  * Data access object for handling TMDB authentication/sync and recommendations.
  */
 
-public class CinedexDataAccessObject implements OperationsDataAccessInterface {
+public class CinedexDataAccessObject implements OperationsDataAccessInterface, RecommendationDataAccessInterface {
     private static final String TMDB_BASE_URL = "https://api.themoviedb.org/3";
     private static final String TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w92";
     private final String apiKey;
@@ -36,6 +37,7 @@ public class CinedexDataAccessObject implements OperationsDataAccessInterface {
         this.client = new OkHttpClient().newBuilder().build();
     }
 
+    // --- OperationsDataAccessInterface ---
     @Override
     public int getAccountId(String sessionId) throws AuthenticationException {
         try {
@@ -203,6 +205,46 @@ public class CinedexDataAccessObject implements OperationsDataAccessInterface {
         catch (IOException | JSONException exception) {
             throw new AuthenticationException(
                     "An error occurred while deleting the session: " + exception.getMessage(), exception);
+        }
+    }
+
+    // --- RecommendationDataAccessInterface ---
+
+    @Override
+    public List<MovieInterface> recommendMovies(int movieId) {
+        try {
+            final ArrayList<MovieInterface> recommendedMovies = new ArrayList<>();
+            final String sessionId = new CinedexMongoDataBase().getCurrentSessionId();
+            int page = 1;
+            boolean hasMorePages = true;
+
+            while (hasMorePages) {
+                final String endpoint = String.format("%s/movie/%d/recommendations?language=en-US&page=1",
+                        TMDB_BASE_URL, movieId);
+                final String response = makeApiRequestWithSession(endpoint, "GET", null, sessionId);
+
+                final JSONObject jsonResponse = new JSONObject(response);
+                final JSONArray results = jsonResponse.getJSONArray("results");
+
+                for (int i = 0; i < results.length(); i++) {
+                    final JSONObject movie = results.getJSONObject(i);
+                    final String backdropPath = movie.getString("backdrop_path");
+                    final int movieIdentity = movie.getInt("id");
+                    final String movieTitle = movie.getString("title");
+                    final String synopsis = movie.getString("overview");
+                    final String releaseDate = movie.getString("release_date");
+                    final MovieInterface movieObj = new Movie(movieIdentity, movieTitle, releaseDate, backdropPath,
+                            synopsis, 0, "none" ,"english", 3.99, 14.99);
+                    recommendedMovies.add(movieObj);
+                }
+                hasMorePages = page < jsonResponse.getInt("total_pages");
+                page++;
+
+            }
+            return recommendedMovies;
+        }
+        catch (IOException | JSONException exception) {
+            return new ArrayList<>();
         }
     }
 

@@ -1,6 +1,4 @@
-package entity.movie_fields;
-
-import entity.Movie;
+package entity;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;

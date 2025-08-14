@@ -17,6 +17,12 @@ public class SearchState {
         }
     }
 
+    /**
+     * Sets search argument.
+     * @param field the field
+     * @param argument the argument.
+     * @throws IllegalArgumentException the execption.
+     */
     public void setSearchArgument(String field, String argument) throws IllegalArgumentException {
         if (this.searchFields.containsKey(field)) {
             searchFields.put(field, argument);
@@ -30,6 +36,11 @@ public class SearchState {
         return searchFields;
     }
 
+    /**
+     * Set Card Search Type.
+     * @param searchableView the searchable view
+     * @throws IllegalArgumentException the exception
+     */
     public void setCardSearchType(CardType searchableView) throws IllegalArgumentException {
         if (searchableView.isValidSearchType()) {
             this.cardSearchType = searchableView;
@@ -39,6 +50,7 @@ public class SearchState {
             throw new IllegalArgumentException("Card search type is not valid");
         }
     }
+
     public CardType getCardSearchType() {
         return cardSearchType;
     }

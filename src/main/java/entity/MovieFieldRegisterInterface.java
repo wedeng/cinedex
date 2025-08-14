@@ -1,4 +1,4 @@
-package entity.movie_fields;
+package entity;
 
 import java.util.List;
 

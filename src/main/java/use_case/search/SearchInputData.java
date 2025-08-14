@@ -9,18 +9,12 @@ public class SearchInputData {
 
     private final Map<String, String> searchArguments;
 
-    private final String searchType;
-
-    public SearchInputData(Map<String, String> searchArguments, String searchType) {
+    public SearchInputData(Map<String, String> searchArguments) {
         this.searchArguments = searchArguments;
-        this.searchType = searchType;
     }
 
     public Map<String, String> getSearchArguments() {
         return searchArguments;
     }
 
-    public String getSearchType() {
-        return searchType;
-    }
 }

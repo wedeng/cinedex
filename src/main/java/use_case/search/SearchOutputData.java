@@ -6,12 +6,10 @@ import java.util.List;
 
 public class SearchOutputData {
     private final List<MovieInterface> movies;
-    private final String resultType;
     private final boolean hasError;
 
-    public SearchOutputData(List<MovieInterface> movies, String resultType, boolean hasError) {
+    public SearchOutputData(List<MovieInterface> movies, boolean hasError) {
         this.movies = movies;
-        this.resultType = resultType;
         this.hasError = hasError;
     }
 
@@ -19,11 +17,12 @@ public class SearchOutputData {
         return movies;
     }
 
+    /**
+     * Returns true if there is an error.
+     * @return if output has error.
+     */
     public boolean hasError() {
         return hasError;
     }
 
-    public String getResultType() {
-        return resultType;
-    }
 }

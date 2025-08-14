@@ -1,17 +1,21 @@
 package app;
 
-import entity.movie_fields.MovieFieldInterface;
-import entity.movie_fields.MovieFieldRegister;
-import entity.movie_fields.MovieFieldRegisterInterface;
+import entity.MovieFieldRegister;
+import entity.MovieFieldRegisterInterface;
+import interface_adapter.recommendation.RecommendationController;
+import interface_adapter.recommendation.RecommendationPresenter;
 import interface_adapter.view.CardType;
 import interface_adapter.view.MovieDisplayViewModel;
 import interface_adapter.view.MovieDisplayViewModels;
-import interface_adapter.view.MovieDisplayViewModelsInterface;
 import interface_adapter.search.SearchController;
 import interface_adapter.search.SearchPresenter;
 import interface_adapter.view.CardViewModel;
 import interface_adapter.search.SearchViewModel;
-import use_case.MovieDataAccessInterface;
+import use_case.search.SearchDataAccessInterface;
+import use_case.recommendation.RecommendationDataAccessInterface;
+import use_case.recommendation.RecommendationInteractor;
+import use_case.recommendation.RecommendationOutputBoundary;
+import use_case.recommendation.WatchedIdDataAccessInterface;
 import use_case.search.SearchInteractor;
 import use_case.search.SearchOutputBoundary;
 import view.AppView;
@@ -19,17 +23,17 @@ import view.CardView;
 import view.FilterView;
 import view.NavigationMenuView;
 import view.SearchView;
+import view.ToolBarView;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  Responsible for wiring together (constructing and connecting) all the components of the
  application (use cases, controllers, presenters, views, etc.) according to Clean Architecture.
-*/ 
+ */
 
 public class AppBuilder {
     public static final int HEIGHT = 300;
@@ -38,12 +42,16 @@ public class AppBuilder {
     private final MovieFieldRegisterInterface movieFieldRegister = MovieFieldRegister.getInstance();
     private final List<String> searchFields = movieFieldRegister.getSearchFieldNames();
 
-    private MovieDataAccessInterface movieDataAccessObject;
+    // DAOs
+    private SearchDataAccessInterface searchDataAccessObject;
+    private WatchedIdDataAccessInterface watchedIdDataAccessObject;
+    private RecommendationDataAccessInterface recommendationDataAccessObject;
 
     // Views and ViewModels
     private AppView appView;
     private FilterView filterView;
-    private final MovieDisplayViewModelsInterface movieDisplayViewModels = new MovieDisplayViewModels();
+    private ToolBarView toolBarView;
+    private final MovieDisplayViewModels movieDisplayViewModels = new MovieDisplayViewModels();
 
     private SearchView searchView;
     private SearchViewModel searchViewModel;
@@ -59,7 +67,7 @@ public class AppBuilder {
     public AppBuilder addSearchUseCase() {
         final SearchOutputBoundary searchPresenter = new SearchPresenter(movieDisplayViewModels, cardViewModel);
 
-        SearchInteractor searchInteractor = new SearchInteractor(movieFieldRegister, searchPresenter, movieDataAccessObject);
+        SearchInteractor searchInteractor = new SearchInteractor(movieFieldRegister, searchPresenter, searchDataAccessObject);
 
         final SearchController controller = new SearchController(searchInteractor);
 
@@ -67,7 +75,26 @@ public class AppBuilder {
             throw new RuntimeException("addSearchView must be called before addSearchUseCase");
         }
         searchView.setSearchController(controller);
+
         return this;
+    }
+
+    public AppBuilder addRecommendationUseCase() {
+        final RecommendationOutputBoundary recommendationPresenter = new RecommendationPresenter(movieDisplayViewModels
+                .getMovieDisplayViewModel(CardType.RECOMMENDED));
+
+        RecommendationInteractor recommendationInteractor = new RecommendationInteractor(
+                watchedIdDataAccessObject, recommendationDataAccessObject, recommendationPresenter);
+
+        final RecommendationController recommendationController = new RecommendationController(recommendationInteractor);
+
+        if (searchView == null) {
+            throw new RuntimeException("addSearchView must be called before addSearchUseCase");
+        }
+        toolBarView.setRecommendationController(recommendationController);
+
+        return this;
+
     }
 
     /**
@@ -92,13 +119,15 @@ public class AppBuilder {
         filterView = new FilterView(searchViewModel, filterFields);
 
         // CardView
-
         CardView cardView = new CardView(cardViewModel, movieDisplayViewModels, filterView);
 
         // NavigationMenuView
         NavigationMenuView navigationMenuView = new NavigationMenuView(cardViewModel);
 
-        appView = new AppView(navigationMenuView, cardView, searchView);
+        // ToolBarView
+        toolBarView = new ToolBarView(searchView, cardViewModel, movieDisplayViewModels);
+
+        appView = new AppView(navigationMenuView, cardView, searchView, toolBarView);
 
         return this;
     }
