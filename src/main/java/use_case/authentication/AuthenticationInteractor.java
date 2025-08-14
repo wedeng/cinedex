@@ -3,6 +3,8 @@ package use_case.authentication;
 import entity.Session;
 import entity.SessionInterface;
 
+import java.util.concurrent.TimeUnit;
+
 public class AuthenticationInteractor implements AuthenticationInputBoundary {
     private final AuthenticationDataAccessInterface authenticationDataAccessInterface;
     private final OperationsDataAccessInterface operationsDataAccessInterface;
@@ -25,6 +27,13 @@ public class AuthenticationInteractor implements AuthenticationInputBoundary {
             final String requestToken = authenticationDataAccessInterface.makeRequestToken();
             authenticationDataAccessInterface.redirectWeb(requestToken);
 
+            try {
+                TimeUnit.SECONDS.sleep(25);
+            } catch (InterruptedException exception) {
+                throw new RuntimeException(exception);
+            }
+
+            // Line below always throws error?
             final String sessionId = authenticationDataAccessInterface.makeSession(requestToken);
             final int accountId = operationsDataAccessInterface.getAccountId(sessionId);
 
@@ -37,8 +46,10 @@ public class AuthenticationInteractor implements AuthenticationInputBoundary {
             outputBoundary.prepareSuccessView(authenticationOutputData);
         }
         catch (AuthenticationException exception) {
+            System.out.println("AuthenticationException in AuthenticationInteractor. Error message: "
+                    + exception.getMessage());
             outputBoundary.prepareFailView(exception.getMessage());
-
         }
     }
 }
+

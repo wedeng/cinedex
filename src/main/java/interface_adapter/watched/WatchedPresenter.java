@@ -1,5 +1,7 @@
 package interface_adapter.watched;
 
+import interface_adapter.view.MovieDisplayState;
+import interface_adapter.view.MovieDisplayViewModel;
 import use_case.watched.WatchedOutputBoundary;
 import use_case.watched.WatchedOutputData;
 
@@ -9,31 +11,29 @@ import use_case.watched.WatchedOutputData;
 
 public class WatchedPresenter implements WatchedOutputBoundary {
 
-    private final WatchedViewModel watchedViewModel;
+    private final MovieDisplayViewModel watchedViewModel;
 
-    public WatchedPresenter(WatchedViewModel watchedViewModel) {
+    public WatchedPresenter(MovieDisplayViewModel watchedViewModel) {
         this.watchedViewModel = watchedViewModel;
     }
 
     @Override
     public void prepareSuccessView(WatchedOutputData watchedOutputData) {
-        final WatchedState watchedState = watchedViewModel.getState();
+        final MovieDisplayState watchedState = watchedViewModel.getState();
 
-        watchedState.setWatchedManagerErrorMessage(null);
-        watchedState.setWatchedManagerSuccess(true);
+        watchedState.setRetrievalError(null);
 
         this.watchedViewModel.setState(watchedState);
-        this.watchedViewModel.firePropertyChanged("watched");
+        this.watchedViewModel.firePropertyChanged("state");
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
-        final WatchedState watchedState = watchedViewModel.getState();
+        final MovieDisplayState watchedState = watchedViewModel.getState();
 
-        watchedState.setWatchedManagerErrorMessage(errorMessage);
-        watchedState.setWatchedManagerSuccess(false);
+        watchedState.setRetrievalError(errorMessage);
 
         this.watchedViewModel.setState(watchedState);
-        this.watchedViewModel.firePropertyChanged("watched");
+        this.watchedViewModel.firePropertyChanged("state");
     }
 }

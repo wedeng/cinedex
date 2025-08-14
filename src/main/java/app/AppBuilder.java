@@ -18,6 +18,7 @@ import interface_adapter.search.SearchPresenter;
 import interface_adapter.view.CardViewModel;
 import interface_adapter.search.SearchViewModel;
 import interface_adapter.view.ViewManagerModel;
+import interface_adapter.watched.WatchedPresenter;
 import use_case.authentication.AuthenticationDataAccessInterface;
 import use_case.authentication.AuthenticationInputBoundary;
 import use_case.authentication.AuthenticationInteractor;
@@ -31,6 +32,8 @@ import use_case.recommendation.RecommendationOutputBoundary;
 import use_case.recommendation.WatchedIdDataAccessInterface;
 import use_case.search.SearchInteractor;
 import use_case.search.SearchOutputBoundary;
+import use_case.watched.WatchedInteractor;
+import use_case.watched.WatchedOutputBoundary;
 import view.AppView;
 import view.AuthenticationView;
 import view.CardView;
@@ -108,7 +111,6 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addAuthenticationUseCase() {
-        authenticationViewModel = new AuthenticationViewModel();
         final AuthenticationOutputBoundary authenticationPresenter = new AuthenticationPresenter(authenticationViewModel, viewManagerModel);
 
         final AuthenticationInputBoundary authenticationInteractor = new AuthenticationInteractor(
@@ -143,8 +145,8 @@ public class AppBuilder {
         final RecommendationController recommendationController = new RecommendationController(
                 recommendationInteractor);
 
-        if (searchView == null) {
-            throw new RuntimeException("addSearchView must be called before addSearchUseCase");
+        if (toolBarView == null) {
+            throw new RuntimeException("addAppView must be called before addRecommendationUseCase");
         }
 
         toolBarView.setRecommendationController(recommendationController);
@@ -173,6 +175,15 @@ public class AppBuilder {
 
         return this;
     }
+
+//    public AppBuilder addWatchedUseCase() {
+//        final WatchedOutputBoundary watchedPresenter = new WatchedPresenter(movieDisplayViewModels.
+//                getMovieDisplayViewModel(CardType.WATCHED));
+//
+//        WatchedInteractor watchedInteractor = new WatchedInteractor(watchedPresenter, )
+//
+//    }
+
 
     /**
      * Adds the AuthenticationView and underlying AuthenticationViewModel for this app.

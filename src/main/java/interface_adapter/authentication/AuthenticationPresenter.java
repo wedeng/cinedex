@@ -24,10 +24,12 @@ public class AuthenticationPresenter implements AuthenticationOutputBoundary {
         authenticationState.setAuthenticationSuccess(true);
 
         this.authenticationViewModel.setState(authenticationState);
-        // TODO: check line below
         this.authenticationViewModel.firePropertyChanged("state");
-        this.viewManagerModel.setState("app");
 
+        this.viewManagerModel.setState("app");
+        this.viewManagerModel.firePropertyChanged("state");
+
+        System.out.println("prepareSuccessView in AuthenticationPresenter called");
     }
 
     @Override
@@ -39,5 +41,8 @@ public class AuthenticationPresenter implements AuthenticationOutputBoundary {
 
         this.authenticationViewModel.setState(authenticationState);
         this.authenticationViewModel.firePropertyChanged("state");
+
+        System.out.println("prepareFailView in AuthenticationPresenter called");
+        System.out.println("\tAuthenticationPresenter error message: " + errorMessage);
     }
 }
