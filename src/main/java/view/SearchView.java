@@ -26,12 +26,10 @@ public class SearchView extends JPanel implements PropertyChangeListener {
     private final BoxLayout layout = new BoxLayout(this, BoxLayout.X_AXIS);
 
     private final int BUTTON_SIZE = 32;
-    private final Icon SEARCH_ICON = new ImageIcon("src/main/resources/placeholder-icon.png");
-    private final Icon FILTER_ICON = new ImageIcon("src/main/resources/placeholder-icon.png");
 
-    final private JButton filterButton = new JButton(FILTER_ICON);
+    final private JButton filterButton = new JButton(AppIcon.FILTER_32.getIcon());
     final private JTextField searchField = new JTextField(20);
-    final private JButton searchButton = new JButton(SEARCH_ICON);
+    final private JButton searchButton = new JButton(AppIcon.SEARCH_32.getIcon());
 
     public SearchView(SearchViewModel searchViewModel, CardViewModel cardViewModel, List<String> fields) {
         super();
@@ -39,21 +37,11 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         this.cardViewModel = cardViewModel;
         this.cardViewModel.addPropertyChangeListener(this);
         this.searchViewModel.getState().setCardSearchType(this.cardViewModel.getState());
-        this.searchController = searchController;
         this.fields = fields;
 
         filterButton.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(filterButton)) {
-//                        final CardType currentCardType = cardViewModel.getState();
-//                        final SearchState currentSearchState = searchViewModel.getState();
-//
-//                        // Set the search state's search type to the current card, unless it's not a searchable card
-//                        if (currentCardType.isValidSearchType()) {
-//                            currentSearchState.setCardSearchType(currentCardType);
-//                        }
-
-                        // Set the current ViewCard to the filter card
                         cardViewModel.setState(CardType.FILTER);
                     }
                 }
@@ -70,9 +58,6 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                     }
                 }
         );
-
-//            filterButton.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
-//            searchButton.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
 
         this.add(filterButton);
         this.add(searchField);

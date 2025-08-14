@@ -16,10 +16,6 @@ public class NavigationMenuView extends JPanel {
     final private CardViewModel cardViewModel;
 
     private final int BUTTON_SIZE = 32;
-    private final Icon DISCOVER_ICON = new ImageIcon("src/main/resources/Discover.png");
-    private final Icon SAVED_ICON = new ImageIcon("src/main/resources/Saved.png");
-    private final Icon WATCHED = new ImageIcon("src/main/resources/Watched.png");
-    private final Icon RECOMMENDED_ICON = new ImageIcon("src/main/resources/Recommend.png");
 
     private final LayoutManager layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 
@@ -36,10 +32,10 @@ public class NavigationMenuView extends JPanel {
         // style
         this.setBorder(BorderFactory.createLineBorder(Color.black));
 
-        prepareButton(discoverButton, CardType.DISCOVER, DISCOVER_ICON);
-        prepareButton(savedButton, CardType.SAVED, SAVED_ICON);
-        prepareButton(watchedButton, CardType.WATCHED, WATCHED);
-        prepareButton(recommendedButton, CardType.RECOMMENDED, RECOMMENDED_ICON);
+        prepareButton(discoverButton, CardType.DISCOVER, AppIcon.DISCOVER_64.getIcon());
+        prepareButton(savedButton, CardType.SAVED, AppIcon.SAVED_64.getIcon());
+        prepareButton(watchedButton, CardType.WATCHED, AppIcon.WATCHED_64.getIcon());
+        prepareButton(recommendedButton, CardType.RECOMMENDED, AppIcon.RECOMMENDED_64.getIcon());
     }
 
     /**

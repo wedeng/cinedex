@@ -104,11 +104,11 @@ public class ToolBarView extends JToolBar {
                 }
         );
 
-        setupButton(recommendButton, PLACEHOLDER_ICON);
-        setupButton(addToSavedButton, PLACEHOLDER_ICON);
-        setupButton(removeFromSavedButton, PLACEHOLDER_ICON);
-        setupButton(addToWatchedButton, PLACEHOLDER_ICON);
-        setupButton(removeFromWatchedButton, PLACEHOLDER_ICON);
+        setupButton(recommendButton, AppIcon.RECOMMENDED_32.getIcon());
+        setupButton(addToSavedButton, AppIcon.SAVED_32.getIcon());
+        setupButton(removeFromSavedButton, AppIcon.SAVED_REMOVE_32.getIcon());
+        setupButton(addToWatchedButton, AppIcon.WATCHED_32.getIcon());
+        setupButton(removeFromWatchedButton, AppIcon.WATCHED_REMOVE_32.getIcon());
 
         Component spacer = Box.createHorizontalStrut((int) Math.round(BUTTON_SIZE * 4));
 
