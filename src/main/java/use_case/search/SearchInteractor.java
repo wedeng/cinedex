@@ -1,8 +1,8 @@
 package use_case.search;
 
-import entity.MovieInterface;
-import entity.MovieFieldInterface;
-import entity.MovieFieldRegisterInterface;
+import entity.movie_fields.MovieFieldInterface;
+import entity.movie_fields.MovieFieldRegisterInterface;
+import use_case.movie.MovieDataAccessInterface;
 
 import java.util.List;
 import java.util.Map;
