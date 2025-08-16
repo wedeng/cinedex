@@ -17,6 +17,10 @@ public class SearchOutputData {
         return movies;
     }
 
+    /**
+     * Returns true if there is an error.
+     * @return if output has error.
+     */
     public boolean hasError() {
         return hasError;
     }

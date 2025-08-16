@@ -13,7 +13,6 @@ public enum CardType {
     FILTER("Filter", false),
     RECOMMENDED("Recommended", false);
 
-
     private final String name;
     private final boolean isSearchable;
     private static final Map<String, CardType> lookup = new HashMap<>();

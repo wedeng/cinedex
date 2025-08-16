@@ -31,6 +31,7 @@ public class SearchPresenter implements SearchOutputBoundary {
         final MovieDisplayState state = discoverViewModel.getState();
         state.setDisplayedMovies(movies);
         discoverViewModel.setState(state);
+        discoverViewModel.firePropertyChanged("state");
 
         // Set view to Discover
         cardViewModel.setState(CardType.DISCOVER);

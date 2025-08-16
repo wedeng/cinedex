@@ -9,12 +9,10 @@ import java.util.Map;
 
 public class SearchInteractor implements SearchInputBoundary {
 
-    private final MovieFieldRegisterInterface movieFieldRegister;
     private final SearchOutputBoundary searchPresenter;
     private final SearchDataAccessInterface movieDataAccessObject;
 
-    public SearchInteractor(MovieFieldRegisterInterface movieFieldRegister, SearchOutputBoundary searchPresenter, SearchDataAccessInterface movieDataAccess) {
-        this.movieFieldRegister = movieFieldRegister;
+    public SearchInteractor(SearchOutputBoundary searchPresenter, SearchDataAccessInterface movieDataAccess) {
         this.searchPresenter = searchPresenter;
         this.movieDataAccessObject = movieDataAccess;
     }
@@ -23,21 +21,16 @@ public class SearchInteractor implements SearchInputBoundary {
     public void execute(SearchInputData searchInputData) {
         Map<String, String> searchArguments = searchInputData.getSearchArguments();
 
-        for (MovieFieldInterface movieField : movieFieldRegister.getSearchFields()) {
-
-            String argument = searchArguments.get(movieField.getName());
-
-            if (!movieField.isValid(argument)) {
-                searchPresenter.prepareFailView("Invalid argument for " + movieField.getName());
-            }
-            else {
-
-                // Get output from DAO
-                List<MovieInterface> outputMovies = movieDataAccessObject.searchMovies(searchArguments);
-
-                final SearchOutputData searchOutputData = new SearchOutputData(outputMovies, false);
-                searchPresenter.prepareSuccessView(searchOutputData);
-            }
+        // Attempt to get output from DAO
+        try {
+            List<MovieInterface> outputMovies = movieDataAccessObject.searchMovies(searchArguments);
+            final SearchOutputData searchOutputData = new SearchOutputData(outputMovies, false);
+            searchPresenter.prepareSuccessView(searchOutputData);
         }
+        catch (Exception exception) {
+            searchPresenter.prepareFailView(exception.getMessage());
+            System.out.println("Failed to execute in search interactor");
+        }
+
     }
 }

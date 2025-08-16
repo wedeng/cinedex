@@ -17,9 +17,18 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 /**
- * The main frame for the program. Contains all other views.
+ * The main view for the program. Contains all other views except for AuthenticationView.
  */
-public class AppView extends JFrame implements ActionListener, PropertyChangeListener {
+public class AppView extends JPanel {
+
+    private final String viewName = "app";
+
+    private final BorderLayout borderLayout = new BorderLayout();
+
+    private final ToolBarView toolBarView;
+    private final SearchView searchView;
+    private final NavigationMenuView navigationMenu;
+    private final CardView cardView;
 
     private final AppViewModel appViewModel;
     private final AppToolBar toolBar = new AppToolBar();
@@ -28,29 +37,24 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
     private final AppCentralView centralView = new AppCentralView();
     private final AppStatusBar statusBar = new AppStatusBar();
 
+
     public AppView(NavigationMenuView navigationMenu, CardView cardView, SearchView searchView, ToolBarView toolBarView) {
-        super("Cinedex App");
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.navigationMenu = navigationMenu;
         this.cardView = cardView;
         this.searchView = searchView;
         this.toolBarView = toolBarView;
 
+        this.setLayout(borderLayout);
+
         // Add components
         this.add(toolBarView, BorderLayout.PAGE_START);
         this.add(navigationMenu, BorderLayout.LINE_START);
         this.add(cardView, BorderLayout.CENTER);
-        this.add(statusBar, BorderLayout.PAGE_END);
     }
 
-    /**
-     * React to a button click that results in evt.
-     * @param evt the ActionEvent to react to
-     */
-    public void actionPerformed(ActionEvent evt) {
-        System.out.println("Click " + evt.getActionCommand());
-    }
+    public String getViewName() {
+        return viewName;
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -297,4 +301,3 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
         }
     }
 }
-
