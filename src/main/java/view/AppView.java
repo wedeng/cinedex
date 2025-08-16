@@ -1,9 +1,6 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,25 +8,16 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JToolBar;
-
-import interface_adapter.app.AppPageController;
-import interface_adapter.app.AppState;
-import interface_adapter.view.AppViewModel;
-import interface_adapter.view.ViewCard;
+import javax.swing.WindowConstants;
 
 /**
- * The View for when the user is viewing a note in the program.
+ * The main frame for the program. Contains all other views.
  */
 public class AppView extends JFrame implements ActionListener, PropertyChangeListener {
 
@@ -40,17 +28,19 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
     private final AppCentralView centralView = new AppCentralView();
     private final AppStatusBar statusBar = new AppStatusBar();
 
+    public AppView(NavigationMenuView navigationMenu, CardView cardView, SearchView searchView, ToolBarView toolBarView) {
+        super("Cinedex App");
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-    public AppView(AppViewModel appViewModel) {
-        super();
-
-        this.appViewModel = appViewModel;
-        this.appViewModel.addPropertyChangeListener(this);
+        this.navigationMenu = navigationMenu;
+        this.cardView = cardView;
+        this.searchView = searchView;
+        this.toolBarView = toolBarView;
 
         // Add components
-        this.add(toolBar, BorderLayout.PAGE_START);
+        this.add(toolBarView, BorderLayout.PAGE_START);
         this.add(navigationMenu, BorderLayout.LINE_START);
-        this.add(centralView, BorderLayout.CENTER);
+        this.add(cardView, BorderLayout.CENTER);
         this.add(statusBar, BorderLayout.PAGE_END);
     }
 
@@ -294,11 +284,11 @@ public class AppView extends JFrame implements ActionListener, PropertyChangeLis
 
         JLabel statusLabel = new JLabel(CHECKMARK_ICON);
 
-        public AppStatusBar() {
+        public StatusBarView() {
             super();
             this.setLayout(layout);
 
-            // style
+            // Style
             this.setBorder(BorderFactory.createLoweredBevelBorder());
 
             statusLabel.setText("Status: Up to date");

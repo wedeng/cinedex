@@ -1,28 +1,41 @@
 package interface_adapter.saved;
 
-import entity.Movie;
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * The state information present for saved use case (add or remove from saved).
+ */
 
 public class SavedState {
-    private String searchQuery = "";
-    private List<Movie> searchResults = new ArrayList<>();
-    private List<Movie> savedMovies = new ArrayList<>();
-    private String message = "";
-    private String error = null;
+    private String savedManagerErrorMessage;
+    private boolean savedManagerSuccess;
 
-    public String getSearchQuery() { return searchQuery; }
-    public void setSearchQuery(String searchQuery) { this.searchQuery = searchQuery; }
+    public SavedState() {
+        this.savedManagerErrorMessage = null;
+        this.savedManagerSuccess = false;
+    }
 
-    public List<Movie> getSearchResults() { return searchResults; }
-    public void setSearchResults(List<Movie> searchResults) { this.searchResults = searchResults; }
+    public String getSavedManagerErrorMessage() {
+        return this.savedManagerErrorMessage;
+    }
 
-    public List<Movie> getSavedMovies() { return savedMovies; }
-    public void setSavedMovies(List<Movie> savedMovies) { this.savedMovies = savedMovies; }
+    /**
+     * Sets the error message for a failed case regarding the saved use case.
+     * @param savedManagerErrorMessage the explanation for error.
+     */
+    public void setSavedManagerErrorMessage(String savedManagerErrorMessage) {
+        this.savedManagerErrorMessage = savedManagerErrorMessage;
+        this.savedManagerSuccess = false;
+    }
 
-    public String getMessage() { return message; }
-    public void setMessage(String message) { this.message = message; }
+    public boolean isSavedManagerSuccess() {
+        return this.savedManagerSuccess;
+    }
 
-    public String getError() { return error; }
-    public void setError(String error) { this.error = error; }
+    /**
+     * Sets the status of a saved task (add or removed from save).
+     * @param savedTaskStatus the saved task status.
+     */
+    public void setSavedManagerSuccess(boolean savedTaskStatus) {
+        this.savedManagerSuccess = savedTaskStatus;
+        this.savedManagerErrorMessage = null;
+    }
 }

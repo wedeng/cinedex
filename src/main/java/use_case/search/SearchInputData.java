@@ -1,8 +1,5 @@
 package use_case.search;
 
-import entity.movie_fields.MovieField;
-
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,4 +16,5 @@ public class SearchInputData {
     public Map<String, String> getSearchArguments() {
         return searchArguments;
     }
+
 }

@@ -3,7 +3,12 @@ package interface_adapter.saved;
 import use_case.saved.SavedOutputBoundary;
 import use_case.saved.SavedOutputData;
 
+/**
+ * The presenter for our saved use case of our application.
+ */
+
 public class SavedPresenter implements SavedOutputBoundary {
+
     private final SavedViewModel savedViewModel;
 
     public SavedPresenter(SavedViewModel savedViewModel) {
@@ -11,23 +16,24 @@ public class SavedPresenter implements SavedOutputBoundary {
     }
 
     @Override
-    public void prepareSearchSuccessView(SavedOutputData outputData) {
-        savedViewModel.getState().setSearchResults(outputData.getMovies());
-        savedViewModel.getState().setMessage("Search completed successfully");
-        savedViewModel.getState().setError(null);
-        savedViewModel.firePropertyChanged();
-    }
+    public void prepareSuccessView(SavedOutputData outputData) {
+        final SavedState savedState = this.savedViewModel.getState();
 
-    @Override
-    public void prepareAddToSavedMoviesSuccessView(String message) {
-        savedViewModel.getState().setMessage(message);
-        savedViewModel.getState().setError(null);
-        savedViewModel.firePropertyChanged();
+        savedState.setSavedManagerErrorMessage(null);
+        savedState.setSavedManagerSuccess(true);
+
+        this.savedViewModel.setState(savedState);
+        this.savedViewModel.firePropertyChanged("saved");
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
-        savedViewModel.getState().setError(errorMessage);
-        savedViewModel.firePropertyChanged();
+        final SavedState savedState = this.savedViewModel.getState();
+
+        savedState.setSavedManagerErrorMessage(errorMessage);
+        savedState.setSavedManagerSuccess(false);
+
+        this.savedViewModel.setState(savedState);
+        this.savedViewModel.firePropertyChanged("saved");
     }
 }

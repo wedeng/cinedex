@@ -4,18 +4,21 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
- * The ViewModel for our CA implementation.
+ * The ViewModel for our Cinedex Application.
  * This class delegates work to a PropertyChangeSupport object for
  * managing the property change events.
  *
- * @param <T> The type of state object contained in the model.
+ * @param <T> The type of the state object contained in this model.
  */
 public class ViewModel<T> {
 
+    // Identifies which View the View Model belongs to (e.g., recommendation, search)
     private final String viewName;
 
+    // Manages Property Changes & Property Change Listeners
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
+    // Holds the actual condition/data of type T (for any usecase output)
     private T state;
 
     public ViewModel(String viewName) {
@@ -45,8 +48,6 @@ public class ViewModel<T> {
      * Fires a property changed event for the state of this ViewModel, which
      * allows the user to specify a different propertyName. This can be useful
      * when a class is listening for multiple kinds of property changes.
-     * <p>For example, the LoggedInView listens for two kinds of property changes;
-     * it can use the property name to distinguish which property has changed.</p>
      * @param propertyName the label for the property that was changed
      */
     public void firePropertyChanged(String propertyName) {

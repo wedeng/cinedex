@@ -4,15 +4,16 @@ import entity.movie_fields.MovieFieldInterface;
 import entity.movie_fields.MovieFieldRegisterInterface;
 import use_case.movie.MovieDataAccessInterface;
 
+import java.util.List;
 import java.util.Map;
 
 public class SearchInteractor implements SearchInputBoundary {
 
     private final MovieFieldRegisterInterface movieFieldRegister;
     private final SearchOutputBoundary searchPresenter;
-    private final MovieDataAccessInterface movieDataAccessObject;
+    private final SearchDataAccessInterface movieDataAccessObject;
 
-    public SearchInteractor(MovieFieldRegisterInterface movieFieldRegister, SearchOutputBoundary searchPresenter, MovieDataAccessInterface movieDataAccess) {
+    public SearchInteractor(MovieFieldRegisterInterface movieFieldRegister, SearchOutputBoundary searchPresenter, SearchDataAccessInterface movieDataAccess) {
         this.movieFieldRegister = movieFieldRegister;
         this.searchPresenter = searchPresenter;
         this.movieDataAccessObject = movieDataAccess;
@@ -23,19 +24,19 @@ public class SearchInteractor implements SearchInputBoundary {
         Map<String, String> searchArguments = searchInputData.getSearchArguments();
 
         for (MovieFieldInterface movieField : movieFieldRegister.getSearchFields()) {
+
             String argument = searchArguments.get(movieField.getName());
-            if (argument == null) {
-                searchPresenter.prepareFailView("Missing argument for " + movieField.getName());
-            }
-            else if (!movieField.isValid(argument)) {
+
+            if (!movieField.isValid(argument)) {
                 searchPresenter.prepareFailView("Invalid argument for " + movieField.getName());
             }
             else {
-                // TODO: Call on movieDataAccessObject accordingly
-//                SearchOutputData outputData = new SearchOutputData(movies, false);
-//                searchOutputBoundary.prepareSuccessView(outputData);
-//
-//                searchOutputBoundary.prepareFailView("Error occurred while searching for movies: " + e.getMessage());
+
+                // Get output from DAO
+                List<MovieInterface> outputMovies = movieDataAccessObject.searchMovies(searchArguments);
+
+                final SearchOutputData searchOutputData = new SearchOutputData(outputMovies, false);
+                searchPresenter.prepareSuccessView(searchOutputData);
             }
         }
     }

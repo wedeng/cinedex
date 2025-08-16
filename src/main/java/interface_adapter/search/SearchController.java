@@ -3,6 +3,7 @@ package interface_adapter.search;
 import use_case.search.SearchInputBoundary;
 import use_case.search.SearchInputData;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -19,9 +20,10 @@ public class SearchController {
     /**
      * Executes the Search use case.
      */
-    public void execute(String query, Map<String, String> arguments) {
-
-        final SearchInputData searchInputData = new SearchInputData(arguments);
+    public void execute(String query, Map<String, String> arguments, String searchType) {
+        HashMap<String, String> argumentsCopy = new HashMap<String, String>(arguments);
+        argumentsCopy.put("title", query);
+        final SearchInputData searchInputData = new SearchInputData(argumentsCopy);
 
         searchInteractor.execute(searchInputData);
     }
